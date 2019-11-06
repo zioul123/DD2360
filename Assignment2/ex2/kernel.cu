@@ -62,8 +62,10 @@ int main()
 {
     // Vary ARRAY_SIZE. To use a fixed array size, uncomment the define statement and
     // comment out the loop.
-    printf("CPU      | GPU      | Correctness\n");
+    printf("ARR SIZE  | CPU      | GPU      | Correctness\n");
     for (; ARRAY_SIZE < FINAL_N; ARRAY_SIZE *= 2) {
+        printf("%9d | ", ARRAY_SIZE);
+
         // Create array pointers x and y on CPU and GPU
         float *c_x, *c_y, *g_x, *g_y, *g_res;
         c_x = (float*)malloc(ARRAY_SIZE*sizeof(float));
