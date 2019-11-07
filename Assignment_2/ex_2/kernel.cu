@@ -53,11 +53,6 @@ __host__ bool arraysMatch(float* arr1, float* arr2)
     return true;
 }
 
-__host__ void simpleTest(float* c_x, float* c_y, float* g_x, float* g_y, float* g_res) 
-{
-
-}
-
 int main()
 {
     // Vary ARRAY_SIZE. To use a fixed array size, uncomment the define statement and
