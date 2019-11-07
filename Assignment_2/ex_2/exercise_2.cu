@@ -14,17 +14,12 @@ double cpuSecond() {
    return ((double)tp.tv_sec + (double)tp.tv_usec*1.e-6);
 }
 
-// Return the ith float among n evenly spaced floats from 0 to 1.
-__host__ __device__ float scale(int i, int n)
-{
-    return ((float)i)/(n - 1);
-}
-
-// Simply fill the array with evenly spaced floats scaled from 0 to 1
+// Fill the array with random floats from 0 to 1
 __host__ void fillArray(float* arr) 
 {
+    srand(0);
     for (int i = 0; i < ARRAY_SIZE; ++i) {
-        arr[i] = scale(i, ARRAY_SIZE);
+        arr[i] = (float) rand() / RAND_MAX;
     }
 }
 
@@ -104,6 +99,7 @@ int main()
         cudaMemcpy(g_res, g_y, ARRAY_SIZE*sizeof(float), cudaMemcpyDeviceToHost);
         // printf(arraysMatch(c_y, g_res) ? " Correct!\n" : " Wrong!\n");
         printf(arraysMatch(c_y, g_res) ? "Correct\n" : " Wrong\n");
+        fflush(stdout);
 
         // Free memory
         free(c_x);
