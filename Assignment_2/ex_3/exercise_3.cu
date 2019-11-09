@@ -125,6 +125,8 @@ int main(int argc, char** argv) {
     const int num_particles = (int) strtol(argv[1], NULL, 10); // e.g. 10000 - NULL is the endpointer and 10 is the base
     const int num_iterations = (int) strtol(argv[2], NULL, 10); // e.g. 10000
     const int tpb = (int) strtol(argv[3], NULL, 10); // e.g. 32
+    const char* include_cpu = argv[4];
+    const char* include_copy_time = argv[5];
     printf("======== %s: %d, %s: %d, %s: %d\n\n", "num_particles", num_particles, "num_iterations", num_iterations, "tpb", tpb);
 
 
@@ -139,16 +141,24 @@ int main(int argc, char** argv) {
     // Initialize array for GPU - particle positions/velocities in device memory are a copy of those in host memory
     g_result = (Particle*) malloc(num_particles*sizeof(Particle)); // Used to store the result of GPU simulation
     cudaMalloc(&g_particles, num_particles*sizeof(Particle));
+
+    iStart = cpuSecond();
     cudaMemcpy(g_particles, c_particles, num_particles*sizeof(Particle), cudaMemcpyHostToDevice);
+    double copy_time = cpuSecond() - iStart;
+
 
     // CPU Version
-    printf("CPU simulation started...\n"); fflush(stdout);
-    iStart = cpuSecond();
-    for (int i = 0; i < num_iterations; i++) {
-        cpu_updateParticles(c_particles, i, num_particles);
+    if (strcmp(include_cpu, "include_cpu") == 0) {  // perfrom CPU version if wanted by the user
+        printf("CPU simulation started...\n"); fflush(stdout);
+        iStart = cpuSecond();
+        for (int i = 0; i < num_iterations; i++) {
+            cpu_updateParticles(c_particles, i, num_particles);
+        }
+        iElaps = cpuSecond() - iStart;
+        printf("Done in %f!\n\n", iElaps); fflush(stdout);
     }
-    iElaps = cpuSecond() - iStart;
-    printf("Done in %f!\n\n", iElaps); fflush(stdout);
+    else
+        printf("Excluded the CPU experiment...\n\n");
 
     // GPU Version
     printf("GPU simulation started...\n"); fflush(stdout);
@@ -158,11 +168,23 @@ int main(int argc, char** argv) {
         cudaDeviceSynchronize();
     }
     iElaps = cpuSecond() - iStart;
-    printf("Done in %f!\n\n", iElaps); fflush(stdout);
+
+    if (strcmp(include_copy_time, "include_copy_time") == 0) {
+        printf("Done (including copy time) in %f!\n\n", iElaps + copy_time);
+        fflush(stdout);
+    }
+    else {
+        printf("Done (excluding copy time) in %f!\n\n", iElaps);
+        fflush(stdout);
+    }
 
     // copying the result back from the GPU memory to the CUP memory
     cudaMemcpy(g_result, g_particles, num_particles*sizeof(Particle), cudaMemcpyDeviceToHost);
-    printf(arraysMatch(g_result, c_particles, num_particles) ? "Results match!\n" : "Results are wrong!\n");
+
+    // if CPU version is perfromed, then compare it with GPU version
+    if (strcmp(include_cpu, "include_cpu") == 0)
+        printf(arraysMatch(g_result, c_particles, num_particles) ? "Results match!\n" : "Results are wrong!\n");
+    printf("========================================================== \n\n\n");
 
     // Free arrays
     free(c_particles);
