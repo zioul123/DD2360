@@ -144,13 +144,14 @@ int main(int argc, char** argv) {
     randomizeParticles(c_particles, num_particles);
 
     // Initialize array for GPU - particle positions/velocities in device memory are a copy of those in host memory
-    g_result = (Particle*) malloc(num_particles*sizeof(Particle)); // Used to store the result of GPU simulation
+    // g_result = (Particle*) malloc(num_particles*sizeof(Particle)); // Used to store the result of GPU simulation
     // cudaMallocHost(&g_result, num_particles*sizeof(Particle));
-    cudaMalloc(&g_particles, num_particles*sizeof(Particle));
+    // cudaMalloc(&g_particles, num_particles*sizeof(Particle));
+    cudaMallocManaged(&g_particles, num_particles*sizeof(Particle));
 
     iStart = cpuSecond();
 
-    memcpy(g_result, c_particles, num_particles*sizeof(Particle));
+    memcpy(g_particles, c_particles, num_particles*sizeof(Particle));
     double copy_time = cpuSecond() - iStart;
 
 
@@ -171,21 +172,22 @@ int main(int argc, char** argv) {
     printf("GPU simulation started...\n"); fflush(stdout);
     iStart = cpuSecond();
     for (int i = 0; i < num_iterations; i++) {
-        cudaMemcpy(g_particles, g_result, num_particles*sizeof(Particle), cudaMemcpyHostToDevice);
+        // cudaMemcpy(g_particles, g_result, num_particles*sizeof(Particle), cudaMemcpyHostToDevice);
         gpu_updateParticles(g_particles, i, num_particles, tpb);
         cudaDeviceSynchronize();
-        cudaMemcpy(g_result, g_particles, num_particles*sizeof(Particle), cudaMemcpyDeviceToHost);
+        // cudaMemcpy(g_result, g_particles, num_particles*sizeof(Particle), cudaMemcpyDeviceToHost);
     }
     iElaps = cpuSecond() - iStart;
 
     printf("Done in %f!\n\n", iElaps + copy_time); fflush(stdout);
 
     // copying the result back from the GPU memory to the CUP memory
-    cudaMemcpy(g_result, g_particles, num_particles*sizeof(Particle), cudaMemcpyDeviceToHost);
+    // cudaMemcpy(g_result, g_particles, num_particles*sizeof(Particle), cudaMemcpyDeviceToHost);
 
     // if CPU version is perfromed, then compare it with GPU version
     if (strcmp(include_cpu, "include_cpu") == 0)
-        printf(arraysMatch(g_result, c_particles, num_particles) ? "Results match!\n" : "Results are wrong!\n");
+        printf(arraysMatch(g_particles, c_particles, num_particles) ? "Results match!\n" : "Results are wrong!\n");
+        // printf(arraysMatch(g_result, c_particles, num_particles) ? "Results match!\n" : "Results are wrong!\n");
     printf("========================================================== \n\n\n");
 
     // Free arrays

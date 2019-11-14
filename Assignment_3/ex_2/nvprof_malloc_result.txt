@@ -1,0 +1,65 @@
+==41307== NVPROF is profiling process 41307, command: ./a1 10000 10000 32 include_cpu
+Running the simulations with the following params:
+======== num_particles: 10000, num_iterations: 10000, tpb: 32
+
+CPU simulation started...
+Done in 2.513816!
+
+GPU simulation started...
+Done in 2.267464!
+
+16813668.000000 16812616.000000 16819226.000000 4999.742188 4999.636719 5000.303711
+16813668.000000 16812616.000000 16819226.000000 4999.742188 4999.636719 5000.303711
+Results match!
+========================================================== 
+
+
+==41307== Profiling application: ./a1 10000 10000 32 include_cpu
+==41307== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   46.75%  663.64ms     10000  66.363us  63.740us  70.268us  gpu_updatePositionAndVelocity(Particle*, int, int)
+                   28.21%  400.45ms     10000  40.045us  39.582us  46.302us  [CUDA memcpy HtoD]
+                   25.04%  355.39ms     10001  35.535us  35.486us  48.093us  [CUDA memcpy DtoH]
+      API calls:   46.64%  1.10869s     10000  110.87us  2.7990us  120.67us  cudaDeviceSynchronize
+                   44.34%  1.05391s     20001  52.692us  30.931us  780.94us  cudaMemcpy
+                    5.19%  123.40ms         1  123.40ms  123.40ms  123.40ms  cudaMalloc
+                    3.72%  88.465ms     10000  8.8460us  8.0020us  1.1839ms  cudaLaunchKernel
+                    0.06%  1.4751ms        96  15.365us     320ns  701.79us  cuDeviceGetAttribute
+                    0.04%  858.06us         1  858.06us  858.06us  858.06us  cudaFree
+                    0.01%  211.81us         1  211.81us  211.81us  211.81us  cuDeviceTotalMem
+                    0.01%  122.00us         1  122.00us  122.00us  122.00us  cuDeviceGetName
+                    0.00%  10.467us         1  10.467us  10.467us  10.467us  cuDeviceGetPCIBusId
+                    0.00%  4.7170us         3  1.5720us     420ns  2.6830us  cuDeviceGetCount
+                    0.00%  2.6690us         2  1.3340us     626ns  2.0430us  cuDeviceGet
+                    0.00%     656ns         1     656ns     656ns     656ns  cuDeviceGetUuid
+
+==41814== NVPROF is profiling process 41814, command: ./a1 100000 1000 32 i_cpu
+Running the simulations with the following params:
+======== num_particles: 100000, num_iterations: 1000, tpb: 32
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done in 1.878850!
+
+========================================================== 
+
+
+==41814== Profiling application: ./a1 100000 1000 32 i_cpu
+==41814== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   51.65%  815.29ms      1000  815.29us  788.66us  850.80us  gpu_updatePositionAndVelocity(Particle*, int, int)
+                   25.25%  398.61ms      1000  398.61us  388.72us  478.89us  [CUDA memcpy HtoD]
+                   23.10%  364.68ms      1001  364.31us  362.70us  433.23us  [CUDA memcpy DtoH]
+      API calls:   48.85%  978.72ms      1000  978.72us  802.87us  1.0141ms  cudaDeviceSynchronize
+                   43.99%  881.24ms      2001  440.40us  352.07us  1.2714ms  cudaMemcpy
+                    6.37%  127.54ms         1  127.54ms  127.54ms  127.54ms  cudaMalloc
+                    0.67%  13.384ms      1000  13.383us  9.8010us  1.2409ms  cudaLaunchKernel
+                    0.07%  1.4655ms        96  15.265us     311ns  708.35us  cuDeviceGetAttribute
+                    0.04%  780.88us         1  780.88us  780.88us  780.88us  cudaFree
+                    0.01%  207.03us         1  207.03us  207.03us  207.03us  cuDeviceTotalMem
+                    0.01%  105.69us         1  105.69us  105.69us  105.69us  cuDeviceGetName
+                    0.00%  13.290us         1  13.290us  13.290us  13.290us  cuDeviceGetPCIBusId
+                    0.00%  3.9780us         3  1.3260us     424ns  2.5240us  cuDeviceGetCount
+                    0.00%  2.4740us         2  1.2370us     544ns  1.9300us  cuDeviceGet
+                    0.00%     671ns         1     671ns     671ns     671ns  cuDeviceGetUuid
