@@ -42,7 +42,7 @@ __global__ void gpu_saxpy(float a, float* x, float* y)
 __host__ bool arraysMatch(float* arr1, float* arr2)
 {
     for (int i = 0; i < ARRAY_SIZE; ++i) {
-        if (abs(arr1[i] - arr2[i]) > EPSILON)
+        if (fabs(arr1[i] - arr2[i]) > EPSILON)
             return false;
     }
     return true;

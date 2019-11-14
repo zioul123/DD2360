@@ -35,9 +35,9 @@ void printParticle(Particle* particles, int index){
 __host__ bool arraysMatch(Particle* arr1, Particle* arr2, int num_particles)
 {
     for (int i = 0; i < num_particles; i++) {
-        if (abs(arr1[i].position.x - arr2[i].position.x) > EPSILON ||
-        abs(arr1[i].position.y - arr2[i].position.y) > EPSILON ||
-        abs(arr1[i].position.z - arr2[i].position.z) > EPSILON)
+        if (fabs(arr1[i].position.x - arr2[i].position.x) > EPSILON ||
+        fabs(arr1[i].position.y - arr2[i].position.y) > EPSILON ||
+        fabs(arr1[i].position.z - arr2[i].position.z) > EPSILON)
         return false;
     }
     return true;
