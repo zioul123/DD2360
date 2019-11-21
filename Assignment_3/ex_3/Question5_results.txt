@@ -1,0 +1,77 @@
+bash-4.2$ srun -n 1 ./a -s 64 -v
+Matrix size: 64x64
+Matrix size: 64x64
+Grid size: 4x4
+Tile size: 16x16
+Run CPU sgemm: 1
+
+CPU matmul:         1.329000 ms
+GPU cuBLAS matmul:      0.093000 ms
+GPU matmul (global memory): 0.368000 ms
+GPU matmul (shared memory): 0.043000 ms
+bash-4.2$ srun -n 1 ./a -s 128 -v
+Matrix size: 128x128
+Matrix size: 128x128
+Grid size: 8x8
+Tile size: 16x16
+Run CPU sgemm: 1
+
+CPU matmul:         10.421000 ms
+GPU cuBLAS matmul:      0.207000 ms
+GPU matmul (global memory): 2.659000 ms
+GPU matmul (shared memory): 0.195000 ms
+bash-4.2$ srun -n 1 ./a -s 256 -v
+Matrix size: 256x256
+Matrix size: 256x256
+Grid size: 16x16
+Tile size: 16x16
+Run CPU sgemm: 1
+
+CPU matmul:         81.916000 ms
+GPU cuBLAS matmul:      0.328000 ms
+GPU matmul (global memory): 20.946000 ms
+GPU matmul (shared memory): 1.444000 ms
+bash-4.2$ srun -n 1 ./a -s 512 -v
+Matrix size: 512x512
+Matrix size: 512x512
+Grid size: 32x32
+Tile size: 16x16
+Run CPU sgemm: 1
+
+CPU matmul:         638.495000 ms
+GPU cuBLAS matmul:      1.832000 ms
+GPU matmul (global memory): 166.704000 ms
+GPU matmul (shared memory): 11.368000 ms
+bash-4.2$ srun -n 1 ./a -s 1024 -v
+Matrix size: 1024x1024
+Matrix size: 1024x1024
+Grid size: 64x64
+Tile size: 16x16
+Run CPU sgemm: 1
+
+CPU matmul:         4019.960000 ms
+GPU cuBLAS matmul:      13.514000 ms
+GPU matmul (global memory): 1328.417000 ms
+GPU matmul (shared memory): 90.698000 ms
+bash-4.2$ srun -n 1 ./a -s 2048 -v
+Matrix size: 2048x2048
+Matrix size: 2048x2048
+Grid size: 128x128
+Tile size: 16x16
+Run CPU sgemm: 1
+
+CPU matmul:         31066.426000 ms
+GPU cuBLAS matmul:      105.198000 ms
+GPU matmul (global memory): 10750.245000 ms
+GPU matmul (shared memory): 725.010000 ms
+bash-4.2$ srun -n 1 ./a -s 4096 -v
+Matrix size: 4096x4096
+Matrix size: 4096x4096
+Grid size: 256x256
+Tile size: 16x16
+Run CPU sgemm: 1
+
+CPU matmul:         247864.305000 ms
+GPU cuBLAS matmul:      830.744000 ms
+GPU matmul (global memory): 86601.466000 ms
+GPU matmul (shared memory): 5854.418000 ms
