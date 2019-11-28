@@ -1,0 +1,371 @@
+========================= CPU EXPERIMENTS =========================
+Running the simulations with the following params:
+======== num_particles: 10000, num_iterations: 1000, tpb: 32
+
+CPU simulation started...
+Done in 0.317639!
+
+GPU simulation started...
+Done (excluding copy time) in 0.074701!
+
+Results match!
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 50000, num_iterations: 1000, tpb: 32
+
+CPU simulation started...
+Done in 1.363318!
+
+GPU simulation started...
+Done (excluding copy time) in 0.409928!
+
+Results match!
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 100000, num_iterations: 1000, tpb: 32
+
+CPU simulation started...
+Done in 2.522345!
+
+GPU simulation started...
+Done (excluding copy time) in 0.804847!
+
+Results match!
+========================================================== 
+
+
+========================= GPU EXPERIMENTS =========================
+Running the simulations with the following params:
+======== num_particles: 10000, num_iterations: 1000, tpb: 16
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.085342!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 10000, num_iterations: 1000, tpb: 16
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.086513!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 10000, num_iterations: 1000, tpb: 32
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.073008!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 10000, num_iterations: 1000, tpb: 32
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.074483!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 10000, num_iterations: 1000, tpb: 64
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.071088!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 10000, num_iterations: 1000, tpb: 64
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.071461!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 10000, num_iterations: 1000, tpb: 128
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.071717!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 10000, num_iterations: 1000, tpb: 128
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.072100!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 10000, num_iterations: 1000, tpb: 256
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.073562!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 10000, num_iterations: 1000, tpb: 256
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.074520!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 50000, num_iterations: 1000, tpb: 16
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.520530!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 50000, num_iterations: 1000, tpb: 16
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.520593!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 50000, num_iterations: 1000, tpb: 32
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.416288!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 50000, num_iterations: 1000, tpb: 32
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.416942!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 50000, num_iterations: 1000, tpb: 64
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.297853!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 50000, num_iterations: 1000, tpb: 64
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.297948!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 50000, num_iterations: 1000, tpb: 128
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.294206!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 50000, num_iterations: 1000, tpb: 128
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.294487!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 50000, num_iterations: 1000, tpb: 256
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.321765!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 50000, num_iterations: 1000, tpb: 256
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.320753!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 100000, num_iterations: 1000, tpb: 16
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 1.021930!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 100000, num_iterations: 1000, tpb: 16
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 1.022477!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 100000, num_iterations: 1000, tpb: 32
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.809446!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 100000, num_iterations: 1000, tpb: 32
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.810964!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 100000, num_iterations: 1000, tpb: 64
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.570293!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 100000, num_iterations: 1000, tpb: 64
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.570948!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 100000, num_iterations: 1000, tpb: 128
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.565820!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 100000, num_iterations: 1000, tpb: 128
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.568078!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 100000, num_iterations: 1000, tpb: 256
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (excluding copy time) in 0.619830!
+
+========================================================== 
+
+
+Running the simulations with the following params:
+======== num_particles: 100000, num_iterations: 1000, tpb: 256
+
+Excluded the CPU experiment...
+
+GPU simulation started...
+Done (including copy time) in 0.619667!
+
+========================================================== 
+
+
