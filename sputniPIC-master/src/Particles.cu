@@ -109,12 +109,12 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
                 iz = 2 +  int((part->z[i] - grd->zStart)*grd->invdz);
                 
                 // calculate weights
-                xi[0]   = part->x[i] - grd->XN[ix - 1][iy][iz];
-                eta[0]  = part->y[i] - grd->YN[ix][iy - 1][iz];
-                zeta[0] = part->z[i] - grd->ZN[ix][iy][iz - 1];
-                xi[1]   = grd->XN[ix][iy][iz] - part->x[i];
-                eta[1]  = grd->YN[ix][iy][iz] - part->y[i];
-                zeta[1] = grd->ZN[ix][iy][iz] - part->z[i];
+                xi[0]   = part->x[i] - grd->XN_flat[get_idx(ix-1, iy, iz, grd->nyn, grd->nzn)];
+                eta[0]  = part->y[i] - grd->YN_flat[get_idx(ix, iy-1, iz, grd->nyn, grd->nzn)];
+                zeta[0] = part->z[i] - grd->ZN_flat[get_idx(ix, iy, iz-1, grd->nyn, grd->nzn)];
+                xi[1]   = grd->XN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part->x[i];
+                eta[1]  = grd->YN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part->y[i];
+                zeta[1] = grd->ZN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part->z[i];
                 for (int i = 0; i < 2; i++)
                     for (int j = 0; j < 2; j++)
                         for (int k = 0; k < 2; k++)
@@ -126,12 +126,12 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
                 for (int ii=0; ii < 2; ii++)
                     for (int jj=0; jj < 2; jj++)
                         for(int kk=0; kk < 2; kk++){
-                            Exl += weight[ii][jj][kk]*field->Ex[ix- ii][iy -jj][iz- kk ];
-                            Eyl += weight[ii][jj][kk]*field->Ey[ix- ii][iy -jj][iz- kk ];
-                            Ezl += weight[ii][jj][kk]*field->Ez[ix- ii][iy -jj][iz -kk ];
-                            Bxl += weight[ii][jj][kk]*field->Bxn[ix- ii][iy -jj][iz -kk ];
-                            Byl += weight[ii][jj][kk]*field->Byn[ix- ii][iy -jj][iz -kk ];
-                            Bzl += weight[ii][jj][kk]*field->Bzn[ix- ii][iy -jj][iz -kk ];
+                            Exl += weight[ii][jj][kk]*field->Ex_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)];
+                            Eyl += weight[ii][jj][kk]*field->Ey_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)];
+                            Ezl += weight[ii][jj][kk]*field->Ez_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)];
+                            Bxl += weight[ii][jj][kk]*field->Bxn_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)];
+                            Byl += weight[ii][jj][kk]*field->Byn_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)];
+                            Bzl += weight[ii][jj][kk]*field->Bzn_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)];
                         }
                 
                 // end interpolation
@@ -255,12 +255,12 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         iz = 2 + int (floor((part->z[i] - grd->zStart) * grd->invdz));
         
         // distances from node
-        xi[0]   = part->x[i] - grd->XN[ix - 1][iy][iz];
-        eta[0]  = part->y[i] - grd->YN[ix][iy - 1][iz];
-        zeta[0] = part->z[i] - grd->ZN[ix][iy][iz - 1];
-        xi[1]   = grd->XN[ix][iy][iz] - part->x[i];
-        eta[1]  = grd->YN[ix][iy][iz] - part->y[i];
-        zeta[1] = grd->ZN[ix][iy][iz] - part->z[i];
+        xi[0]   = part->x[i] - grd->XN_flat[get_idx(ix-1, iy, iz, grd->nyn, grd->nzn)];
+        eta[0]  = part->y[i] - grd->YN_flat[get_idx(ix, iy-1, iz, grd->nyn, grd->nzn)];
+        zeta[0] = part->z[i] - grd->ZN_flat[get_idx(ix, iy, iz-1, grd->nyn, grd->nzn)];
+        xi[1]   = grd->XN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part->x[i];
+        eta[1]  = grd->YN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part->y[i];
+        zeta[1] = grd->ZN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part->z[i];
         
         // calculate the weights for different nodes
         for (int ii = 0; ii < 2; ii++)
@@ -273,7 +273,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++)
                 for (int k = 0; k < 2; k++)
-                    ids->rhon[ix - i][iy - j][iz - k] += weight[i][j][k] * grd->invVOL;
+                    ids->rhon_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
         
         
         ////////////////////////////
@@ -286,7 +286,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++)
                 for (int k = 0; k < 2; k++)
-                    ids->Jx[ix - i][iy - j][iz - k] += weight[i][j][k] * grd->invVOL;
+                    ids->Jx_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
         
         
         ////////////////////////////
@@ -298,7 +298,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++)
                 for (int k = 0; k < 2; k++)
-                    ids->Jy[ix - i][iy - j][iz - k] += weight[i][j][k] * grd->invVOL;
+                    ids->Jy_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
         
         
         
@@ -311,7 +311,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++)
                 for (int k = 0; k < 2; k++)
-                    ids->Jz[ix - i][iy - j][iz - k] += weight[i][j][k] * grd->invVOL;
+                    ids->Jz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
         
         
         ////////////////////////////
@@ -323,7 +323,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++)
                 for (int k = 0; k < 2; k++)
-                    ids->pxx[ix - i][iy - j][iz - k] += weight[i][j][k] * grd->invVOL;
+                    ids->pxx_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
         
         
         ////////////////////////////
@@ -335,7 +335,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++)
                 for (int k = 0; k < 2; k++)
-                    ids->pxy[ix - i][iy - j][iz - k] += weight[i][j][k] * grd->invVOL;
+                    ids->pxy_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
         
         
         
@@ -348,7 +348,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++)
                 for (int k = 0; k < 2; k++)
-                    ids->pxz[ix - i][iy - j][iz - k] += weight[i][j][k] * grd->invVOL;
+                    ids->pxz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
         
         
         /////////////////////////////
@@ -360,7 +360,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++)
                 for (int k = 0; k < 2; k++)
-                    ids->pyy[ix - i][iy - j][iz - k] += weight[i][j][k] * grd->invVOL;
+                    ids->pyy_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
         
         
         /////////////////////////////
@@ -372,7 +372,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         for (int i = 0; i < 2; i++)
             for (int j = 0; j < 2; j++)
                 for (int k = 0; k < 2; k++)
-                    ids->pyz[ix - i][iy - j][iz - k] += weight[i][j][k] * grd->invVOL;
+                    ids->pyz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
         
         
         /////////////////////////////
@@ -384,7 +384,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         for (int i=0; i < 2; i++)
             for (int j=0; j < 2; j++)
                 for(int k=0; k < 2; k++)
-                    ids->pzz[ix -i][iy -j][iz - k] += weight[i][j][k] * grd->invVOL;
+                    ids->pzz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)]= weight[i][j][k] * grd->invVOL;
     
     }
    
