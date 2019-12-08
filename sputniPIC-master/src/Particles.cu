@@ -251,12 +251,16 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
     return(0); // exit succcesfully
 } // end of the mover
 
-
-
-/** Interpolation Particle --> Grid: This is for species */
-void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd)
+/** CPU serial function to interpolate for a single particle during one subcycle. */
+__host__ void h_interp_particle(register long long i, struct grid* grd,
+    FPpart* part_x, FPpart* part_y, FPpart* part_z, 
+    FPpart* part_u, FPpart* part_v, FPpart* part_w, FPinterp* part_q,
+    FPinterp *ids_rhon_flat, FPinterp *ids_rhoc_flat, 
+    FPinterp *ids_Jx_flat, FPinterp *ids_Jy_flat, FPinterp *ids_Jz_flat, 
+    FPinterp *ids_pxx_flat, FPinterp *ids_pxy_flat, FPinterp *ids_pxz_flat, 
+    FPinterp *ids_pyy_flat, FPinterp *ids_pyz_flat, FPinterp *ids_pzz_flat, 
+    FPfield* grd_XN_flat, FPfield* grd_YN_flat, FPfield* grd_ZN_flat) 
 {
-    
     // arrays needed for interpolation
     FPpart weight[2][2][2];
     FPpart temp[2][2][2];
@@ -264,147 +268,157 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
     
     // index of the cell
     int ix, iy, iz;
+
+    // determine cell: can we change to int()? is it faster?
+    ix = 2 + int (floor((part_x[i] - grd->xStart) * grd->invdx));
+    iy = 2 + int (floor((part_y[i] - grd->yStart) * grd->invdy));
+    iz = 2 + int (floor((part_z[i] - grd->zStart) * grd->invdz));
+    
+    // distances from node
+    xi[0]   = part_x[i] - grd_XN_flat[get_idx(ix-1, iy, iz, grd->nyn, grd->nzn)];
+    eta[0]  = part_y[i] - grd_YN_flat[get_idx(ix, iy-1, iz, grd->nyn, grd->nzn)];
+    zeta[0] = part_z[i] - grd_ZN_flat[get_idx(ix, iy, iz-1, grd->nyn, grd->nzn)];
+    xi[1]   = grd_XN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part_x[i];
+    eta[1]  = grd_YN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part_y[i];
+    zeta[1] = grd_ZN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part_z[i];
+    
+    // calculate the weights for different nodes
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                weight[ii][jj][kk] = part_q[i] * xi[ii] * eta[jj] * zeta[kk] * grd->invVOL;
+    
+    //////////////////////////
+    // add charge density
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            for (int k = 0; k < 2; k++)
+                ids_rhon_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
     
     
+    ////////////////////////////
+    // add current density - Jx
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                temp[ii][jj][kk] = part_u[i] * weight[ii][jj][kk];
+    
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            for (int k = 0; k < 2; k++)
+                ids_Jx_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    
+    
+    ////////////////////////////
+    // add current density - Jy
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                temp[ii][jj][kk] = part_v[i] * weight[ii][jj][kk];
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            for (int k = 0; k < 2; k++)
+                ids_Jy_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    
+    
+    
+    ////////////////////////////
+    // add current density - Jz
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                temp[ii][jj][kk] = part_w[i] * weight[ii][jj][kk];
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            for (int k = 0; k < 2; k++)
+                ids_Jz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    
+    
+    ////////////////////////////
+    // add pressure pxx
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                temp[ii][jj][kk] = part_u[i] * part_u[i] * weight[ii][jj][kk];
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            for (int k = 0; k < 2; k++)
+                ids_pxx_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    
+    
+    ////////////////////////////
+    // add pressure pxy
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                temp[ii][jj][kk] = part_u[i] * part_v[i] * weight[ii][jj][kk];
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            for (int k = 0; k < 2; k++)
+                ids_pxy_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    
+    
+    
+    /////////////////////////////
+    // add pressure pxz
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                temp[ii][jj][kk] = part_u[i] * part_w[i] * weight[ii][jj][kk];
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            for (int k = 0; k < 2; k++)
+                ids_pxz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    
+    
+    /////////////////////////////
+    // add pressure pyy
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                temp[ii][jj][kk] = part_v[i] * part_v[i] * weight[ii][jj][kk];
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            for (int k = 0; k < 2; k++)
+                ids_pyy_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    
+    
+    /////////////////////////////
+    // add pressure pyz
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                temp[ii][jj][kk] = part_v[i] * part_w[i] * weight[ii][jj][kk];
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            for (int k = 0; k < 2; k++)
+                ids_pyz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    
+    
+    /////////////////////////////
+    // add pressure pzz
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                temp[ii][jj][kk] = part_w[i] * part_w[i] * weight[ii][jj][kk];
+    for (int i=0; i < 2; i++)
+        for (int j=0; j < 2; j++)
+            for(int k=0; k < 2; k++)
+                ids_pzz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)]= weight[i][j][k] * grd->invVOL;
+
+}
+
+/** Interpolation Particle --> Grid: This is for species */
+void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd)
+{
     for (register long long i = 0; i < part->nop; i++) {
-        
-        // determine cell: can we change to int()? is it faster?
-        ix = 2 + int (floor((part->x[i] - grd->xStart) * grd->invdx));
-        iy = 2 + int (floor((part->y[i] - grd->yStart) * grd->invdy));
-        iz = 2 + int (floor((part->z[i] - grd->zStart) * grd->invdz));
-        
-        // distances from node
-        xi[0]   = part->x[i] - grd->XN_flat[get_idx(ix-1, iy, iz, grd->nyn, grd->nzn)];
-        eta[0]  = part->y[i] - grd->YN_flat[get_idx(ix, iy-1, iz, grd->nyn, grd->nzn)];
-        zeta[0] = part->z[i] - grd->ZN_flat[get_idx(ix, iy, iz-1, grd->nyn, grd->nzn)];
-        xi[1]   = grd->XN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part->x[i];
-        eta[1]  = grd->YN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part->y[i];
-        zeta[1] = grd->ZN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part->z[i];
-        
-        // calculate the weights for different nodes
-        for (int ii = 0; ii < 2; ii++)
-            for (int jj = 0; jj < 2; jj++)
-                for (int kk = 0; kk < 2; kk++)
-                    weight[ii][jj][kk] = part->q[i] * xi[ii] * eta[jj] * zeta[kk] * grd->invVOL;
-        
-        //////////////////////////
-        // add charge density
-        for (int i = 0; i < 2; i++)
-            for (int j = 0; j < 2; j++)
-                for (int k = 0; k < 2; k++)
-                    ids->rhon_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
-        
-        
-        ////////////////////////////
-        // add current density - Jx
-        for (int ii = 0; ii < 2; ii++)
-            for (int jj = 0; jj < 2; jj++)
-                for (int kk = 0; kk < 2; kk++)
-                    temp[ii][jj][kk] = part->u[i] * weight[ii][jj][kk];
-        
-        for (int i = 0; i < 2; i++)
-            for (int j = 0; j < 2; j++)
-                for (int k = 0; k < 2; k++)
-                    ids->Jx_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
-        
-        
-        ////////////////////////////
-        // add current density - Jy
-        for (int ii = 0; ii < 2; ii++)
-            for (int jj = 0; jj < 2; jj++)
-                for (int kk = 0; kk < 2; kk++)
-                    temp[ii][jj][kk] = part->v[i] * weight[ii][jj][kk];
-        for (int i = 0; i < 2; i++)
-            for (int j = 0; j < 2; j++)
-                for (int k = 0; k < 2; k++)
-                    ids->Jy_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
-        
-        
-        
-        ////////////////////////////
-        // add current density - Jz
-        for (int ii = 0; ii < 2; ii++)
-            for (int jj = 0; jj < 2; jj++)
-                for (int kk = 0; kk < 2; kk++)
-                    temp[ii][jj][kk] = part->w[i] * weight[ii][jj][kk];
-        for (int i = 0; i < 2; i++)
-            for (int j = 0; j < 2; j++)
-                for (int k = 0; k < 2; k++)
-                    ids->Jz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
-        
-        
-        ////////////////////////////
-        // add pressure pxx
-        for (int ii = 0; ii < 2; ii++)
-            for (int jj = 0; jj < 2; jj++)
-                for (int kk = 0; kk < 2; kk++)
-                    temp[ii][jj][kk] = part->u[i] * part->u[i] * weight[ii][jj][kk];
-        for (int i = 0; i < 2; i++)
-            for (int j = 0; j < 2; j++)
-                for (int k = 0; k < 2; k++)
-                    ids->pxx_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
-        
-        
-        ////////////////////////////
-        // add pressure pxy
-        for (int ii = 0; ii < 2; ii++)
-            for (int jj = 0; jj < 2; jj++)
-                for (int kk = 0; kk < 2; kk++)
-                    temp[ii][jj][kk] = part->u[i] * part->v[i] * weight[ii][jj][kk];
-        for (int i = 0; i < 2; i++)
-            for (int j = 0; j < 2; j++)
-                for (int k = 0; k < 2; k++)
-                    ids->pxy_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
-        
-        
-        
-        /////////////////////////////
-        // add pressure pxz
-        for (int ii = 0; ii < 2; ii++)
-            for (int jj = 0; jj < 2; jj++)
-                for (int kk = 0; kk < 2; kk++)
-                    temp[ii][jj][kk] = part->u[i] * part->w[i] * weight[ii][jj][kk];
-        for (int i = 0; i < 2; i++)
-            for (int j = 0; j < 2; j++)
-                for (int k = 0; k < 2; k++)
-                    ids->pxz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
-        
-        
-        /////////////////////////////
-        // add pressure pyy
-        for (int ii = 0; ii < 2; ii++)
-            for (int jj = 0; jj < 2; jj++)
-                for (int kk = 0; kk < 2; kk++)
-                    temp[ii][jj][kk] = part->v[i] * part->v[i] * weight[ii][jj][kk];
-        for (int i = 0; i < 2; i++)
-            for (int j = 0; j < 2; j++)
-                for (int k = 0; k < 2; k++)
-                    ids->pyy_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
-        
-        
-        /////////////////////////////
-        // add pressure pyz
-        for (int ii = 0; ii < 2; ii++)
-            for (int jj = 0; jj < 2; jj++)
-                for (int kk = 0; kk < 2; kk++)
-                    temp[ii][jj][kk] = part->v[i] * part->w[i] * weight[ii][jj][kk];
-        for (int i = 0; i < 2; i++)
-            for (int j = 0; j < 2; j++)
-                for (int k = 0; k < 2; k++)
-                    ids->pyz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
-        
-        
-        /////////////////////////////
-        // add pressure pzz
-        for (int ii = 0; ii < 2; ii++)
-            for (int jj = 0; jj < 2; jj++)
-                for (int kk = 0; kk < 2; kk++)
-                    temp[ii][jj][kk] = part->w[i] * part->w[i] * weight[ii][jj][kk];
-        for (int i=0; i < 2; i++)
-            for (int j=0; j < 2; j++)
-                for(int k=0; k < 2; k++)
-                    ids->pzz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)]= weight[i][j][k] * grd->invVOL;
-    
-    }
-   
+        h_interp_particle(i, grd,
+            part->x, part->y, part->z, 
+            part->u, part->v, part->w, part->q,
+            ids->rhon_flat, ids->rhoc_flat,
+            ids->Jx_flat, ids->Jy_flat, ids->Jz_flat,
+            ids->pxx_flat, ids->pxy_flat, ids->pxz_flat,
+            ids->pyy_flat, ids->pyz_flat, ids->pzz_flat,
+            grd->XN_flat, grd->YN_flat, grd->ZN_flat);
+    }  
 }
