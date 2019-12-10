@@ -120,10 +120,10 @@ __host__ void h_move_particle(int i, int part_NiterMover,
         xi[1]   = grd_XN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part_x[i];
         eta[1]  = grd_YN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part_y[i];
         zeta[1] = grd_ZN_flat[get_idx(ix, iy, iz, grd->nyn, grd->nzn)] - part_z[i];
-        for (int i = 0; i < 2; i++)
-            for (int j = 0; j < 2; j++)
-                for (int k = 0; k < 2; k++)
-                    weight[i][j][k] = xi[i] * eta[j] * zeta[k] * grd->invVOL;
+        for (int ii = 0; ii < 2; ii++)
+            for (int jj = 0; jj < 2; jj++)
+                for (int kk = 0; kk < 2; kk++)
+                    weight[ii][jj][kk] = xi[ii] * eta[jj] * zeta[kk] * grd->invVOL;
         
         // set to zero local electric and magnetic field
         Exl=0.0, Eyl = 0.0, Ezl = 0.0, Bxl = 0.0, Byl = 0.0, Bzl = 0.0;
@@ -297,10 +297,10 @@ __host__ void h_interp_particle(register long long i, struct grid* grd,
     
     //////////////////////////
     // add charge density
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++)
-            for (int k = 0; k < 2; k++)
-                ids_rhon_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                ids_rhon_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)] += weight[ii][jj][kk] * grd->invVOL;
     
     
     ////////////////////////////
@@ -310,10 +310,10 @@ __host__ void h_interp_particle(register long long i, struct grid* grd,
             for (int kk = 0; kk < 2; kk++)
                 temp[ii][jj][kk] = part_u[i] * weight[ii][jj][kk];
     
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++)
-            for (int k = 0; k < 2; k++)
-                ids_Jx_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                ids_Jx_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)] += weight[ii][jj][kk] * grd->invVOL;
     
     
     ////////////////////////////
@@ -322,10 +322,10 @@ __host__ void h_interp_particle(register long long i, struct grid* grd,
         for (int jj = 0; jj < 2; jj++)
             for (int kk = 0; kk < 2; kk++)
                 temp[ii][jj][kk] = part_v[i] * weight[ii][jj][kk];
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++)
-            for (int k = 0; k < 2; k++)
-                ids_Jy_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                ids_Jy_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)] += weight[ii][jj][kk] * grd->invVOL;
     
     
     
@@ -335,10 +335,10 @@ __host__ void h_interp_particle(register long long i, struct grid* grd,
         for (int jj = 0; jj < 2; jj++)
             for (int kk = 0; kk < 2; kk++)
                 temp[ii][jj][kk] = part_w[i] * weight[ii][jj][kk];
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++)
-            for (int k = 0; k < 2; k++)
-                ids_Jz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                ids_Jz_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)] += weight[ii][jj][kk] * grd->invVOL;
     
     
     ////////////////////////////
@@ -347,10 +347,10 @@ __host__ void h_interp_particle(register long long i, struct grid* grd,
         for (int jj = 0; jj < 2; jj++)
             for (int kk = 0; kk < 2; kk++)
                 temp[ii][jj][kk] = part_u[i] * part_u[i] * weight[ii][jj][kk];
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++)
-            for (int k = 0; k < 2; k++)
-                ids_pxx_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                ids_pxx_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)] += weight[ii][jj][kk] * grd->invVOL;
     
     
     ////////////////////////////
@@ -359,10 +359,10 @@ __host__ void h_interp_particle(register long long i, struct grid* grd,
         for (int jj = 0; jj < 2; jj++)
             for (int kk = 0; kk < 2; kk++)
                 temp[ii][jj][kk] = part_u[i] * part_v[i] * weight[ii][jj][kk];
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++)
-            for (int k = 0; k < 2; k++)
-                ids_pxy_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                ids_pxy_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)] += weight[ii][jj][kk] * grd->invVOL;
     
     
     
@@ -372,10 +372,10 @@ __host__ void h_interp_particle(register long long i, struct grid* grd,
         for (int jj = 0; jj < 2; jj++)
             for (int kk = 0; kk < 2; kk++)
                 temp[ii][jj][kk] = part_u[i] * part_w[i] * weight[ii][jj][kk];
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++)
-            for (int k = 0; k < 2; k++)
-                ids_pxz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                ids_pxz_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)] += weight[ii][jj][kk] * grd->invVOL;
     
     
     /////////////////////////////
@@ -384,10 +384,10 @@ __host__ void h_interp_particle(register long long i, struct grid* grd,
         for (int jj = 0; jj < 2; jj++)
             for (int kk = 0; kk < 2; kk++)
                 temp[ii][jj][kk] = part_v[i] * part_v[i] * weight[ii][jj][kk];
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++)
-            for (int k = 0; k < 2; k++)
-                ids_pyy_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                ids_pyy_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)] += weight[ii][jj][kk] * grd->invVOL;
     
     
     /////////////////////////////
@@ -396,10 +396,10 @@ __host__ void h_interp_particle(register long long i, struct grid* grd,
         for (int jj = 0; jj < 2; jj++)
             for (int kk = 0; kk < 2; kk++)
                 temp[ii][jj][kk] = part_v[i] * part_w[i] * weight[ii][jj][kk];
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++)
-            for (int k = 0; k < 2; k++)
-                ids_pyz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)] += weight[i][j][k] * grd->invVOL;
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                ids_pyz_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)] += weight[ii][jj][kk] * grd->invVOL;
     
     
     /////////////////////////////
@@ -408,10 +408,10 @@ __host__ void h_interp_particle(register long long i, struct grid* grd,
         for (int jj = 0; jj < 2; jj++)
             for (int kk = 0; kk < 2; kk++)
                 temp[ii][jj][kk] = part_w[i] * part_w[i] * weight[ii][jj][kk];
-    for (int i=0; i < 2; i++)
-        for (int j=0; j < 2; j++)
-            for(int k=0; k < 2; k++)
-                ids_pzz_flat[get_idx(ix-i, iy-j, iz-k, grd->nyn, grd->nzn)]= weight[i][j][k] * grd->invVOL;
+    for (int ii = 0; ii < 2; ii++)
+        for (int jj = 0; jj < 2; jj++)
+            for (int kk = 0; kk < 2; kk++)
+                ids_pzz_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)]= weight[ii][jj][kk] * grd->invVOL;
 
 }
 
