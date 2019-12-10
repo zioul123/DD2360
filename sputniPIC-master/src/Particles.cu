@@ -3,6 +3,13 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
+/** "Global" environment auxilliary variables necessary to run h_move_particle() */
+typedef struct {
+    FPpart dt_sub_cycling;
+    FPpart dto2;
+    FPpart qomdt2;
+} dt_info;
+
 /** allocate particle arrays */
 void particle_allocate(struct parameters* param, struct particles* part, int is)
 {
@@ -72,17 +79,15 @@ void particle_deallocate(struct particles* part)
     delete[] part->q;
 }
 
-/** Global auxilliary variables necessary to run h_move_particle(), values must be initialized
-    by mover_PC() before calling it. */
-FPpart dt_sub_cycling, dto2, qomdt2;
 
 /** CPU serial function to move a single particle during one subcycle. */
-__host__ void h_move_particle(int i, int part_NiterMover, struct grid* grd, struct parameters* param,
-    FPpart* part_x, FPpart* part_y, FPpart* part_z, 
+__host__ void h_move_particle(int i, int part_NiterMover,
+    struct grid* grd, struct parameters* param, const dt_info dt_inf,
+    FPpart* part_x, FPpart* part_y, FPpart* part_z,
     FPpart* part_u, FPpart* part_v, FPpart* part_w,
     FPfield* field_Ex_flat, FPfield* field_Ey_flat, FPfield* field_Ez_flat,
     FPfield* field_Bxn_flat, FPfield* field_Byn_flat, FPfield* field_Bzn_flat,
-    FPfield* grd_XN_flat, FPfield* grd_YN_flat, FPfield* grd_ZN_flat) 
+    FPfield* grd_XN_flat, FPfield* grd_YN_flat, FPfield* grd_ZN_flat)
 {
     // auxiliary variables
     FPpart omdtsq, denom, ut, vt, wt, udotb;
@@ -135,31 +140,31 @@ __host__ void h_move_particle(int i, int part_NiterMover, struct grid* grd, stru
                 }
         
         // end interpolation
-        omdtsq = qomdt2*qomdt2*(Bxl*Bxl+Byl*Byl+Bzl*Bzl);
+        omdtsq = dt_inf.qomdt2*dt_inf.qomdt2*(Bxl*Bxl+Byl*Byl+Bzl*Bzl);
         denom = 1.0/(1.0 + omdtsq);
         // solve the position equation
-        ut= part_u[i] + qomdt2*Exl;
-        vt= part_v[i] + qomdt2*Eyl;
-        wt= part_w[i] + qomdt2*Ezl;
+        ut= part_u[i] + dt_inf.qomdt2*Exl;
+        vt= part_v[i] + dt_inf.qomdt2*Eyl;
+        wt= part_w[i] + dt_inf.qomdt2*Ezl;
         udotb = ut*Bxl + vt*Byl + wt*Bzl;
         // solve the velocity equation
-        uptilde = (ut+qomdt2*(vt*Bzl -wt*Byl + qomdt2*udotb*Bxl))*denom;
-        vptilde = (vt+qomdt2*(wt*Bxl -ut*Bzl + qomdt2*udotb*Byl))*denom;
-        wptilde = (wt+qomdt2*(ut*Byl -vt*Bxl + qomdt2*udotb*Bzl))*denom;
+        uptilde = (ut+dt_inf.qomdt2*(vt*Bzl -wt*Byl + dt_inf.qomdt2*udotb*Bxl))*denom;
+        vptilde = (vt+dt_inf.qomdt2*(wt*Bxl -ut*Bzl + dt_inf.qomdt2*udotb*Byl))*denom;
+        wptilde = (wt+dt_inf.qomdt2*(ut*Byl -vt*Bxl + dt_inf.qomdt2*udotb*Bzl))*denom;
         // update position
-        part_x[i] = xptilde + uptilde*dto2;
-        part_y[i] = yptilde + vptilde*dto2;
-        part_z[i] = zptilde + wptilde*dto2;
-        
-        
+        part_x[i] = xptilde + uptilde*dt_inf.dto2;
+        part_y[i] = yptilde + vptilde*dt_inf.dto2;
+        part_z[i] = zptilde + wptilde*dt_inf.dto2;
+
+
     } // end of iteration
     // update the final position and velocity
     part_u[i]= 2.0*uptilde - part_u[i];
     part_v[i]= 2.0*vptilde - part_v[i];
     part_w[i]= 2.0*wptilde - part_w[i];
-    part_x[i] = xptilde + uptilde*dt_sub_cycling;
-    part_y[i] = yptilde + vptilde*dt_sub_cycling;
-    part_z[i] = zptilde + wptilde*dt_sub_cycling;
+    part_x[i] = xptilde + uptilde*dt_inf.dt_sub_cycling;
+    part_y[i] = yptilde + vptilde*dt_inf.dt_sub_cycling;
+    part_z[i] = zptilde + wptilde*dt_inf.dt_sub_cycling;
 
 
     //////////
@@ -230,18 +235,20 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
 {
     // print species and subcycling
     std::cout << "***  MOVER with SUBCYCLYING "<< param->n_sub_cycles << " - species " << part->species_ID << " ***" << std::endl;
- 
-    // global auxiliary variables, updated before running mover_PC
-    dt_sub_cycling = (FPpart) param->dt/((double) part->n_sub_cycles);
-    dto2 = .5*dt_sub_cycling, qomdt2 = part->qom*dto2/param->c;
-    
+
+    // "global" environment variables
+    FPpart dt_sub_cycling = (FPpart) param->dt/((double) part->n_sub_cycles);
+    FPpart dto2 = .5*dt_sub_cycling, qomdt2 = part->qom*dto2/param->c;
+    const dt_info dt_inf { dt_sub_cycling, dto2, qomdt2 };
+
     // start subcycling
     for (int i_sub=0; i_sub < part->n_sub_cycles; i_sub++){
         // move each particle with new fields
         for (int i=0; i < part->nop; i++){
-            h_move_particle(i, part->NiterMover, grd, param,
+            h_move_particle(i, part->NiterMover,
+                grd, param, dt_inf,
                 part->x, part->y, part->z,
-                part->u, part->v, part->w, 
+                part->u, part->v, part->w,
                 field->Ex_flat, field->Ey_flat, field->Ez_flat,
                 field->Bxn_flat, field->Byn_flat, field->Bzn_flat,
                 grd->XN_flat, grd->YN_flat, grd->ZN_flat);
@@ -253,13 +260,13 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
 
 /** CPU serial function to interpolate for a single particle during one subcycle. */
 __host__ void h_interp_particle(register long long i, struct grid* grd,
-    FPpart* part_x, FPpart* part_y, FPpart* part_z, 
+    FPpart* part_x, FPpart* part_y, FPpart* part_z,
     FPpart* part_u, FPpart* part_v, FPpart* part_w, FPinterp* part_q,
-    FPinterp *ids_rhon_flat, FPinterp *ids_rhoc_flat, 
-    FPinterp *ids_Jx_flat, FPinterp *ids_Jy_flat, FPinterp *ids_Jz_flat, 
-    FPinterp *ids_pxx_flat, FPinterp *ids_pxy_flat, FPinterp *ids_pxz_flat, 
-    FPinterp *ids_pyy_flat, FPinterp *ids_pyz_flat, FPinterp *ids_pzz_flat, 
-    FPfield* grd_XN_flat, FPfield* grd_YN_flat, FPfield* grd_ZN_flat) 
+    FPinterp *ids_rhon_flat, FPinterp *ids_rhoc_flat,
+    FPinterp *ids_Jx_flat, FPinterp *ids_Jy_flat, FPinterp *ids_Jz_flat,
+    FPinterp *ids_pxx_flat, FPinterp *ids_pxy_flat, FPinterp *ids_pxz_flat,
+    FPinterp *ids_pyy_flat, FPinterp *ids_pyz_flat, FPinterp *ids_pzz_flat,
+    FPfield* grd_XN_flat, FPfield* grd_YN_flat, FPfield* grd_ZN_flat)
 {
     // arrays needed for interpolation
     FPpart weight[2][2][2];
@@ -413,7 +420,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
 {
     for (register long long i = 0; i < part->nop; i++) {
         h_interp_particle(i, grd,
-            part->x, part->y, part->z, 
+            part->x, part->y, part->z,
             part->u, part->v, part->w, part->q,
             ids->rhon_flat, ids->rhoc_flat,
             ids->Jx_flat, ids->Jy_flat, ids->Jz_flat,
