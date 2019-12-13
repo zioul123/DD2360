@@ -73,8 +73,41 @@ int main(int argc, char **argv){
     
     // Initialization
     initGEM(&param,&grd,&field,&field_aux,part,ids);
-    
-    
+
+    // -------------------------------------------------------------- //
+    // ------ Additions for GPU version ----------------------------- //
+    // Declare GPU copies of arrays
+    int grdSize = grd.nxn * grd.nyn * grd.nzn;
+    int rhocSize = grd.nxc * grd.nyc * grd.nzc;
+    FPpart* part_copies[6];
+    FPinterp* part_copy_q;
+    FPinterp* ids_copies[11];
+    FPfield* grd_copies[3];
+    // Allocate GPU arrays
+    {
+        cudaMalloc(&part_copy_q, part->npmax*sizeof(FPinterp));
+        for (int i = 0; i < 6; ++i)
+            cudaMalloc(&part_copies[i], part->npmax*sizeof(FPpart));
+        for (int i = 0; i < 11; ++i)
+            cudaMalloc(&ids_copies[i], grdSize*sizeof(FPinterp));
+        for (int i = 0; i < 3; ++i)
+            cudaMalloc(&grd_copies[i], grdSize*sizeof(FPfield));
+    }
+    // Put GPU array pointers into structs
+    particles_pointers p_p {
+        part_copies[0], part_copies[1], part_copies[2],
+        part_copies[3], part_copies[4], part_copies[5], part_copy_q
+    };
+    ids_pointers i_p {
+        ids_copies[0], ids_copies[1], ids_copies[2],
+        ids_copies[3], ids_copies[4], ids_copies[5], ids_copies[6],
+        ids_copies[7], ids_copies[8], ids_copies[9], ids_copies[10]
+    };
+    grd_pointers g_p {
+        grd_copies[0], grd_copies[1], grd_copies[2]
+    };
+    // -------------------------------------------------------------- //
+
     // **********************************************************//
     // **** Start the Simulation!  Cycle index start from 1  *** //
     // **********************************************************//
@@ -103,7 +136,7 @@ int main(int argc, char **argv){
         iInterp = cpuSecond(); // start timer for the interpolation step
         // interpolate species
         for (int is=0; is < param.ns; is++)
-            interpP2G(&part[is],&ids[is],&grd);
+            interpP2G(&part[is],&ids[is],&grd, p_p, i_p, g_p, grdSize, rhocSize);
         // apply BC to interpolated densities
         for (int is=0; is < param.ns; is++)
             applyBCids(&ids[is],&grd,&param);
@@ -138,8 +171,21 @@ int main(int argc, char **argv){
         interp_dens_species_deallocate(&grd,&ids[is]);
         particle_deallocate(&part[is]);
     }
-    
-    
+
+    // -------------------------------------------------------------- //
+    // ------ Additions for GPU version ----------------------------- //
+    // Free GPU arrays
+    {
+        cudaFree(part_copy_q);
+        for (int i = 0; i < 6; ++i)
+            cudaFree(part_copies[i]);
+        for (int i = 0; i < 11; ++i)
+            cudaFree(ids_copies[i]);
+        for (int i = 0; i < 3; ++i)
+            cudaFree(grd_copies[i]);
+    }
+    // -------------------------------------------------------------- //
+
     // stop timer
     double iElaps = cpuSecond() - iStart;
     
