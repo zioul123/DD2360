@@ -411,7 +411,7 @@ __host__ void h_interp_particle(register long long i, struct grid* grd,
     for (int ii = 0; ii < 2; ii++)
         for (int jj = 0; jj < 2; jj++)
             for (int kk = 0; kk < 2; kk++)
-                ids_pzz_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)]= weight[ii][jj][kk] * grd->invVOL;
+                ids_pzz_flat[get_idx(ix-ii, iy-jj, iz-kk, grd->nyn, grd->nzn)] += weight[ii][jj][kk] * grd->invVOL;
 
 }
 
