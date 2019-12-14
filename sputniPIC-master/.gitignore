@@ -2,9 +2,11 @@ src/CMakeLists.txt
 CMakeLists.txt
 ../.DS_Store
 .DS_Store
+*.DS_Store
 .idea/
 notes.txt
 runs.sh
+
 
 *~
 aclocal.m4
