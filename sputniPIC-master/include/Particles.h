@@ -10,6 +10,21 @@
 #include "EMfield.h"
 #include "InterpDensSpecies.h"
 
+/** Structs containing the arrays necessary to run h_interp_particle*/
+typedef struct {
+    FPpart* x; FPpart* y; FPpart* z;
+    FPpart* u; FPpart* v; FPpart* w; FPinterp* q;
+} particles_pointers;
+typedef struct {
+    FPinterp* rhon_flat; FPinterp* rhoc_flat;
+    FPinterp* Jx_flat; FPinterp* Jy_flat; FPinterp* Jz_flat;
+    FPinterp* pxx_flat; FPinterp* pxy_flat; FPinterp* pxz_flat;
+    FPinterp* pyy_flat; FPinterp* pyz_flat; FPinterp* pzz_flat;
+} ids_pointers;
+typedef struct {
+    FPfield* XN_flat; FPfield* YN_flat; FPfield* ZN_flat;
+} grd_pointers;
+
 struct particles {
     
     /** species ID: 0, 1, 2 , ... */
@@ -62,6 +77,7 @@ void particle_deallocate(struct particles*);
 int mover_PC(struct particles*, struct EMfield*, struct grid*, struct parameters*);
 
 /** Interpolation Particle --> Grid: This is for species */
-void interpP2G(struct particles*, struct interpDensSpecies*, struct grid*);
+void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
+    particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize, int rhocSize);
 
 #endif
