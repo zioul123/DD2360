@@ -10,20 +10,40 @@
 #include "EMfield.h"
 #include "InterpDensSpecies.h"
 
+
 /** Structs containing the arrays necessary to run h_interp_particle*/
 typedef struct {
     FPpart* x; FPpart* y; FPpart* z;
     FPpart* u; FPpart* v; FPpart* w; FPinterp* q;
 } particles_pointers;
+
+
 typedef struct {
     FPinterp* rhon_flat; FPinterp* rhoc_flat;
     FPinterp* Jx_flat; FPinterp* Jy_flat; FPinterp* Jz_flat;
     FPinterp* pxx_flat; FPinterp* pxy_flat; FPinterp* pxz_flat;
     FPinterp* pyy_flat; FPinterp* pyz_flat; FPinterp* pzz_flat;
 } ids_pointers;
+
+
+/** NOTE: This struct is used in both moving and interpolating functions */
 typedef struct {
     FPfield* XN_flat; FPfield* YN_flat; FPfield* ZN_flat;
 } grd_pointers;
+
+
+/** Structs for mover_PC */
+typedef struct {  // very similar to particles_pointers but excludes FPinterp* q
+    FPpart* x; FPpart* y; FPpart* z;
+    FPpart* u; FPpart* v; FPpart* w;
+} particle_info;
+
+
+typedef struct {
+    FPfield* Ex_flat; FPfield* Ey_flat; FPfield* Ez_flat;
+    FPfield* Bxn_flat; FPfield* Byn_flat; FPfield* Bzn_flat;
+} field_pointers;
+
 
 struct particles {
     
@@ -70,11 +90,14 @@ struct particles {
 /** allocate particle arrays */
 void particle_allocate(struct parameters*, struct particles*, int);
 
+
 /** deallocate */
 void particle_deallocate(struct particles*);
 
+
 /** particle mover */
 int mover_PC(struct particles*, struct EMfield*, struct grid*, struct parameters*);
+
 
 /** Interpolation Particle --> Grid: This is for species */
 void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,

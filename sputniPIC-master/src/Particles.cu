@@ -12,6 +12,7 @@ typedef struct {
     FPpart qomdt2;
 } dt_info;
 
+
 /** allocate particle arrays */
 void particle_allocate(struct parameters* param, struct particles* part, int is)
 {
@@ -68,6 +69,8 @@ void particle_allocate(struct parameters* param, struct particles* part, int is)
     part->q = new FPinterp[npmax];
     
 }
+
+
 /** deallocate */
 void particle_deallocate(struct particles* part)
 {
@@ -83,14 +86,29 @@ void particle_deallocate(struct particles* part)
 
 
 /** CPU serial function to move a single particle during one subcycle. */
-__host__ void h_move_particle(int i, int part_NiterMover,
-    struct grid* grd, struct parameters* param, const dt_info dt_inf,
-    FPpart* part_x, FPpart* part_y, FPpart* part_z,
-    FPpart* part_u, FPpart* part_v, FPpart* part_w,
-    FPfield* field_Ex_flat, FPfield* field_Ey_flat, FPfield* field_Ez_flat,
-    FPfield* field_Bxn_flat, FPfield* field_Byn_flat, FPfield* field_Bzn_flat,
-    FPfield* grd_XN_flat, FPfield* grd_YN_flat, FPfield* grd_ZN_flat)
-{
+__host__ void h_move_particle(int i, int part_NiterMover, struct grid* grd, struct parameters* param,
+        const dt_info dt_inf, particle_info p_info, field_pointers f_pointers, grd_pointers g_pointers) {
+    // extracting the particle variables out of the auxiliary struct
+    FPpart* part_x = p_info.x;
+    FPpart* part_y = p_info.y;
+    FPpart* part_z = p_info.z;
+    FPpart* part_u = p_info.u;
+    FPpart* part_v = p_info.v;
+    FPpart* part_w = p_info.w;
+
+    // extracting the field variables out of the auxiliary struct
+    FPfield* field_Ex_flat = f_pointers.Ex_flat;
+    FPfield* field_Ey_flat = f_pointers.Ey_flat;
+    FPfield* field_Ez_flat = f_pointers.Ez_flat;
+    FPfield* field_Bxn_flat = f_pointers.Bxn_flat;
+    FPfield* field_Byn_flat = f_pointers.Byn_flat;
+    FPfield* field_Bzn_flat = f_pointers.Bzn_flat;
+
+    // extracting the grid variables out of the auxiliary struct
+    FPfield* grd_XN_flat = g_pointers.XN_flat;
+    FPfield* grd_YN_flat = g_pointers.YN_flat;
+    FPfield* grd_ZN_flat = g_pointers.ZN_flat;
+
     // auxiliary variables
     FPpart omdtsq, denom, ut, vt, wt, udotb;
     
@@ -161,12 +179,12 @@ __host__ void h_move_particle(int i, int part_NiterMover,
 
     } // end of iteration
     // update the final position and velocity
-    part_u[i]= 2.0*uptilde - part_u[i];
-    part_v[i]= 2.0*vptilde - part_v[i];
-    part_w[i]= 2.0*wptilde - part_w[i];
-    part_x[i] = xptilde + uptilde*dt_inf.dt_sub_cycling;
-    part_y[i] = yptilde + vptilde*dt_inf.dt_sub_cycling;
-    part_z[i] = zptilde + wptilde*dt_inf.dt_sub_cycling;
+    part_u[i] = 2.0 * uptilde - part_u[i];
+    part_v[i] = 2.0 * vptilde - part_v[i];
+    part_w[i] = 2.0 * wptilde - part_w[i];
+    part_x[i] = xptilde + uptilde * dt_inf.dt_sub_cycling;
+    part_y[i] = yptilde + vptilde * dt_inf.dt_sub_cycling;
+    part_z[i] = zptilde + wptilde * dt_inf.dt_sub_cycling;
 
 
     //////////
@@ -232,6 +250,7 @@ __host__ void h_move_particle(int i, int part_NiterMover,
     }
 }
 
+
 /** particle mover */
 int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, struct parameters* param)
 {
@@ -239,26 +258,43 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
     std::cout << "***  MOVER with SUBCYCLYING "<< param->n_sub_cycles << " - species " << part->species_ID << " ***" << std::endl;
 
     // "global" environment variables
-    FPpart dt_sub_cycling = (FPpart) param->dt/((double) part->n_sub_cycles);
-    FPpart dto2 = .5*dt_sub_cycling, qomdt2 = part->qom*dto2/param->c;
+    FPpart dt_sub_cycling = (FPpart) param->dt / ((double) part->n_sub_cycles);
+    FPpart dto2 = .5 * dt_sub_cycling, qomdt2 = part->qom * dto2 / param->c;
     const dt_info dt_inf { dt_sub_cycling, dto2, qomdt2 };
 
     // start subcycling
     for (int i_sub=0; i_sub < part->n_sub_cycles; i_sub++){
         // move each particle with new fields
         for (int i=0; i < part->nop; i++){
-            h_move_particle(i, part->NiterMover,
+            /*h_move_particle(i, part->NiterMover,
                 grd, param, dt_inf,
                 part->x, part->y, part->z,
                 part->u, part->v, part->w,
                 field->Ex_flat, field->Ey_flat, field->Ez_flat,
                 field->Bxn_flat, field->Byn_flat, field->Bzn_flat,
-                grd->XN_flat, grd->YN_flat, grd->ZN_flat);
+                grd->XN_flat, grd->YN_flat, grd->ZN_flat);  */
+
+            particle_info p_info {
+                part->x, part->y, part->z,
+                part->u, part->v, part->w
+            };
+
+            field_pointers f_pointers {
+                field->Ex_flat, field->Ey_flat, field->Ez_flat,
+                field->Bxn_flat, field->Byn_flat, field->Bzn_flat
+             };
+
+            grd_pointers g_pointers{
+                grd->XN_flat, grd->YN_flat, grd->ZN_flat
+            };
+            h_move_particle(i, part->NiterMover, grd, param, dt_inf, p_info, f_pointers, g_pointers);
+
         }  // end of one particle
     } // end of subcycling
                                                                         
-    return(0); // exit succcesfully
+    return(0); // exit successfully
 } // end of the mover
+
 
 /** CPU serial function to interpolate for a single particle during one subcycle. */
 __host__ void h_interp_particle(register long long i, struct grid grd,
@@ -410,6 +446,7 @@ __host__ void h_interp_particle(register long long i, struct grid grd,
                 ids.pzz_flat[get_idx(ix-ii, iy-jj, iz-kk, grd.nyn, grd.nzn)] += weight[ii][jj][kk] * grd.invVOL;
 
 }
+
 
 /** GPU kernel to interpolate for a single particle during one subcycle. */
 __global__ void g_interp_particle(int nop, struct grid grd,
@@ -565,6 +602,7 @@ __global__ void g_interp_particle(int nop, struct grid grd,
     }
 }
 
+
 /** Interpolation Particle --> Grid: This is for species */
 // CPU Version
 void h_interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd)
@@ -587,6 +625,7 @@ void h_interpP2G(struct particles* part, struct interpDensSpecies* ids, struct g
         h_interp_particle(i, *grd, p_p, i_p, g_p);
     }
 }
+
 
 /** Interpolation Particle --> Grid: This is for species
  *  TODO: Move the malloc and free to sputniPIC.cpp instead of here.
