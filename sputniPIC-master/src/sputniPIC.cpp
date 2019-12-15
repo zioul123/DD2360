@@ -76,14 +76,15 @@ int main(int argc, char **argv){
 
     // -------------------------------------------------------------- //
     // ------ Additions for GPU version ----------------------------- //
-    // Declare GPU copies of arrays
+    // Declare GPU copies of arrays for interpP2G
     int grdSize = grd.nxn * grd.nyn * grd.nzn;
     int rhocSize = grd.nxc * grd.nyc * grd.nzc;
     FPpart* part_copies[6];
     FPinterp* part_copy_q;
     FPinterp* ids_copies[11];
     FPfield* grd_copies[3];
-    // Allocate GPU arrays
+
+    // Allocate GPU arrays for interpP2G
     {
         cudaMalloc(&part_copy_q, part->npmax*sizeof(FPinterp));
         for (int i = 0; i < 6; ++i)
@@ -93,7 +94,8 @@ int main(int argc, char **argv){
         for (int i = 0; i < 3; ++i)
             cudaMalloc(&grd_copies[i], grdSize*sizeof(FPfield));
     }
-    // Put GPU array pointers into structs
+
+    // Put GPU array pointers into structs for interpP2G
     particles_pointers p_p {
         part_copies[0], part_copies[1], part_copies[2],
         part_copies[3], part_copies[4], part_copies[5], part_copy_q
@@ -106,6 +108,43 @@ int main(int argc, char **argv){
     grd_pointers g_p {
         grd_copies[0], grd_copies[1], grd_copies[2]
     };
+
+
+    // Declare GPU copies of arrays for mover_PC
+    FPpart* part_info_copies[6];
+    FPfield* f_pointer_copies[6];
+    FPfield* g_pointer_copies[3];
+
+    int field_size = grd.nxn * grd.nyn * grd.nzn;
+
+    // Allocate GPU arrays for mover_PC
+    {
+        for (int i = 0; i < 6; i++)
+            cudaMalloc(&part_info_copies[i], part->npmax * sizeof(FPpart));
+
+        for (int i = 0; i < 6; i++)
+            cudaMalloc(&f_pointer_copies[i], field_size * sizeof(FPfield));
+
+        for (int i = 0; i < 3; i++)
+            cudaMalloc(&g_pointer_copies[i], grdSize * sizeof(FPfield));
+    }
+
+    // Put GPU array pointers into structs for mover_PC
+    particle_info p_info {
+        part_info_copies[0], part_info_copies[1], part_info_copies[2],
+        part_info_copies[3], part_info_copies[4], part_info_copies[5]
+    };
+
+    field_pointers f_pointers {
+        f_pointer_copies[0], f_pointer_copies[1], f_pointer_copies[2],
+        f_pointer_copies[3], f_pointer_copies[4], f_pointer_copies[5]
+    };
+
+    grd_pointers g_pointers {
+        g_pointer_copies[0], g_pointer_copies[1], g_pointer_copies[2]
+    };
+
+
     // -------------------------------------------------------------- //
 
     // **********************************************************//
@@ -126,10 +165,10 @@ int main(int argc, char **argv){
         // implicit mover
         iMover = cpuSecond(); // start timer for mover
         for (int is=0; is < param.ns; is++)
-            mover_PC(&part[is],&field,&grd,&param);
+            // mover_PC(&part[is],&field,&grd,&param);
+            mover_PC(&part[is], &field, &grd, &param, p_info, f_pointers, g_pointers, grdSize, field_size);
+
         eMover += (cpuSecond() - iMover); // stop timer for mover
-        
-        
         
         
         // interpolation particle to grid
