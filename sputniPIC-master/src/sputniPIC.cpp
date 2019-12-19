@@ -30,6 +30,7 @@
 // Read and output operations
 #include "RW_IO.h"
 
+#include "helper.h"  // our helper functions
 
 int main(int argc, char **argv){
     
@@ -79,70 +80,13 @@ int main(int argc, char **argv){
     // Declare GPU copies of arrays for interpP2G
     int grdSize = grd.nxn * grd.nyn * grd.nzn;
     int rhocSize = grd.nxc * grd.nyc * grd.nzc;
-    FPpart* part_copies[6];
-    FPinterp* part_copy_q;
-    FPinterp* ids_copies[11];
-    FPfield* grd_copies[3];
-
-    // Allocate GPU arrays for interpP2G
-    {
-        cudaMalloc(&part_copy_q, part->npmax*sizeof(FPinterp));
-        for (int i = 0; i < 6; ++i)
-            cudaMalloc(&part_copies[i], part->npmax*sizeof(FPpart));
-        for (int i = 0; i < 11; ++i)
-            cudaMalloc(&ids_copies[i], grdSize*sizeof(FPinterp));
-        for (int i = 0; i < 3; ++i)
-            cudaMalloc(&grd_copies[i], grdSize*sizeof(FPfield));
-    }
-
-    // Put GPU array pointers into structs for interpP2G
-    particles_pointers p_p {
-        part_copies[0], part_copies[1], part_copies[2],
-        part_copies[3], part_copies[4], part_copies[5], part_copy_q
-    };
-    ids_pointers i_p {
-        ids_copies[0], ids_copies[1], ids_copies[2],
-        ids_copies[3], ids_copies[4], ids_copies[5], ids_copies[6],
-        ids_copies[7], ids_copies[8], ids_copies[9], ids_copies[10]
-    };
-    grd_pointers g_p {
-        grd_copies[0], grd_copies[1], grd_copies[2]
-    };
-
-
-    // Declare GPU copies of arrays for mover_PC
-    FPpart* part_info_copies[6];
-    FPfield* f_pointer_copies[6];
-    FPfield* g_pointer_copies[3];
+    particles_pointers p_p; ids_pointers i_p; grd_pointers g_p;  // on the GPU memory
+    allocate_interp_gpu_memory(part, grdSize, &p_p, &i_p, &g_p);
 
     int field_size = grd.nxn * grd.nyn * grd.nzn;
-
-    // Allocate GPU arrays for mover_PC
-    {
-        for (int i = 0; i < 6; i++)
-            cudaMalloc(&part_info_copies[i], part->npmax * sizeof(FPpart));
-
-        for (int i = 0; i < 6; i++)
-            cudaMalloc(&f_pointer_copies[i], field_size * sizeof(FPfield));
-
-        for (int i = 0; i < 3; i++)
-            cudaMalloc(&g_pointer_copies[i], grdSize * sizeof(FPfield));
-    }
-
-    // Put GPU array pointers into structs for mover_PC
-    particle_info p_info {
-        part_info_copies[0], part_info_copies[1], part_info_copies[2],
-        part_info_copies[3], part_info_copies[4], part_info_copies[5]
-    };
-
-    field_pointers f_pointers {
-        f_pointer_copies[0], f_pointer_copies[1], f_pointer_copies[2],
-        f_pointer_copies[3], f_pointer_copies[4], f_pointer_copies[5]
-    };
-
-    grd_pointers g_pointers {
-        g_pointer_copies[0], g_pointer_copies[1], g_pointer_copies[2]
-    };
+    particle_info p_info; field_pointers f_pointers; grd_pointers g_pointers;  // on the GPU memory
+    allocate_mover_gpu_memory(part, grdSize, field_size, &p_info, &f_pointers, &g_pointers);
+    // std::cout << "In [main]: GPU memory allocation: done" << std::endl;
 
 
     // -------------------------------------------------------------- //
@@ -214,16 +158,7 @@ int main(int argc, char **argv){
     // -------------------------------------------------------------- //
     // ------ Additions for GPU version ----------------------------- //
     // Free GPU arrays
-    {
-        cudaFree(part_copy_q);
-        for (int i = 0; i < 6; ++i)
-            cudaFree(part_copies[i]);
-        for (int i = 0; i < 11; ++i)
-            cudaFree(ids_copies[i]);
-        for (int i = 0; i < 3; ++i)
-            cudaFree(grd_copies[i]);
-    }
-    // -------------------------------------------------------------- //
+    free_gpu_memory(&p_p, &i_p, &g_p, &p_info, &f_pointers, &g_pointers);
 
     // stop timer
     double iElaps = cpuSecond() - iStart;

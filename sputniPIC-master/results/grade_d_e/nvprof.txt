@@ -1,0 +1,54 @@
+======================================= RESULTS FOR GRADE E, D =======================================
+======================================= 2D INPUT FILE
+**************************************
+   Tot. Simulation Time (s) = 54.7395
+   Mover Time / Cycle   (s) = 1.82815
+   Interp. Time / Cycle (s) = 3.01835
+**************************************
+==31174== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_2D.inp
+==31174== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   73.11%  22.8969s        40  572.42ms  478.70ms  639.40ms  g_interp_particle(int, grid, particles_pointers, ids_pointers, grd_pointers)
+                   17.86%  5.59416s        40  139.85ms  67.229ms  261.97ms  g_move_particle(int, int, int, grid, parameters, dt_info, particle_info, field_pointers, grd_pointers)
+                    4.66%  1.46032s      1440  1.0141ms  65.532us  3.4506ms  [CUDA memcpy HtoD]
+                    4.37%  1.36865s      1440  950.45us  60.957us  3.0436ms  [CUDA memcpy DtoH]
+      API calls:   90.18%  42.6376s        80  532.97ms  67.310ms  1.12724s  cudaDeviceSynchronize
+                    6.40%  3.02489s      2880  1.0503ms  99.680us  3.4578ms  cudaMemcpy
+                    3.41%  1.61396s        36  44.832ms  139.81us  1.60274s  cudaMalloc
+                    0.01%  2.6171ms        80  32.714us  28.203us  52.990us  cudaLaunchKernel
+                    0.00%  1.3181ms        21  62.765us  50.227us  173.96us  cudaFree
+                    0.00%  406.42us        96  4.2330us     332ns  173.38us  cuDeviceGetAttribute
+                    0.00%  101.85us         1  101.85us  101.85us  101.85us  cuDeviceTotalMem
+                    0.00%  38.237us         1  38.237us  38.237us  38.237us  cuDeviceGetName
+                    0.00%  6.6020us         1  6.6020us  6.6020us  6.6020us  cuDeviceGetPCIBusId
+                    0.00%  2.8820us         3     960ns     460ns  1.8370us  cuDeviceGetCount
+                    0.00%  1.6370us         2     818ns     381ns  1.2560us  cuDeviceGet
+                    0.00%     588ns         1     588ns     588ns     588ns  cuDeviceGetUuid
+
+
+
+======================================= 3D INPUT FILE
+**************************************
+   Tot. Simulation Time (s) = 159.51
+   Mover Time / Cycle   (s) = 3.47502
+   Interp. Time / Cycle (s) = 10.923
+**************************************
+==33426== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D.inp
+==33426== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   61.61%  64.1818s        40  1.60454s  1.44853s  1.70153s  g_interp_particle(int, grid, particles_pointers, ids_pointers, grd_pointers)
+                   28.84%  30.0433s        40  751.08ms  235.01ms  1.83916s  g_move_particle(int, int, int, grid, parameters, dt_info, particle_info, field_pointers, grd_pointers)
+                    4.96%  5.16911s      1440  3.5897ms  364.81us  19.629ms  [CUDA memcpy HtoD]
+                    4.59%  4.77968s      1440  3.3192ms  342.38us  8.7620ms  [CUDA memcpy DtoH]
+      API calls:   90.10%  94.2376s        80  1.17797s  235.17ms  1.83933s  cudaDeviceSynchronize
+                    9.80%  10.2509s      2880  3.5593ms  405.67us  20.951ms  cudaMemcpy
+                    0.09%  96.584ms        36  2.6829ms  117.35us  91.021ms  cudaMalloc
+                    0.00%  2.6804ms        80  33.505us  28.230us  61.863us  cudaLaunchKernel
+                    0.00%  1.6414ms        21  78.161us  51.031us  245.51us  cudaFree
+                    0.00%  419.14us        96  4.3660us     320ns  183.15us  cuDeviceGetAttribute
+                    0.00%  121.75us         1  121.75us  121.75us  121.75us  cuDeviceTotalMem
+                    0.00%  40.154us         1  40.154us  40.154us  40.154us  cuDeviceGetName
+                    0.00%  8.1220us         1  8.1220us  8.1220us  8.1220us  cuDeviceGetPCIBusId
+                    0.00%  2.6910us         3     897ns     390ns  1.8430us  cuDeviceGetCount
+                    0.00%  1.8150us         2     907ns     329ns  1.4860us  cuDeviceGet
+                    0.00%     566ns         1     566ns     566ns     566ns  cuDeviceGetUuid
