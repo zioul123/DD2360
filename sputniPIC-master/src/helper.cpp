@@ -1,5 +1,11 @@
 #include "helper.h"
 
+
+void print(std::string str) {
+    std::cout << str << std::endl;
+}
+
+
 void allocate_interp_gpu_memory(struct particles* part, int grdSize, particles_pointers* p_p, ids_pointers* i_p,
                                 grd_pointers* g_p) {
     FPpart* part_copies[6];
@@ -116,10 +122,18 @@ void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_si
     FPfield* f_pointer_copies[6];
     FPfield* g_pointer_copies[3];
 
+    long num_gpu_particles = part->npmax;
+    if (part->npmax > MAX_GPU_PARTICLES) {
+        num_gpu_particles = MAX_GPU_PARTICLES;
+        std::cout << "In [allocate_mover_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. "
+                     "Allocating only up to MAX_GPU_PARTICLES particles..." << std::endl;
+        // getchar();
+    }
+
     // Allocate GPU arrays for mover_PC
     {
         for (int i = 0; i < 6; i++)
-            cudaMalloc(&part_info_copies[i], part->npmax * sizeof(FPpart));
+            cudaMalloc(&part_info_copies[i], num_gpu_particles * sizeof(FPpart));
 
         for (int i = 0; i < 6; i++)
             cudaMalloc(&f_pointer_copies[i], field_size * sizeof(FPfield));
@@ -151,16 +165,77 @@ void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_si
 
 void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, particle_info p_info,
                        field_pointers f_pointers, grd_pointers g_pointers, int grdSize, int field_size,
-                       std::string mode) {
+                       std::string mode, long from, long to) {
+    /** long from and long to (if specified) determine which elements of the particle arrays should be copied to GPU.
+     * If not specified (default), all the particles will be copied.
+     * NOTE: to is exclusive => mini-batch size is (to - from) */
+    long batch_size = -1;
+    if (from != -1 && to != -1) {  // determine size of mini-batch, if from and to are specified
+        batch_size = to - from;
+        std::cout << "In [copy_mover_arrays]: copying with batch size of " << batch_size << std::endl;
+        // getchar();
+    }
+
+
+    // prepare mini-batch structures if we mini-batching should be performed
+    FPpart* x_tmp; FPpart* y_tmp; FPpart* z_tmp; FPpart* u_tmp; FPpart* v_tmp; FPpart* w_tmp;
+    if (batch_size != -1) {  // mini-batch copying
+        x_tmp = (FPpart*) malloc(batch_size * sizeof(FPpart));
+        y_tmp = (FPpart*) malloc(batch_size * sizeof(FPpart));
+        z_tmp = (FPpart*) malloc(batch_size * sizeof(FPpart));
+        u_tmp = (FPpart*) malloc(batch_size * sizeof(FPpart));
+        v_tmp = (FPpart*) malloc(batch_size * sizeof(FPpart));
+        w_tmp = (FPpart*) malloc(batch_size * sizeof(FPpart));
+
+        std::cout << "In [copy_mover_arrays]: temp variables created..." << std::endl;
+        // getchar();
+
+    }
+
     if (mode == "cpu_to_gpu") {
         // Copy CPU arrays to GPU
         // std::cout << "In [copy_mover_arrays]: copying arrays to GPU" << std::endl;
-        cudaMemcpy(p_info.x, part->x, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
-        cudaMemcpy(p_info.y, part->y, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
-        cudaMemcpy(p_info.z, part->z, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
-        cudaMemcpy(p_info.u, part->u, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
-        cudaMemcpy(p_info.v, part->v, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
-        cudaMemcpy(p_info.w, part->w, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
+
+        if (batch_size != -1) {  // copy the mini-batch
+            // copy the corresponding mini-batch of particles to tmp variables
+            for (long i = from; i < to; i++) {  // could it be more efficient?
+                // iter * MAX_GPU_PARTICLES ==> 0, iter * MAX_GPU_PARTICLES + 1 ==> 1, iter * MAX_GPU_PARTICLES + 2 ==> 2
+                long relative_i = i % MAX_GPU_PARTICLES;  // preventing segmentation fault, relative index in the batch
+                // std::cout << relative_i << std::endl;
+                x_tmp[relative_i] = part->x[i];
+                y_tmp[relative_i] = part->y[i];
+                z_tmp[relative_i] = part->z[i];
+                u_tmp[relative_i] = part->u[i];
+                v_tmp[relative_i] = part->v[i];
+                w_tmp[relative_i] = part->w[i];
+            }
+            std::cout << "In [copy_mover_arrays]: copy from part to temp done." << std::endl;
+            /*std::cout << "\n\n x_tmp" << std::endl;
+            for (int ii = 0; ii < 10; ii++) {
+                std::cout << x_tmp[ii] << std::endl;
+            }
+
+            // getchar();*/
+
+            cudaMemcpy(p_info.x, x_tmp, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
+            cudaMemcpy(p_info.y, y_tmp, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
+            cudaMemcpy(p_info.z, z_tmp, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
+            cudaMemcpy(p_info.u, u_tmp, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
+            cudaMemcpy(p_info.v, v_tmp, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
+            cudaMemcpy(p_info.w, w_tmp, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
+
+            std::cout << "In [copy_mover_arrays]: copy to GPU done..." << std::endl;
+            //getchar();
+        }
+
+        else {  // copy all the particles
+            cudaMemcpy(p_info.x, part->x, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
+            cudaMemcpy(p_info.y, part->y, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
+            cudaMemcpy(p_info.z, part->z, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
+            cudaMemcpy(p_info.u, part->u, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
+            cudaMemcpy(p_info.v, part->v, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
+            cudaMemcpy(p_info.w, part->w, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
+        }
 
         cudaMemcpy(f_pointers.Ex_flat, field->Ex_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
         cudaMemcpy(f_pointers.Ey_flat, field->Ey_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
@@ -174,15 +249,55 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
         cudaMemcpy(g_pointers.ZN_flat, grd->ZN_flat, grdSize * sizeof(FPfield), cudaMemcpyHostToDevice);
     }
 
+    // Copy GPU arrays back to CPU
     else {
-        // Copy GPU arrays back to CPU
-        // std::cout << "In [copy_mover_arrays]: copying arrays back to CPU" << std::endl;
-        cudaMemcpy(part->x, p_info.x, part->npmax * sizeof(FPpart), cudaMemcpyDeviceToHost);
-        cudaMemcpy(part->y, p_info.y, part->npmax * sizeof(FPpart), cudaMemcpyDeviceToHost);
-        cudaMemcpy(part->z, p_info.z, part->npmax * sizeof(FPpart), cudaMemcpyDeviceToHost);
-        cudaMemcpy(part->u, p_info.u, part->npmax * sizeof(FPpart), cudaMemcpyDeviceToHost);
-        cudaMemcpy(part->v, p_info.v, part->npmax * sizeof(FPpart), cudaMemcpyDeviceToHost);
-        cudaMemcpy(part->w, p_info.w, part->npmax * sizeof(FPpart), cudaMemcpyDeviceToHost);
+        if (batch_size != -1) {  // copy the mini-batch
+            cudaMemcpy(x_tmp, p_info.x, batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
+            cudaMemcpy(y_tmp, p_info.y, batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
+            cudaMemcpy(z_tmp, p_info.z, batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
+            cudaMemcpy(u_tmp, p_info.u, batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
+            cudaMemcpy(v_tmp, p_info.v, batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
+            cudaMemcpy(w_tmp, p_info.w, batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
+
+            std::cout << "In [copy_mover_arrays]: copy back to CPU done..." << std::endl;
+            /*std::cout << "\n\n x_tmp AFTER GPU" << std::endl;
+            for (int ii = 0; ii < 10; ii++) {
+                std::cout << x_tmp[ii] << std::endl;
+            }*/
+
+            //getchar();
+
+            for (long i = from; i < to; i++) {  // could it be more efficient?
+                // iter * MAX_GPU_PARTICLES ==> 0, iter * MAX_GPU_PARTICLES + 1 ==> 1, iter * MAX_GPU_PARTICLES + 2 ==> 2
+                long relative_i = i % MAX_GPU_PARTICLES;  // preventing segmentation fault, relative index in the batch
+                part->x[i] = x_tmp[relative_i];
+                part->y[i] = y_tmp[relative_i];
+                part->z[i] = z_tmp[relative_i];
+                part->u[i] = u_tmp[relative_i];
+                part->v[i] = v_tmp[relative_i];
+                part->w[i] = w_tmp[relative_i];
+
+                // p_info.x[i] =1;
+                /*p_info.x[i] = part->x[i];
+                p_info.y[i] = part->y[i];
+                p_info.z[i] = part->z[i];
+                p_info.u[i] = part->u[i];
+                p_info.v[i] = part->v[i];
+                p_info.w[i] = part->w[i];*/
+
+            }
+            std::cout << "In [copy_mover_arrays]: copy from temp to part done." << std::endl;
+            //getchar();
+        }
+        else {
+            // std::cout << "In [copy_mover_arrays]: copying arrays back to CPU" << std::endl;
+            cudaMemcpy(part->x, p_info.x, part->npmax * sizeof(FPpart), cudaMemcpyDeviceToHost);
+            cudaMemcpy(part->y, p_info.y, part->npmax * sizeof(FPpart), cudaMemcpyDeviceToHost);
+            cudaMemcpy(part->z, p_info.z, part->npmax * sizeof(FPpart), cudaMemcpyDeviceToHost);
+            cudaMemcpy(part->u, p_info.u, part->npmax * sizeof(FPpart), cudaMemcpyDeviceToHost);
+            cudaMemcpy(part->v, p_info.v, part->npmax * sizeof(FPpart), cudaMemcpyDeviceToHost);
+            cudaMemcpy(part->w, p_info.w, part->npmax * sizeof(FPpart), cudaMemcpyDeviceToHost);
+        }
 
         cudaMemcpy(field->Ex_flat, f_pointers.Ex_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);
         cudaMemcpy(field->Ey_flat, f_pointers.Ey_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);

@@ -6,9 +6,11 @@
 #include <cuda_runtime.h>
 
 #include <iostream>
+#include <cmath>
+#include <algorithm>
 
 #define TPB 32
-// #define MAX_PARTICLES_ON_GPU 14155776  // the number of particles per species in the GEM_3D file is chosen for maximum
+
 
 /** "Global" environment auxilliary variables necessary to run h_move_particle() */
 typedef struct {
@@ -448,19 +450,52 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
     FPpart dto2 = .5 * dt_sub_cycling, qomdt2 = part->qom * dto2 / param->c;
     const dt_info dt_inf { dt_sub_cycling, dto2, qomdt2 };
 
-    /*if (part->nop > MAX_PARTICLES_ON_GPU) {
-        std::cout << "in [mover_PC]: number of particles > MAX_PARTICLES_ON_GPU: performing mini-batching" << std::endl;
+    if (part->npmax > MAX_GPU_PARTICLES) {  // mini-batches
+        int n_iterations = ceil((double)part->npmax / MAX_GPU_PARTICLES);
+        // int n_iterations = part->npmax / MAX_GPU_PARTICLES;
+        for (int iter = 0; iter < n_iterations; iter++) {
+            long batch_start = iter * MAX_GPU_PARTICLES;
+            long batch_end = std::min(batch_start + MAX_GPU_PARTICLES, part->npmax);  // max is part->npmax
+            long batch_size = batch_end - batch_start;
 
-    }*/
+            std::cout << "================== In [mover_PC]: iteration " << (iter + 1) << " of " << n_iterations
+                      << " - batch_start: " << batch_start << ", batch_end: " << batch_end
+                      << ", batch_size: " << batch_size << std::endl;
 
-    copy_mover_arrays(part, field, grd, p_info, f_pointers, g_pointers, grdSize, field_size, "cpu_to_gpu");
+            std::cout << "\n \n PARTICELS BEFORE GPU...." << std::endl;
+            for (long i = batch_start; i < batch_start + 10; i++)
+                std::cout << part->x[i] << std::endl;
 
-    // h_move_particle(i, part->NiterMover, grd, param, dt_inf, p_info, f_pointers, g_pointers)
-    g_move_particle<<<(part->nop+TPB-1)/TPB, TPB>>>(part->nop, part->n_sub_cycles, part->NiterMover, *grd,
-                                                    *param, dt_inf, p_info, f_pointers, g_pointers);
-    cudaDeviceSynchronize();
+            copy_mover_arrays(part, field, grd, p_info, f_pointers, g_pointers, grdSize, field_size, "cpu_to_gpu",
+                              batch_start, batch_end);
 
-    copy_mover_arrays(part, field, grd, p_info, f_pointers, g_pointers, grdSize, field_size, "gpu_to_cpu");
+
+            g_move_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(batch_size, part->n_sub_cycles, part->NiterMover, *grd,
+                                                                  *param, dt_inf, p_info, f_pointers, g_pointers);
+            cudaDeviceSynchronize();
+
+            copy_mover_arrays(part, field, grd, p_info, f_pointers, g_pointers, grdSize, field_size, "gpu_to_cpu",
+                              batch_start, batch_end);
+
+            std::cout << "\n \n PARTICELS AFTER GPU...." << std::endl;
+            for (long i = batch_start; i < batch_start + 10; i++)
+                std::cout << part->x[i] << std::endl;
+            // getchar();
+
+        }
+    }
+
+    else {  // all the particles
+        copy_mover_arrays(part, field, grd, p_info, f_pointers, g_pointers, grdSize, field_size, "cpu_to_gpu");
+
+        // h_move_particle(i, part->NiterMover, grd, param, dt_inf, p_info, f_pointers, g_pointers)
+        // Launch the kernel
+        g_move_particle<<<(part->nop+TPB-1)/TPB, TPB>>>(part->nop, part->n_sub_cycles, part->NiterMover, *grd,
+                *param, dt_inf, p_info, f_pointers, g_pointers);
+        cudaDeviceSynchronize();
+
+        copy_mover_arrays(part, field, grd, p_info, f_pointers, g_pointers, grdSize, field_size, "gpu_to_cpu");
+    }
     return(0); // exit successfully
 }
 

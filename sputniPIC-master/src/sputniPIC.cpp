@@ -81,12 +81,12 @@ int main(int argc, char **argv){
     int grdSize = grd.nxn * grd.nyn * grd.nzn;
     int rhocSize = grd.nxc * grd.nyc * grd.nzc;
     particles_pointers p_p; ids_pointers i_p; grd_pointers g_p;  // on the GPU memory
-    allocate_interp_gpu_memory(part, grdSize, &p_p, &i_p, &g_p);
+    allocate_interp_gpu_memory(part, grdSize, &p_p, &i_p, &g_p);  // Allocates maximum MAX_GPU_PARTICLES particles
 
     int field_size = grd.nxn * grd.nyn * grd.nzn;
     particle_info p_info; field_pointers f_pointers; grd_pointers g_pointers;  // on the GPU memory
     allocate_mover_gpu_memory(part, grdSize, field_size, &p_info, &f_pointers, &g_pointers);
-    // std::cout << "In [main]: GPU memory allocation: done" << std::endl;
+    std::cout << "In [main]: All GPU memory allocation: done" << std::endl;
 
 
     // -------------------------------------------------------------- //
