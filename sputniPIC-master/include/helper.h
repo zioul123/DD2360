@@ -9,6 +9,22 @@
 void print(std::string str);
 
 
+void allocate_batch(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
+                    FPpart*& batch_u, FPpart*& batch_v, FPpart*& batch_w, long batch_size);
+
+
+void deallocate_batch(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
+                      FPpart*& batch_u, FPpart*& batch_v, FPpart*& batch_w);
+
+
+void batch_copy(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
+                FPpart*& batch_u, FPpart*& batch_v, FPpart*& batch_w,
+                FPpart*& part_x, FPpart*& part_y, FPpart*& part_z,
+                FPpart*& part_u, FPpart*& part_v, FPpart*& part_w,
+                long from, long to, std::string direction);
+
+
+
 void allocate_interp_gpu_memory(struct particles* part, int grdSize, particles_pointers* p_p,
                                 ids_pointers* i_p, grd_pointers* g_p);
 

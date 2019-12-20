@@ -450,7 +450,8 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
     FPpart dto2 = .5 * dt_sub_cycling, qomdt2 = part->qom * dto2 / param->c;
     const dt_info dt_inf { dt_sub_cycling, dto2, qomdt2 };
 
-    if (part->npmax > MAX_GPU_PARTICLES) {  // mini-batches
+    // mini-batches
+    if (part->npmax > MAX_GPU_PARTICLES) {
         int n_iterations = ceil((double)part->npmax / MAX_GPU_PARTICLES);
         // int n_iterations = part->npmax / MAX_GPU_PARTICLES;
         for (int iter = 0; iter < n_iterations; iter++) {
@@ -485,7 +486,8 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
         }
     }
 
-    else {  // all the particles
+    // all the particles at once
+    else {
         copy_mover_arrays(part, field, grd, p_info, f_pointers, g_pointers, grdSize, field_size, "cpu_to_gpu");
 
         // h_move_particle(i, part->NiterMover, grd, param, dt_inf, p_info, f_pointers, g_pointers)
