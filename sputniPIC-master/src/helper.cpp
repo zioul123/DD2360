@@ -44,13 +44,12 @@ void deallocate_batch(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
 }
 
 
-void batch_copy(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
-                FPpart*& batch_u, FPpart*& batch_v, FPpart*& batch_w, FPpart*& batch_q,
-                FPpart*& part_x, FPpart*& part_y, FPpart*& part_z,
-                FPpart*& part_u, FPpart*& part_v, FPpart*& part_w, FPpart*& part_q,
-                long from, long to, std::string mode, std::string direction) {
+void batch_copy(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z, FPpart*& batch_u, FPpart*& batch_v,
+                FPpart*& batch_w, FPpart*& batch_q, FPpart*& part_x, FPpart*& part_y, FPpart*& part_z,
+                FPpart*& part_u, FPpart*& part_v, FPpart*& part_w, FPpart*& part_q, long from, long to,
+                std::string mode, std::string direction) {
 
-    /** This function... copies the data of a batch either from particles to batch variables (to be copied to GPU then)
+    /** This function copies the data of a batch either from particles to batch variables (to be copied to GPU then)
      * or from the batch variables (which contain the kernel results on the batch) back to the particles
      * NOTE: depending on the 'mode' variable, batch_q will be ignored (if mode is "mover_PC") */
 
@@ -87,6 +86,10 @@ void batch_copy(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
 
 void allocate_interp_gpu_memory(struct particles* part, int grdSize, particles_pointers* p_p, ids_pointers* i_p,
                                 grd_pointers* g_p) {
+    /** This function allocates the GPU memory needed for the kernel in the interp2G function. If the number of
+     * particles is more than the maximum defined, it only allocates the maximum number of particles already defined,
+     * and then operations are done in batches of particles. */
+
     FPpart* part_copies[6];
     FPinterp* part_copy_q;
     FPinterp* ids_copies[11];
@@ -141,12 +144,15 @@ void allocate_interp_gpu_memory(struct particles* part, int grdSize, particles_p
 
 void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
                         particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize,
-                        int rhocSize, std::string mode, long from, long to) {
+                        int rhocSize, std::string mode, long from, long to, bool verbose) {
+    /** This function copies from CPU to GPU the data needed for running the kernel in the interp2G function.
+     * For more info see the copy_mover_arrays function. */
+
     // if batch_size is not -1, it means that mini-batching should be done
     long batch_size = -1;
     if (from != -1 && to != -1) {  // determine size of mini-batch, if from and to are specified
         batch_size = to - from;
-        std::cout << "In [copy_interp_arrays]: copying with batch size of " << batch_size << std::endl;
+        if (verbose) std::cout << "In [copy_interp_arrays]: copying with batch size of " << batch_size << std::endl;
     }
 
     // prepare mini-batch structures if we mini-batching should be performed
@@ -154,8 +160,7 @@ void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, s
     if (batch_size != -1) {  // mini-batch copying
         allocate_batch(batch_x, batch_y, batch_z, batch_u, batch_v, batch_w,
                        batch_q, batch_size, "interp2G");
-        std::cout << "In [copy_interp_arrays]: batch variables created..." << std::endl;
-        //getchar();
+        if (verbose) std::cout << "In [copy_interp_arrays]: batch variables created..." << std::endl;
     }
 
 
@@ -163,12 +168,13 @@ void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, s
     if (mode == "cpu_to_gpu") {
         // mini-batching
         if (batch_size != -1){
+            // copy from particles to batch variables
             batch_copy(batch_x, batch_y, batch_z, batch_u, batch_v, batch_w, batch_q,
                        part->x, part->y, part->z, part->u, part->v, part->w, part->q,
                           from, to,"interp2G", "particle_to_batch");
-            std::cout << "In [copy_interp_arrays]: copy from part to batch done." << std::endl;
-            //getchar();
+            if (verbose) std::cout << "In [copy_interp_arrays]: copy from part to batch done." << std::endl;
 
+            // copy from batch variables to GPU
             cudaMemcpy(p_p.x, batch_x, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
             cudaMemcpy(p_p.y, batch_y, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
             cudaMemcpy(p_p.z, batch_z, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
@@ -176,14 +182,14 @@ void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, s
             cudaMemcpy(p_p.v, batch_v, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
             cudaMemcpy(p_p.w, batch_w, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
             cudaMemcpy(p_p.q, batch_q, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
-            std::cout << "In [copy_interp_arrays]: copy to GPU: done." << std::endl;
-            //getchar();
+
+            if (verbose) std::cout << "In [copy_interp_arrays]: copy to GPU: done." << std::endl;
+
 
             // deallocate the memory once the data is copied to the GPU memory
             deallocate_batch(batch_x, batch_y, batch_z, batch_u, batch_v, batch_w,
                              batch_q, "interp2G");
-            std::cout << "In [copy_interp_arrays]: batch variables freed..." << std::endl;
-            //getchar();
+            if (verbose) std::cout << "In [copy_interp_arrays]: batch variables freed..." << std::endl;
         }
 
         // copy all the particles at once
@@ -227,18 +233,18 @@ void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, s
             cudaMemcpy(batch_w, p_p.w, batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
 
             cudaMemcpy(batch_q, p_p.q, batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
-            std::cout << "In [copy_interp_arrays]: copy from GPU to batch variables: done." << std::endl;
+            if (verbose) std::cout << "In [copy_interp_arrays]: copy from GPU to batch variables: done." << std::endl;
 
             batch_copy(batch_x, batch_y, batch_z, batch_u, batch_v, batch_w, batch_q,
                        part->x, part->y, part->z, part->u, part->v, part->w, part->q,
                           from, to,"interp2G", "batch_to_particle");
-            std::cout << "In [copy_interp_arrays]: copy from batch to particles: done." << std::endl;
+
+            if (verbose) std::cout << "In [copy_interp_arrays]: copy from batch to particles: done." << std::endl;
 
             // deallocate the memory once the data is copied to the original particles
             deallocate_batch(batch_x, batch_y, batch_z, batch_u, batch_v, batch_w,
                              batch_q, "interp2G");
-            std::cout << "In [copy_interp_arrays]: batch variables freed: done." << std::endl;
-            //getchar();
+            if (verbose) std::cout << "In [copy_interp_arrays]: batch variables freed: done." << std::endl;
         }
 
         // all particles at once
@@ -274,6 +280,10 @@ void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, s
 
 void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_size, particle_info* p_info,
                                field_pointers* f_pointers, grd_pointers* g_pointers) {
+    /** This function allocates the GPU memory needed for the kernel in the mover_PC function. If the number of
+     * particles is more than the maximum defined, it only allocates the maximum number of particles already defined,
+     * and then operations are done in batches of particles. */
+
     // Declare GPU copies of arrays for mover_PC
     FPpart* part_info_copies[6];
     FPfield* f_pointer_copies[6];
@@ -322,8 +332,9 @@ void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_si
 
 void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, particle_info p_info,
                        field_pointers f_pointers, grd_pointers g_pointers, int grdSize, int field_size,
-                       std::string mode, long from, long to) {
-    /** long 'from' and long 'to' (if specified) determine which elements of the particle arrays should be copied to GPU.
+                       std::string mode, long from, long to, bool verbose) {
+    /** This function copies from CPU to GPU the data needed for running the kernel in the interp2G function
+     * long 'from' and long 'to' (if specified) determine which elements of the particle arrays should be copied to GPU.
      * If not specified (default), all the particles will be copied.
      * NOTE: to is exclusive => mini-batch size is (to - from) */
 
@@ -331,7 +342,7 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
     long batch_size = -1;
     if (from != -1 && to != -1) {  // determine size of mini-batch, if from and to are specified
         batch_size = to - from;
-        std::cout << "In [copy_mover_arrays]: copying with batch size of " << batch_size << std::endl;
+        if (verbose) std::cout << "In [copy_mover_arrays]: copying with batch size of " << batch_size << std::endl;
     }
 
     // prepare mini-batch structures if we mini-batching should be performed
@@ -339,18 +350,22 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
     if (batch_size != -1) {  // mini-batch copying
         allocate_batch(batch_x, batch_y, batch_z, batch_u, batch_v, batch_w,
                        batch_q, batch_size, "mover_PC");  // by specifying "mover_PC", batch_q will be ignored
-        std::cout << "In [copy_mover_arrays]: batch variables created..." << std::endl;
+
+        if (verbose) std::cout << "In [copy_mover_arrays]: batch variables created..." << std::endl;
     }
 
     // Copy CPU arrays to GPU
     if (mode == "cpu_to_gpu") {
         // copy the mini-batch
         if (batch_size != -1) {
+            // copy from particles to batch variables
             batch_copy(batch_x, batch_y, batch_z, batch_u, batch_v, batch_w, batch_q,
                        part->x, part->y, part->z, part->u, part->v, part->w, part->q,
                        from, to, "mover_PC", "particle_to_batch");
-            std::cout << "In [copy_mover_arrays]: copy from part to batch done." << std::endl;
 
+            if (verbose) std::cout << "In [copy_mover_arrays]: copy from part to batch done." << std::endl;
+
+            // copy from batch variables to GPU
             cudaMemcpy(p_info.x, batch_x, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
             cudaMemcpy(p_info.y, batch_y, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
             cudaMemcpy(p_info.z, batch_z, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
@@ -358,12 +373,12 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
             cudaMemcpy(p_info.v, batch_v, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
             cudaMemcpy(p_info.w, batch_w, batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
 
-            std::cout << "In [copy_mover_arrays]: copy to GPU done..." << std::endl;
+            if (verbose) std::cout << "In [copy_mover_arrays]: copy to GPU done..." << std::endl;
 
             // deallocate the memory once the data is copied to the GPU memory
             deallocate_batch(batch_x, batch_y, batch_z, batch_u, batch_v, batch_w,
                              batch_q, "mover_PC");
-            std::cout << "In [copy_mover_arrays]: batch variables freed..." << std::endl;
+            if (verbose) std::cout << "In [copy_mover_arrays]: batch variables freed..." << std::endl;
         }
 
         // copy all the particles at once
@@ -401,7 +416,7 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
             cudaMemcpy(batch_v, p_info.v, batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
             cudaMemcpy(batch_w, p_info.w, batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
 
-            std::cout << "In [copy_mover_arrays]: copy back to CPU done..." << std::endl;
+            if (verbose) std::cout << "In [copy_mover_arrays]: copy back to CPU done..." << std::endl;
 
             batch_copy(batch_x, batch_y, batch_z, batch_u, batch_v, batch_w, batch_q,
                        part->x, part->y, part->z, part->u, part->v, part->w, part->q,
@@ -410,7 +425,7 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
             // deallocate the memory once the data is copied to the original particles
             deallocate_batch(batch_x, batch_y, batch_z, batch_u, batch_v, batch_w,
                              batch_q, "mover_PC");
-            std::cout << "In [copy_mover_arrays]: batch variables freed..." << std::endl;
+            if (verbose) std::cout << "In [copy_mover_arrays]: batch variables freed..." << std::endl;
         }
 
         // copy all particles at once
@@ -441,6 +456,7 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
 
 void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g_p,
                      particle_info* p_info, field_pointers* f_pointers, grd_pointers* g_pointers) {
+    /** This function frees all the memory allocated on the GPU for both kernels. */
 
     cudaFree(p_p->x);
     cudaFree(p_p->y);

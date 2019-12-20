@@ -442,7 +442,7 @@ __global__ void g_move_particle(int nop, int n_sub_cycles, int part_NiterMover, 
 int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, struct parameters* param,
              particle_info p_info, field_pointers f_pointers, grd_pointers g_pointers, int grdSize, int field_size) {
     // print species and subcycling
-    std::cout << "***  MOVER with SUBCYCLYING "<< param->n_sub_cycles
+    std::cout << std::endl << "***  In [mover_PC]: MOVER with SUBCYCLYING "<< param->n_sub_cycles
               << " - species " << part->species_ID << " ***" << std::endl;
 
     // "global" environment variables
@@ -459,17 +459,12 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
             long batch_end = std::min(batch_start + MAX_GPU_PARTICLES, part->npmax);  // max is part->npmax
             long batch_size = batch_end - batch_start;
 
-            std::cout << "================== In [mover_PC]: iteration " << (iter + 1) << " of " << n_iterations
+            /* std::cout << "================== In [mover_PC]: iteration " << (iter + 1) << " of " << n_iterations
                       << " - batch_start: " << batch_start << ", batch_end: " << batch_end
-                      << ", batch_size: " << batch_size << std::endl;
-
-            std::cout << "\n \n PARTICELS BEFORE GPU...." << std::endl;
-            for (long i = batch_start; i < batch_start + 10; i++)
-                std::cout << part->x[i] << std::endl;
+                      << ", batch_size: " << batch_size << std::endl; */
 
             copy_mover_arrays(part, field, grd, p_info, f_pointers, g_pointers, grdSize, field_size, "cpu_to_gpu",
                               batch_start, batch_end);
-
 
             g_move_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(batch_size, part->n_sub_cycles, part->NiterMover, *grd,
                                                                   *param, dt_inf, p_info, f_pointers, g_pointers);
@@ -478,11 +473,7 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
             copy_mover_arrays(part, field, grd, p_info, f_pointers, g_pointers, grdSize, field_size, "gpu_to_cpu",
                               batch_start, batch_end);
 
-            std::cout << "\n \n PARTICELS AFTER GPU...." << std::endl;
-            for (long i = batch_start; i < batch_start + 10; i++)
-                std::cout << part->x[i] << std::endl;
-            // getchar();
-
+            std::cout << "====== In [mover_PC]: batch " << (iter + 1) << " of " << n_iterations << ": done." << std::endl;
         }
     }
 
@@ -847,16 +838,9 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
             long batch_end = std::min(batch_start + MAX_GPU_PARTICLES, part->npmax);  // max is part->npmax
             long batch_size = batch_end - batch_start;
 
-            std::cout << "================== In [interpP2G]: iteration " << (iter + 1) << " of " << n_iterations
+            /* std::cout << "================== In [interpP2G]: iteration " << (iter + 1) << " of " << n_iterations
                       << " - batch_start: " << batch_start << ", batch_end: " << batch_end
-                      << ", batch_size: " << batch_size << std::endl;
-            //getchar();
-
-
-            std::cout << "\n \n -----------> Interp2G: PARTICELS BEFOR GPU...." << std::endl;
-            for (long i = batch_start; i < batch_start + 10; i++)
-                std::cout << part->x[i] << std::endl;
-            // getchar();
+                      << ", batch_size: " << batch_size << std::endl; */
 
             // copy batch to GPU
             copy_interp_arrays(part, ids, grd, p_p, i_p, g_p, grdSize, rhocSize, "cpu_to_gpu",
@@ -870,11 +854,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
             copy_interp_arrays(part, ids, grd, p_p, i_p, g_p, grdSize, rhocSize, "gpu_to_cpu",
                                batch_start, batch_end);
 
-            std::cout << "\n \n -----------> Interp2G: PARTICELS AFTER GPU...." << std::endl;
-            for (long i = batch_start; i < batch_start + 10; i++)
-                std::cout << part->x[i] << std::endl;
-            // getchar();
-
+            std::cout << "====== In [interpP2G]: batch " << (iter + 1) << " of " << n_iterations << ": done." << std::endl;
         }
     }
 
