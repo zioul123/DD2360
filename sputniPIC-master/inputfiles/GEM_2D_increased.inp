@@ -30,7 +30,7 @@ rhoINIT = 1.0 1.0 0.02 0.02
 # TrackParticleID[species] = 1=true, 0=false --> Assign ID to particles 
 TrackParticleID= 0 0 0 0 
 # npcelx = number of particles per cell - Direction X 
-npcelx = 20 5 5 5
+npcelx = 20 20 20 20
 # npcely = number of particles per cell - Direction Y */
 npcely = 5 5 5 5
 # npcelz = number of particles per cell - Direction Z */
