@@ -5,7 +5,6 @@ CMakeLists.txt
 *.DS_Store
 **/.DS_Store
 .idea/
-notes.txt
 runs.sh
 commit_msg.txt
 

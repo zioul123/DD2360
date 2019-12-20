@@ -1,0 +1,83 @@
+Important notes:
+    - The 'inputfiles' folder now contains two new files named 'GEM_2D_increased.inp' and 'GEM_3D_increased.inp'
+      which contain more particles for testing mini_batch functionality. In the 'GEM_2D_increased.inp' and 'GEM_3D_increased.inp',
+       the number of particles in each species are increased by a factor of 4 and 3 respectively, and 'FieldOutputCycle'
+       is set to 10.
+
+    - The 'Particle.cu' file now contains the GPU versions of the mover. In the 'helper.cpp' file, some helper functions
+      are defined.
+
+    - The 'reference_output' folder contains the output of running the original CPU version of the code, used for
+      correctness checking.
+
+    - The 'results' folder contains the result of different functionalities added to the code (based on the grade).
+      For grades E and D, the results correspond to the GPU version of the code, and the grade C results correspond to
+      mini-batch functionality.
+
+    - When adding new functionality to the code, it is important that we keep the previously implemented functions
+      working properly as we finally need to test profile their execution time them and compare them together. For
+      instance, when adding the streaming functionality, we should keep the vanilla mini-batch functionality working
+      as well.
+
+    - After adding each functionality, please save the raw output files, diff and nvprof results for future reference.
+
+
+To-Do:
+    - For streaming:
+        - Remember to destroy the stream
+        - Use cudaMemcpyAsync() -> pinned host memory
+
+    - In general:
+        - Enable code to perform both CPU and GPU versions. It is best if we define a running argument based on which
+          the program decide if it should run the CPU version, GPU version, and if there are a lot of particles, it should
+          run the vanilla mini-batching or use streaming (not yet implemented). (Should we add the priginal CPU versions
+          of the functions back in the 'Particle.cu' file or in a separate file?)
+
+        - h_mover and h_interp functions could be removed.
+        - Mini-batch array has for loops for extracting batch data out of the original particles variable: could it be more efficient?
+        - Optimize how many particles to allocate on GPU (MAX_GPU_PARTICLES) based on the GPU memory.
+
+     - In the repo:
+        - Add Read.me
+        - Remove .DS_Store files and update .gitignore in a way to ignore them.
+        - Write documentation for the functions.
+
+
+Important things to mentions (in the report):
+    - Atomic add in the g_interp_particle function
+    - Files that we changes: Particle.h, Particle.cu, sputniPIC.cpp
+    - The response to my post in Canvas
+    - Since NPMaxToNPRation is always 1, so nop=npmax, we decided to handle the maximum number of particles separately
+      in our functions.
+
+
+Questions:
+    - For the basic memory allocation: should change 'npmax' to 'nop' when allocating memory?
+      (because they are the same - in kernels we are using nop)
+
+
+To run the code:
+    - Make the code using the 'make' command. This creates the '/bin/sputniPIC.out'.
+    - Run './bin/sputniPIC.out inputfiles/GEM_2D.inp' (for the GPU version salloc and srun should be used)
+        - NOTE: Before running, you should create the 'data' folder (see the 'runs.sh' file)
+    - Check rho_net as the main quantity for testing
+    - For visualization: Open in paraview visualization application the .vtk files (I did not perform this step)
+
+
+Improvements:
+    _ Code refactoring:
+        - Memory allocations from main to helper function
+        - Split cuda files in separate files
+    - Grid memory ca be ignored when moving back from GPU to CPU (am I right?)
+    - Should we parallelize for ALL species? (4 in total) => I think not.
+    - Add arguments to the program for running the CPU, or the GPU functions, or change the TPB based on arguments
+    - The copy variables are not actually needed, we can directly use the structs passed as the arguments....
+
+
+Useful links:
+    - Their code repository: https://github.com/iPIC3D/sputniPIC
+    - Our code repo: https://github.com/zioul123/DD2360/tree/master/sputniPIC-master
+
+
+Git push:
+    - (For Moein), 'reference_output', 'results', and 'notes' should bee added using --force.
