@@ -6,23 +6,34 @@
 #define MAX_GPU_PARTICLES 14155776  // the number of particles per species in the GEM_3D file is chosen for maximum
 
 
+// Modes for running the functions
+enum PICMode 
+{
+    INTERP2G,
+    MOVER_PC,
+    PARTICLE_TO_BATCH,
+    BATCH_TO_PARTICLE,
+    CPU_TO_GPU,
+    GPU_TO_CPU
+};
+
 void print(std::string str);
 
 
 void allocate_batch(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
                     FPpart*& batch_u, FPpart*& batch_v, FPpart*& batch_w,
-                    FPpart*& batch_q, long batch_size, std::string mode);
+                    FPpart*& batch_q, long batch_size, PICMode mode);
 
 
 void deallocate_batch(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
                       FPpart*& batch_u, FPpart*& batch_v, FPpart*& batch_w,
-                      FPpart*& batch_q, std::string mode);
+                      FPpart*& batch_q, PICMode mode);
 
 
 void batch_copy(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z, FPpart*& batch_u, FPpart*& batch_v,
                 FPpart*& batch_w, FPpart*& batch_q, FPpart*& part_x, FPpart*& part_y, FPpart*& part_z,
                 FPpart*& part_u, FPpart*& part_v, FPpart*& part_w, FPpart*& part_q,long from, long to,
-                std::string mode, std::string direction);
+                PICMode mode, PICMode direction);
 
 
 
@@ -32,7 +43,7 @@ void allocate_interp_gpu_memory(struct particles* part, int grdSize, particles_p
 
 void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
                         particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize,
-                        int rhocSize, std::string mode, long from=-1, long to=-1, bool verbose=false);
+                        int rhocSize, PICMode mode, long from=-1, long to=-1, bool verbose=false);
 
 
 void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_size, particle_info* p_info,
@@ -41,7 +52,7 @@ void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_si
 
 void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, particle_info p_info,
                        field_pointers f_pointers, grd_pointers g_pointers, int grdSize, int field_size,
-                       std::string mode, long from=-1, long to=-1, bool verbose=false);
+                       PICMode mode, long from=-1, long to=-1, bool verbose=false);
 
 
 void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g_p,
