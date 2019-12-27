@@ -424,7 +424,6 @@ void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g
     cudaFree(p_p->v);
     cudaFree(p_p->w);
     cudaFree(p_p->q);
-    cudaFree(p_p);  // freeing the top-level pointer
 
     cudaFree(i_p->rhon_flat);
     cudaFree(i_p->rhoc_flat);
@@ -437,12 +436,10 @@ void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g
     cudaFree(i_p->pyy_flat);
     cudaFree(i_p->pyz_flat);
     cudaFree(i_p->pzz_flat);
-    cudaFree(i_p);
 
     cudaFree(g_p->XN_flat);
     cudaFree(g_p->YN_flat);
     cudaFree(g_p->ZN_flat);
-    cudaFree(g_p);
 
     cudaFree(f_pointers->Ex_flat);
     cudaFree(f_pointers->Ey_flat);
@@ -450,7 +447,6 @@ void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g
     cudaFree(f_pointers->Bxn_flat);
     cudaFree(f_pointers->Byn_flat);
     cudaFree(f_pointers->Bzn_flat);
-    cudaFree(f_pointers);
 
     std::cout << "In [free_gpu_memory]: all GPU memory freed.." << std::endl;
 }
