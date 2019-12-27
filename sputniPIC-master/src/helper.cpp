@@ -8,7 +8,8 @@ void print(std::string str) {
 
 void allocate_batch(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
                     FPpart*& batch_u, FPpart*& batch_v, FPpart*& batch_w,
-                    FPpart*& batch_q, long batch_size, PICMode mode) {
+                    FPpart*& batch_q, long batch_size, PICMode mode) 
+{
     /** This function allocates auxiliary batch variables that contain the data of a batch of particles, used to
      * transfer batch data between CPU and GPU.
      * NOTE: depending on the 'mode' variable, batch_q will be ignored (if mode is "mover_PC") */
@@ -27,7 +28,8 @@ void allocate_batch(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
 
 void deallocate_batch(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
                       FPpart*& batch_u, FPpart*& batch_v, FPpart*& batch_w,
-                      FPpart*& batch_q, PICMode mode) {
+                      FPpart*& batch_q, PICMode mode) 
+{
     /** Since the batch variables are temporary, they are immediately deallocated once the data is copied to the GPU
      * or copied to the original particles variable
      * NOTE: depending on the 'mode' variable, batch_q will be ignored (if mode is "mover_PC") */
@@ -47,7 +49,8 @@ void deallocate_batch(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
 void batch_copy(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z, FPpart*& batch_u, FPpart*& batch_v,
                 FPpart*& batch_w, FPpart*& batch_q, FPpart*& part_x, FPpart*& part_y, FPpart*& part_z,
                 FPpart*& part_u, FPpart*& part_v, FPpart*& part_w, FPpart*& part_q, long from, long to,
-                PICMode mode, PICMode direction) {
+                PICMode mode, PICMode direction) 
+{
 
     /** This function copies the data of a batch either from particles to batch variables (to be copied to GPU then)
      * or from the batch variables (which contain the kernel results on the batch) back to the particles
@@ -90,7 +93,8 @@ void batch_copy(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z, FPpart*& b
  */
 void allocate_gpu_memory(struct particles* part, int grdSize, int fieldSize, 
                                 particles_pointers* p_p, ids_pointers* i_p,
-                                grd_pointers* g_p, field_pointers* f_p) {
+                                grd_pointers* g_p, field_pointers* f_p) 
+{
     
     FPpart* part_copies[6]; FPinterp* part_copy_q;
     FPinterp* ids_copies[11];
@@ -176,12 +180,13 @@ void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, s
                        batch_q, batch_size, INTERP2G);
         if (verbose) std::cout << "In [copy_interp_arrays]: batch variables created..." << std::endl;
     }
-
-
+    
     // Copy CPU arrays to GPU
-    if (mode == CPU_TO_GPU) {
+    if (mode == CPU_TO_GPU) { 
+    
         // mini-batching
-        if (batch_size != -1){
+        if (batch_size != -1)
+        {
             // copy from particles to batch variables
             batch_copy(batch_x, batch_y, batch_z, batch_u, batch_v, batch_w, batch_q,
                        part->x, part->y, part->z, part->u, part->v, part->w, part->q,
