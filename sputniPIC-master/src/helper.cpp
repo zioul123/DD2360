@@ -83,17 +83,19 @@ void batch_copy(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z, FPpart*& b
     }
 }
 
-
-void allocate_interp_gpu_memory(struct particles* part, int grdSize, particles_pointers* p_p, ids_pointers* i_p,
-                                grd_pointers* g_p) {
-    /** This function allocates the GPU memory needed for the kernel in the interp2G function. If the number of
-     * particles is more than the maximum defined, it only allocates the maximum number of particles already defined,
-     * and then operations are done in batches of particles. */
-
-    FPpart* part_copies[6];
-    FPinterp* part_copy_q;
+/** 
+ * This function allocates the GPU memory needed for the kernels in the mover_pc and interp2G functions. If the number of
+ * particles is more than the maximum defined, it only allocates the maximum number of particles already defined,
+ * and then operations are done in batches of particles. 
+ */
+void allocate_gpu_memory(struct particles* part, int grdSize, int fieldSize, 
+                                particles_pointers* p_p, ids_pointers* i_p,
+                                grd_pointers* g_p, field_pointers* f_p) {
+    
+    FPpart* part_copies[6]; FPinterp* part_copy_q;
     FPinterp* ids_copies[11];
     FPfield* grd_copies[3];
+    FPfield* field_copies[6];
 
     long num_gpu_particles = part->npmax;
     if (part->npmax > MAX_GPU_PARTICLES) {
@@ -101,6 +103,7 @@ void allocate_interp_gpu_memory(struct particles* part, int grdSize, particles_p
         std::cout << "In [allocate_interp_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. "
                      "Allocating only up to MAX_GPU_PARTICLES particles..." << std::endl;
     }
+
     // Allocate GPU arrays for interpP2G
     {
         cudaMalloc(&part_copy_q, num_gpu_particles * sizeof(FPinterp));
@@ -113,6 +116,9 @@ void allocate_interp_gpu_memory(struct particles* part, int grdSize, particles_p
 
         for (int i = 0; i < 3; ++i)
             cudaMalloc(&grd_copies[i], grdSize * sizeof(FPfield));
+
+        for (int i = 0; i < 6; i++)
+            cudaMalloc(&field_copies[i], fieldSize * sizeof(FPfield));
     }
 
     // Put GPU array pointers into structs for interpP2G
@@ -139,6 +145,13 @@ void allocate_interp_gpu_memory(struct particles* part, int grdSize, particles_p
     g_p->XN_flat = grd_copies[0];
     g_p->YN_flat = grd_copies[1];
     g_p->ZN_flat = grd_copies[2];
+
+    f_p->Ex_flat = field_copies[0];
+    f_p->Ey_flat = field_copies[1];
+    f_p->Ez_flat = field_copies[2];
+    f_p->Bxn_flat = field_copies[3];
+    f_p->Byn_flat = field_copies[4];
+    f_p->Bzn_flat = field_copies[5];
 }
 
 
@@ -277,40 +290,6 @@ void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, s
     }
 }
 
-
-void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_size,
-                               field_pointers* f_pointers) {
-    /** This function allocates the GPU memory needed for the kernel in the mover_PC function. If the number of
-     * particles is more than the maximum defined, it only allocates the maximum number of particles already defined,
-     * and then operations are done in batches of particles. */
-
-    // Declare GPU copies of arrays for mover_PC
-    FPfield* f_pointer_copies[6];
-
-    long num_gpu_particles = part->npmax;
-    if (part->npmax > MAX_GPU_PARTICLES) {
-        num_gpu_particles = MAX_GPU_PARTICLES;
-        std::cout << "In [allocate_mover_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. "
-                     "Allocating only up to MAX_GPU_PARTICLES particles..." << std::endl;
-        // getchar();
-    }
-
-    // Allocate GPU arrays for mover_PC
-    {
-        for (int i = 0; i < 6; i++)
-            cudaMalloc(&f_pointer_copies[i], field_size * sizeof(FPfield));
-    }
-
-    // Put GPU array pointers into structs for mover_PC
-    f_pointers->Ex_flat = f_pointer_copies[0];
-    f_pointers->Ey_flat = f_pointer_copies[1];
-    f_pointers->Ez_flat = f_pointer_copies[2];
-    f_pointers->Bxn_flat = f_pointer_copies[3];
-    f_pointers->Byn_flat = f_pointer_copies[4];
-    f_pointers->Bzn_flat = f_pointer_copies[5];
-}
-
-
 void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, particles_pointers p_info,
                        field_pointers f_pointers, grd_pointers g_pointers, int grdSize, int field_size,
                        PICMode mode, long from, long to, bool verbose) {
@@ -434,11 +413,10 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
     }
 }
 
-
-void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g_p,
-                     field_pointers* f_pointers) {
-    /** This function frees all the memory allocated on the GPU for both kernels. */
-
+/** 
+ * This function frees all the memory allocated on the GPU for both kernels.
+ */
+void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g_p, field_pointers* f_pointers) {
     cudaFree(p_p->x);
     cudaFree(p_p->y);
     cudaFree(p_p->z);

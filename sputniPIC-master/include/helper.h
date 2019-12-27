@@ -36,18 +36,14 @@ void batch_copy(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z, FPpart*& b
                 PICMode mode, PICMode direction);
 
 
-
-void allocate_interp_gpu_memory(struct particles* part, int grdSize, particles_pointers* p_p,
-                                ids_pointers* i_p, grd_pointers* g_p);
+void allocate_gpu_memory(struct particles* part, int grdSize, int fieldSize, 
+                                particles_pointers* p_p, ids_pointers* i_p, 
+                                grd_pointers* g_p, field_pointers* f_p);
 
 
 void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
                         particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize,
                         int rhocSize, PICMode mode, long from=-1, long to=-1, bool verbose=false);
-
-
-void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_size,
-                               field_pointers* f_pointers);
 
 
 void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, particles_pointers p_info,
