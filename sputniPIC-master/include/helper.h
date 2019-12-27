@@ -46,19 +46,19 @@ void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, s
                         int rhocSize, PICMode mode, long from=-1, long to=-1, bool verbose=false);
 
 
-void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_size, particle_info* p_info,
+void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_size,
                                field_pointers* f_pointers, grd_pointers* g_pointers);
 
 
-void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, particle_info p_info,
+void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, particles_pointers p_info,
                        field_pointers f_pointers, grd_pointers g_pointers, int grdSize, int field_size,
                        PICMode mode, long from=-1, long to=-1, bool verbose=false);
 
 
 void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g_p,
-                     particle_info* p_info, field_pointers* f_pointers, grd_pointers* g_pointers);
+                     field_pointers* f_pointers, grd_pointers* g_pointers);
 
 
-void create_particle_batch(long batch_size, particle_info p_info_batch);
+void create_particle_batch(long batch_size, particles_pointers p_info_batch);
 
 #endif

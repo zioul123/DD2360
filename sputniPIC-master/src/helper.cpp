@@ -278,14 +278,13 @@ void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, s
 }
 
 
-void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_size, particle_info* p_info,
+void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_size,
                                field_pointers* f_pointers, grd_pointers* g_pointers) {
     /** This function allocates the GPU memory needed for the kernel in the mover_PC function. If the number of
      * particles is more than the maximum defined, it only allocates the maximum number of particles already defined,
      * and then operations are done in batches of particles. */
 
     // Declare GPU copies of arrays for mover_PC
-    FPpart* part_info_copies[6];
     FPfield* f_pointer_copies[6];
     FPfield* g_pointer_copies[3];
 
@@ -300,9 +299,6 @@ void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_si
     // Allocate GPU arrays for mover_PC
     {
         for (int i = 0; i < 6; i++)
-            cudaMalloc(&part_info_copies[i], num_gpu_particles * sizeof(FPpart));
-
-        for (int i = 0; i < 6; i++)
             cudaMalloc(&f_pointer_copies[i], field_size * sizeof(FPfield));
 
         for (int i = 0; i < 3; i++)
@@ -310,13 +306,6 @@ void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_si
     }
 
     // Put GPU array pointers into structs for mover_PC
-    p_info->x = part_info_copies[0];
-    p_info->y = part_info_copies[1];
-    p_info->z = part_info_copies[2];
-    p_info->u = part_info_copies[3];
-    p_info->v = part_info_copies[4];
-    p_info->w = part_info_copies[5];
-
     f_pointers->Ex_flat = f_pointer_copies[0];
     f_pointers->Ey_flat = f_pointer_copies[1];
     f_pointers->Ez_flat = f_pointer_copies[2];
@@ -330,7 +319,7 @@ void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_si
 }
 
 
-void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, particle_info p_info,
+void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, particles_pointers p_info,
                        field_pointers f_pointers, grd_pointers g_pointers, int grdSize, int field_size,
                        PICMode mode, long from, long to, bool verbose) {
     /** This function copies from CPU to GPU the data needed for running the kernel in the interp2G function
@@ -455,7 +444,7 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
 
 
 void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g_p,
-                     particle_info* p_info, field_pointers* f_pointers, grd_pointers* g_pointers) {
+                     field_pointers* f_pointers, grd_pointers* g_pointers) {
     /** This function frees all the memory allocated on the GPU for both kernels. */
 
     cudaFree(p_p->x);
@@ -484,14 +473,6 @@ void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g
     cudaFree(g_p->YN_flat);
     cudaFree(g_p->ZN_flat);
     cudaFree(g_p);
-
-    cudaFree(p_info->x);
-    cudaFree(p_info->y);
-    cudaFree(p_info->z);
-    cudaFree(p_info->u);
-    cudaFree(p_info->v);
-    cudaFree(p_info->w);
-    cudaFree(p_info);
 
     cudaFree(f_pointers->Ex_flat);
     cudaFree(f_pointers->Ey_flat);

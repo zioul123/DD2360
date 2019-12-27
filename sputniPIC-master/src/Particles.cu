@@ -95,7 +95,7 @@ void particle_deallocate(struct particles* part)
 /** CPU serial function to move a single particle during one subcycle. */
 __host__ void h_move_particle(int i, int part_NiterMover, struct grid* grd,
                               struct parameters* param, const dt_info dt_inf,
-                              particle_info p_info, field_pointers f_pointers, grd_pointers g_pointers) {
+                              particles_pointers p_info, field_pointers f_pointers, grd_pointers g_pointers) {
     // extracting the particle variables out of the auxiliary struct
     FPpart* part_x = p_info.x;
     FPpart* part_y = p_info.y;
@@ -262,7 +262,7 @@ __host__ void h_move_particle(int i, int part_NiterMover, struct grid* grd,
 /** GPU kernel to move a single particle */
 __global__ void g_move_particle(int nop, int n_sub_cycles, int part_NiterMover, struct grid grd,
                                 struct parameters param, const dt_info dt_inf,
-                                particle_info p_info, field_pointers f_pointers, grd_pointers g_pointers) {
+                                particles_pointers p_info, field_pointers f_pointers, grd_pointers g_pointers) {
     // getting thread ID
     const int i = blockIdx.x * blockDim.x + threadIdx.x;
     if (i > nop) return;
@@ -440,7 +440,7 @@ __global__ void g_move_particle(int nop, int n_sub_cycles, int part_NiterMover, 
 
 /** particle mover */
 int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, struct parameters* param,
-             particle_info p_info, field_pointers f_pointers, grd_pointers g_pointers, int grdSize, int field_size) {
+             particles_pointers p_info, field_pointers f_pointers, grd_pointers g_pointers, int grdSize, int field_size) {
     // print species and subcycling
     std::cout << std::endl << "***  In [mover_PC]: MOVER with SUBCYCLYING "<< param->n_sub_cycles
               << " - species " << part->species_ID << " ***" << std::endl;

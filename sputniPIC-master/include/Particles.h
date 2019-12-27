@@ -14,7 +14,8 @@
 /** Structs containing the arrays necessary to run h_interp_particle*/
 typedef struct {
     FPpart* x; FPpart* y; FPpart* z;
-    FPpart* u; FPpart* v; FPpart* w; FPinterp* q;
+    FPpart* u; FPpart* v; FPpart* w; 
+    FPinterp* q; // Only for interp2g
 } particles_pointers;
 
 
@@ -33,11 +34,6 @@ typedef struct {
 
 
 /** Structs for mover_PC */
-typedef struct {  // very similar to particles_pointers but excludes FPinterp* q
-    FPpart* x; FPpart* y; FPpart* z;
-    FPpart* u; FPpart* v; FPpart* w;
-} particle_info;
-
 
 typedef struct {
     FPfield* Ex_flat; FPfield* Ey_flat; FPfield* Ez_flat;
@@ -98,7 +94,7 @@ void particle_deallocate(struct particles*);
 /** particle mover */
 // int mover_PC(struct particles*, struct EMfield*, struct grid*, struct parameters*);
 int mover_PC(struct particles*, struct EMfield*, struct grid*, struct parameters*,
-             particle_info, field_pointers, grd_pointers, int, int);
+             particles_pointers, field_pointers, grd_pointers, int, int);
 
 
 /** Interpolation Particle --> Grid: This is for species */
