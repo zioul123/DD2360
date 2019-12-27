@@ -94,7 +94,7 @@ void particle_deallocate(struct particles* part)
 /** GPU kernel to move a single particle */
 __global__ void g_move_particle(int nop, int n_sub_cycles, int part_NiterMover, struct grid grd,
                                 struct parameters param, const dt_info dt_inf,
-                                particles_pointers part, field_pointers field, grd_pointers grd_p) 
+                                particles_pointers part, const field_pointers field, const grd_pointers grd_p) 
 {
     // getting thread ID
     const int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -265,7 +265,7 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
 
     // mini-batches
     if (part->npmax > MAX_GPU_PARTICLES) {
-        int n_iterations = ceil((double)part->npmax / MAX_GPU_PARTICLES);
+        int n_iterations = (part->npmax + MAX_GPU_PARTICLES - 1) / MAX_GPU_PARTICLES;
 
         for (int iter = 0; iter < n_iterations; iter++) {
             long batch_start = iter * MAX_GPU_PARTICLES;
@@ -308,7 +308,7 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
 
 /** GPU kernel to interpolate for a single particle during one subcycle. */
 __global__ void g_interp_particle(int nop, struct grid grd,
-                                  particles_pointers part, ids_pointers ids, grd_pointers grd_p)
+                                  const particles_pointers part, ids_pointers ids, const grd_pointers grd_p)
 {
     const int i = blockIdx.x * blockDim.x + threadIdx.x;
     if (i > nop) return;
@@ -465,8 +465,9 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
 {
 
     // mini-batches
-    if (part->npmax > MAX_GPU_PARTICLES) {
-        int n_iterations = ceil((double) part->npmax / MAX_GPU_PARTICLES);
+    if (part->npmax > MAX_GPU_PARTICLES) 
+    {
+        int n_iterations = (part->npmax + MAX_GPU_PARTICLES - 1) / MAX_GPU_PARTICLES;
 
         // for each batch
         for (int iter = 0; iter < n_iterations; iter++) {
@@ -492,10 +493,10 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
 
             std::cout << "====== In [interpP2G]: batch " << (iter + 1) << " of " << n_iterations << ": done." << std::endl;
         }
-    }
 
-    // all the particles at once
-    else {
+    } 
+    else // all the particles at once
+    {
         copy_interp_arrays(part, ids, grd, p_p, i_p, g_p, grdSize, rhocSize, CPU_TO_GPU);
 
         // Launch interpolation kernel
