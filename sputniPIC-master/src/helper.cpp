@@ -291,7 +291,7 @@ void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, s
 }
 
 void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, particles_pointers p_info,
-                       field_pointers f_pointers, grd_pointers g_pointers, int grdSize, int field_size,
+                       field_pointers f_p, grd_pointers g_p, int grdSize, int field_size,
                        PICMode mode, long from, long to, bool verbose) {
     /** This function copies from CPU to GPU the data needed for running the kernel in the interp2G function
      * long 'from' and long 'to' (if specified) determine which elements of the particle arrays should be copied to GPU.
@@ -352,17 +352,17 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
         }
 
         // copy field variables
-        cudaMemcpy(f_pointers.Ex_flat, field->Ex_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(f_pointers.Ey_flat, field->Ey_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(f_pointers.Ez_flat, field->Ez_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(f_pointers.Bxn_flat, field->Bxn_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(f_pointers.Byn_flat, field->Byn_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(f_pointers.Bzn_flat, field->Bzn_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
+        cudaMemcpy(f_p.Ex_flat, field->Ex_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
+        cudaMemcpy(f_p.Ey_flat, field->Ey_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
+        cudaMemcpy(f_p.Ez_flat, field->Ez_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
+        cudaMemcpy(f_p.Bxn_flat, field->Bxn_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
+        cudaMemcpy(f_p.Byn_flat, field->Byn_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
+        cudaMemcpy(f_p.Bzn_flat, field->Bzn_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
 
         // copy grid variables
-        cudaMemcpy(g_pointers.XN_flat, grd->XN_flat, grdSize * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(g_pointers.YN_flat, grd->YN_flat, grdSize * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(g_pointers.ZN_flat, grd->ZN_flat, grdSize * sizeof(FPfield), cudaMemcpyHostToDevice);
+        cudaMemcpy(g_p.XN_flat, grd->XN_flat, grdSize * sizeof(FPfield), cudaMemcpyHostToDevice);
+        cudaMemcpy(g_p.YN_flat, grd->YN_flat, grdSize * sizeof(FPfield), cudaMemcpyHostToDevice);
+        cudaMemcpy(g_p.ZN_flat, grd->ZN_flat, grdSize * sizeof(FPfield), cudaMemcpyHostToDevice);
     }
 
     // Copy GPU arrays back to CPU
@@ -399,24 +399,24 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
         }
 
         // copy field variables
-        cudaMemcpy(field->Ex_flat, f_pointers.Ex_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);
-        cudaMemcpy(field->Ey_flat, f_pointers.Ey_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);
-        cudaMemcpy(field->Ez_flat, f_pointers.Ez_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);
-        cudaMemcpy(field->Bxn_flat, f_pointers.Bxn_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);
-        cudaMemcpy(field->Byn_flat, f_pointers.Byn_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);
-        cudaMemcpy(field->Bzn_flat, f_pointers.Bzn_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);
+        cudaMemcpy(field->Ex_flat, f_p.Ex_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);
+        cudaMemcpy(field->Ey_flat, f_p.Ey_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);
+        cudaMemcpy(field->Ez_flat, f_p.Ez_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);
+        cudaMemcpy(field->Bxn_flat, f_p.Bxn_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);
+        cudaMemcpy(field->Byn_flat, f_p.Byn_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);
+        cudaMemcpy(field->Bzn_flat, f_p.Bzn_flat, field_size * sizeof(FPfield), cudaMemcpyDeviceToHost);
 
         // copy grid variables
-        cudaMemcpy(grd->XN_flat, g_pointers.XN_flat, grdSize * sizeof(FPfield), cudaMemcpyDeviceToHost);
-        cudaMemcpy(grd->YN_flat, g_pointers.YN_flat, grdSize * sizeof(FPfield), cudaMemcpyDeviceToHost);
-        cudaMemcpy(grd->ZN_flat, g_pointers.ZN_flat, grdSize * sizeof(FPfield), cudaMemcpyDeviceToHost);
+        cudaMemcpy(grd->XN_flat, g_p.XN_flat, grdSize * sizeof(FPfield), cudaMemcpyDeviceToHost);
+        cudaMemcpy(grd->YN_flat, g_p.YN_flat, grdSize * sizeof(FPfield), cudaMemcpyDeviceToHost);
+        cudaMemcpy(grd->ZN_flat, g_p.ZN_flat, grdSize * sizeof(FPfield), cudaMemcpyDeviceToHost);
     }
 }
 
 /** 
  * This function frees all the memory allocated on the GPU for both kernels.
  */
-void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g_p, field_pointers* f_pointers) {
+void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g_p, field_pointers* f_p) {
     cudaFree(p_p->x);
     cudaFree(p_p->y);
     cudaFree(p_p->z);
@@ -441,12 +441,12 @@ void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g
     cudaFree(g_p->YN_flat);
     cudaFree(g_p->ZN_flat);
 
-    cudaFree(f_pointers->Ex_flat);
-    cudaFree(f_pointers->Ey_flat);
-    cudaFree(f_pointers->Ez_flat);
-    cudaFree(f_pointers->Bxn_flat);
-    cudaFree(f_pointers->Byn_flat);
-    cudaFree(f_pointers->Bzn_flat);
+    cudaFree(f_p->Ex_flat);
+    cudaFree(f_p->Ey_flat);
+    cudaFree(f_p->Ez_flat);
+    cudaFree(f_p->Bxn_flat);
+    cudaFree(f_p->Byn_flat);
+    cudaFree(f_p->Bzn_flat);
 
     std::cout << "In [free_gpu_memory]: all GPU memory freed.." << std::endl;
 }

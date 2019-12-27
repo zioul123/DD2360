@@ -32,29 +32,27 @@ void deallocate_batch(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
 
 void batch_copy(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z, FPpart*& batch_u, FPpart*& batch_v,
                 FPpart*& batch_w, FPpart*& batch_q, FPpart*& part_x, FPpart*& part_y, FPpart*& part_z,
-                FPpart*& part_u, FPpart*& part_v, FPpart*& part_w, FPpart*& part_q,long from, long to,
-                PICMode mode, PICMode direction);
+                FPpart*& part_u, FPpart*& part_v, FPpart*& part_w, FPpart*& part_q,
+                long from, long to, PICMode mode, PICMode direction);
 
 
 void allocate_gpu_memory(struct particles* part, int grdSize, int fieldSize, 
-                                particles_pointers* p_p, ids_pointers* i_p, 
-                                grd_pointers* g_p, field_pointers* f_p);
+                         particles_pointers* p_p, ids_pointers* i_p, 
+                         grd_pointers* g_p, field_pointers* f_p);
 
 
 void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
-                        particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize,
-                        int rhocSize, PICMode mode, long from=-1, long to=-1, bool verbose=false);
+                        particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, 
+                        int grdSize, int rhocSize, PICMode mode, 
+                        long from=-1, long to=-1, bool verbose=false);
 
 
-void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, particles_pointers p_info,
-                       field_pointers f_pointers, grd_pointers g_pointers, int grdSize, int field_size,
-                       PICMode mode, long from=-1, long to=-1, bool verbose=false);
+void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, 
+                       particles_pointers p_p, field_pointers f_p, grd_pointers g_p, 
+                       int grdSize, int field_size, PICMode mode, 
+                       long from=-1, long to=-1, bool verbose=false);
 
 
-void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g_p,
-                     field_pointers* f_pointers);
-
-
-void create_particle_batch(long batch_size, particles_pointers p_info_batch);
+void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g_p, field_pointers* f_p);
 
 #endif

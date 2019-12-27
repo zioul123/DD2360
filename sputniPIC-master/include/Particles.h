@@ -99,6 +99,6 @@ int mover_PC(struct particles*, struct EMfield*, struct grid*, struct parameters
 
 /** Interpolation Particle --> Grid: This is for species */
 void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
-    particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize, int rhocSize);
+               particles_pointers, ids_pointers, grd_pointers, int, int);
 
 #endif
