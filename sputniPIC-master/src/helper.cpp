@@ -279,14 +279,13 @@ void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, s
 
 
 void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_size,
-                               field_pointers* f_pointers, grd_pointers* g_pointers) {
+                               field_pointers* f_pointers) {
     /** This function allocates the GPU memory needed for the kernel in the mover_PC function. If the number of
      * particles is more than the maximum defined, it only allocates the maximum number of particles already defined,
      * and then operations are done in batches of particles. */
 
     // Declare GPU copies of arrays for mover_PC
     FPfield* f_pointer_copies[6];
-    FPfield* g_pointer_copies[3];
 
     long num_gpu_particles = part->npmax;
     if (part->npmax > MAX_GPU_PARTICLES) {
@@ -300,9 +299,6 @@ void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_si
     {
         for (int i = 0; i < 6; i++)
             cudaMalloc(&f_pointer_copies[i], field_size * sizeof(FPfield));
-
-        for (int i = 0; i < 3; i++)
-            cudaMalloc(&g_pointer_copies[i], grdSize * sizeof(FPfield));
     }
 
     // Put GPU array pointers into structs for mover_PC
@@ -312,10 +308,6 @@ void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_si
     f_pointers->Bxn_flat = f_pointer_copies[3];
     f_pointers->Byn_flat = f_pointer_copies[4];
     f_pointers->Bzn_flat = f_pointer_copies[5];
-
-    g_pointers->XN_flat = g_pointer_copies[0];
-    g_pointers->YN_flat = g_pointer_copies[1];
-    g_pointers->ZN_flat = g_pointer_copies[2];
 }
 
 
@@ -444,7 +436,7 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
 
 
 void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g_p,
-                     field_pointers* f_pointers, grd_pointers* g_pointers) {
+                     field_pointers* f_pointers) {
     /** This function frees all the memory allocated on the GPU for both kernels. */
 
     cudaFree(p_p->x);
@@ -481,11 +473,6 @@ void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g
     cudaFree(f_pointers->Byn_flat);
     cudaFree(f_pointers->Bzn_flat);
     cudaFree(f_pointers);
-
-    cudaFree(g_pointers->XN_flat);
-    cudaFree(g_pointers->YN_flat);
-    cudaFree(g_pointers->ZN_flat);
-    cudaFree(g_pointers);
 
     std::cout << "In [free_gpu_memory]: all GPU memory freed.." << std::endl;
 }

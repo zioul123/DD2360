@@ -84,8 +84,8 @@ int main(int argc, char **argv){
     allocate_interp_gpu_memory(part, grdSize, &p_p, &i_p, &g_p);  // Allocates maximum MAX_GPU_PARTICLES particles
 
     int field_size = grd.nxn * grd.nyn * grd.nzn;
-    field_pointers f_pointers; grd_pointers g_pointers;  // on the GPU memory
-    allocate_mover_gpu_memory(part, grdSize, field_size, &f_pointers, &g_pointers);
+    field_pointers f_pointers; // on the GPU memory
+    allocate_mover_gpu_memory(part, grdSize, field_size, &f_pointers);
     std::cout << "In [main]: All GPU memory allocation: done" << std::endl;
 
 
@@ -110,7 +110,7 @@ int main(int argc, char **argv){
         iMover = cpuSecond(); // start timer for mover
         for (int is=0; is < param.ns; is++)
             // mover_PC(&part[is],&field,&grd,&param);
-            mover_PC(&part[is], &field, &grd, &param, p_p, f_pointers, g_pointers, grdSize, field_size);
+            mover_PC(&part[is], &field, &grd, &param, p_p, f_pointers, g_p, grdSize, field_size);
 
         eMover += (cpuSecond() - iMover); // stop timer for mover
         
@@ -158,7 +158,7 @@ int main(int argc, char **argv){
     // -------------------------------------------------------------- //
     // ------ Additions for GPU version ----------------------------- //
     // Free GPU arrays
-    free_gpu_memory(&p_p, &i_p, &g_p, &f_pointers, &g_pointers);
+    free_gpu_memory(&p_p, &i_p, &g_p, &f_pointers);
 
     // stop timer
     double iElaps = cpuSecond() - iStart;

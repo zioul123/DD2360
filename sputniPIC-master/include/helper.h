@@ -47,7 +47,7 @@ void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, s
 
 
 void allocate_mover_gpu_memory(struct particles* part, int grdSize, int field_size,
-                               field_pointers* f_pointers, grd_pointers* g_pointers);
+                               field_pointers* f_pointers);
 
 
 void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, particles_pointers p_info,
@@ -56,7 +56,7 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
 
 
 void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g_p,
-                     field_pointers* f_pointers, grd_pointers* g_pointers);
+                     field_pointers* f_pointers);
 
 
 void create_particle_batch(long batch_size, particles_pointers p_info_batch);
