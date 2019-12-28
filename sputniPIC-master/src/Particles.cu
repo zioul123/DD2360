@@ -263,6 +263,18 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
     FPpart dto2 = .5 * dt_sub_cycling, qomdt2 = part->qom * dto2 / param->c;
     const dt_info dt_inf { dt_sub_cycling, dto2, qomdt2 };
 
+    /*
+     * The following steps are taken:
+     * 1. Copy grd and field to GPU 
+     * 2. For each batch/full batch:
+     *     1. Copy relevant Particles to GPU
+     *     2. Launch kernels that modify Particles in GPU memory
+     *     3. Copy back relevant Particles to CPU
+     */
+
+    // Copy grid/field constants to GPU
+    copy_mover_constants_to_GPU(field, grd, f_p, g_p, grdSize, field_size);
+
     // mini-batches
     if (part->npmax > MAX_GPU_PARTICLES) {
         int n_iterations = (part->npmax + MAX_GPU_PARTICLES - 1) / MAX_GPU_PARTICLES;
@@ -272,33 +284,25 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
             long batch_end = std::min(batch_start + MAX_GPU_PARTICLES, part->npmax);  // max is part->npmax
             long batch_size = batch_end - batch_start;
 
-            /* std::cout << "================== In [mover_PC]: iteration " << (iter + 1) << " of " << n_iterations
-                      << " - batch_start: " << batch_start << ", batch_end: " << batch_end
-                      << ", batch_size: " << batch_size << std::endl; */
+            copy_mover_arrays(part, p_p, CPU_TO_GPU, batch_start, batch_end);
 
-            copy_mover_arrays(part, field, grd, p_p, f_p, g_p, grdSize, field_size, CPU_TO_GPU,
-                              batch_start, batch_end);
-            g_move_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(batch_start, batch_size, part->n_sub_cycles, part->NiterMover, *grd,
-                                                             *param, dt_inf, p_p, f_p, g_p);
+            g_move_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(batch_start, batch_size, part->n_sub_cycles, part->NiterMover, 
+                                                             *grd, *param, dt_inf, p_p, f_p, g_p);
             cudaDeviceSynchronize();
-            copy_mover_arrays(part, field, grd, p_p, f_p, g_p, grdSize, field_size, GPU_TO_CPU,
-                              batch_start, batch_end);
+            copy_mover_arrays(part, p_p, GPU_TO_CPU, batch_start, batch_end);
 
             std::cout << "====== In [mover_PC]: batch " << (iter + 1) << " of " << n_iterations << ": done." << std::endl;
         }
     }
-
     // all the particles at once
     else {
-        copy_mover_arrays(part, field, grd, p_p, f_p, g_p, grdSize, field_size, CPU_TO_GPU);
-
+        copy_mover_arrays(part, p_p, CPU_TO_GPU);
         // h_move_particle(i, part->NiterMover, grd, param, dt_inf, p_p, f_p, g_p)
         // Launch the kernel
-        g_move_particle<<<(part->nop+TPB-1)/TPB, TPB>>>(0, part->nop, part->n_sub_cycles, part->NiterMover, *grd,
-                *param, dt_inf, p_p, f_p, g_p);
+        g_move_particle<<<(part->nop+TPB-1)/TPB, TPB>>>(0, part->nop, part->n_sub_cycles, part->NiterMover, 
+                                                        *grd, *param, dt_inf, p_p, f_p, g_p);
         cudaDeviceSynchronize();
-
-        copy_mover_arrays(part, field, grd, p_p, f_p, g_p, grdSize, field_size, GPU_TO_CPU);
+        copy_mover_arrays(part, p_p, GPU_TO_CPU);
     }
     return(0); // exit successfully
 }
@@ -461,21 +465,26 @@ __global__ void g_interp_particle(int batch_offset, int nop, struct grid grd,
 void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
                particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize, int rhocSize)
 {
-
+    /*
+     * The following steps are taken:
+     * 0. Assume grd is copied to GPU already
+     * 1. Copy zero'd ids to GPU as initial
+     * 2. For each batch/full batch:
+     *     1. Copy relevant Particles to GPU
+     *     2. Launch kernels that modify ids in GPU memory
+     * 3. Copy ids back to CPU memory
+     */
+    
+    copy_interp_initial_to_GPU(ids, i_p, grdSize, rhocSize);
     // mini-batches
     if (part->npmax > MAX_GPU_PARTICLES) 
     {
         int n_iterations = (part->npmax + MAX_GPU_PARTICLES - 1) / MAX_GPU_PARTICLES;
 
-        // for each batch
         for (int iter = 0; iter < n_iterations; iter++) {
             long batch_start = iter * MAX_GPU_PARTICLES;
             long batch_end = std::min(batch_start + MAX_GPU_PARTICLES, part->npmax);  // max is part->npmax
             long batch_size = batch_end - batch_start;
-
-            /* std::cout << "================== In [interpP2G]: iteration " << (iter + 1) << " of " << n_iterations
-                      << " - batch_start: " << batch_start << ", batch_end: " << batch_end
-                      << ", batch_size: " << batch_size << std::endl; */
 
             // copy batch to GPU
             copy_interp_arrays(part, ids, grd, p_p, i_p, g_p, grdSize, rhocSize, CPU_TO_GPU,
@@ -485,24 +494,19 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
             g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(batch_start, batch_size, *grd, p_p, i_p, g_p);
             cudaDeviceSynchronize();
 
-            // copy batch from GPU back to CPU
-            copy_interp_arrays(part, ids, grd, p_p, i_p, g_p, grdSize, rhocSize, GPU_TO_CPU,
-                               batch_start, batch_end);
-
             std::cout << "====== In [interpP2G]: batch " << (iter + 1) << " of " << n_iterations << ": done." << std::endl;
         }
 
     } 
-    else // all the particles at once
-    {
+    // all the particles at once
+    else {
         copy_interp_arrays(part, ids, grd, p_p, i_p, g_p, grdSize, rhocSize, CPU_TO_GPU);
 
         // Launch interpolation kernel
         g_interp_particle<<<(part->nop+TPB-1)/TPB, TPB>>>(0, part->nop, *grd, p_p, i_p, g_p);
         cudaDeviceSynchronize();
-
-        copy_interp_arrays(part, ids, grd, p_p, i_p, g_p, grdSize, rhocSize, GPU_TO_CPU);
     }
+    copy_interp_arrays(part, ids, grd, p_p, i_p, g_p, grdSize, rhocSize, GPU_TO_CPU);
 }
 
 

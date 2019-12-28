@@ -25,10 +25,18 @@ void allocate_gpu_memory(struct particles* part, int grdSize, int fieldSize,
                          grd_pointers* g_p, field_pointers* f_p);
 
 
-void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, 
-                       particles_pointers p_p, field_pointers f_p, grd_pointers g_p, 
-                       int grdSize, int field_size, PICMode mode, 
+void copy_mover_constants_to_GPU(struct EMfield* field, struct grid* grd, 
+                                 field_pointers f_p, grd_pointers g_p,
+                                 int grdSize, int field_size);
+
+
+void copy_mover_arrays(struct particles* part, 
+                       particles_pointers p_p, PICMode mode, 
                        long from=-1, long to=-1, bool verbose=false);
+
+
+void copy_interp_initial_to_GPU(struct interpDensSpecies* ids, ids_pointers i_p,
+                                int grdSize, int rhocSize);
 
 
 void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,

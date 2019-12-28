@@ -70,15 +70,38 @@ void allocate_gpu_memory(struct particles* part, int grdSize, int fieldSize,
     f_p->Bzn_flat = field_copies[5];
 }
 
+/**
+ * Copy the field and grid arrays that are constant throughout all mover_PC kernels. This
+ * should be executed before any mover_PC kernels are launched. Note that grid pointers
+ * must also have been copied over prior to calling interpP2G kernels as well. 
+ */
+void copy_mover_constants_to_GPU(struct EMfield* field, struct grid* grd, 
+                                 field_pointers f_p, grd_pointers g_p, 
+                                 int grdSize, int field_size)
+{
+    // copy field variables
+    cudaMemcpy(f_p.Ex_flat, field->Ex_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
+    cudaMemcpy(f_p.Ey_flat, field->Ey_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
+    cudaMemcpy(f_p.Ez_flat, field->Ez_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
+    cudaMemcpy(f_p.Bxn_flat, field->Bxn_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
+    cudaMemcpy(f_p.Byn_flat, field->Byn_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
+    cudaMemcpy(f_p.Bzn_flat, field->Bzn_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
+
+    // copy grid variables
+    cudaMemcpy(g_p.XN_flat, grd->XN_flat, grdSize * sizeof(FPfield), cudaMemcpyHostToDevice);
+    cudaMemcpy(g_p.YN_flat, grd->YN_flat, grdSize * sizeof(FPfield), cudaMemcpyHostToDevice);
+    cudaMemcpy(g_p.ZN_flat, grd->ZN_flat, grdSize * sizeof(FPfield), cudaMemcpyHostToDevice);
+}
+
 /** 
- * This function copies from CPU to GPU the data needed for running the kernel in the mover_pc function
- * long 'from' and long 'to' (if specified) determine which elements of the particle arrays should be copied to GPU.
+ * This function copies from CPU to GPU the Particle data needed for running the kernel in the mover_pc function.
+ * As Particle calculations are independent of each other, this can be done without all Particles being loaded
+ * at once, hence long 'from' and long 'to' (if specified) determine which elements of the particle arrays should 
+ * be copied to GPU for the specific kernel launch.
  * If not specified (default), all the particles will be copied.
  * NOTE: to is exclusive => mini-batch size is (to - from) 
  */
-void copy_mover_arrays(struct particles* part, struct EMfield* field, struct grid* grd, 
-                       particles_pointers p_p, field_pointers f_p, grd_pointers g_p, 
-                       int grdSize, int field_size,
+void copy_mover_arrays(struct particles* part, particles_pointers p_p, 
                        PICMode mode, long from, long to, bool verbose) {
     // if batch_size is not -1, it means that mini-batching should be done
     long batch_size = -1;
@@ -87,7 +110,7 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
         if (verbose) std::cout << "In [copy_mover_arrays]: copying with batch size of " << batch_size << std::endl;
     }
 
-    // Copy CPU arrays to GPU
+    // Copy CPU Particles arrays to GPU
     if (mode == CPU_TO_GPU) {
         // copy the particles in the mini-batch
         if (batch_size != -1) {
@@ -108,21 +131,8 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
             cudaMemcpy(p_p.v, part->v, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
             cudaMemcpy(p_p.w, part->w, part->npmax * sizeof(FPpart), cudaMemcpyHostToDevice);
         }
-
-        // copy field variables
-        cudaMemcpy(f_p.Ex_flat, field->Ex_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(f_p.Ey_flat, field->Ey_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(f_p.Ez_flat, field->Ez_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(f_p.Bxn_flat, field->Bxn_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(f_p.Byn_flat, field->Byn_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(f_p.Bzn_flat, field->Bzn_flat, field_size * sizeof(FPfield), cudaMemcpyHostToDevice);
-
-        // copy grid variables
-        cudaMemcpy(g_p.XN_flat, grd->XN_flat, grdSize * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(g_p.YN_flat, grd->YN_flat, grdSize * sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(g_p.ZN_flat, grd->ZN_flat, grdSize * sizeof(FPfield), cudaMemcpyHostToDevice);
     }
-    // Copy GPU arrays back to CPU - only particles need to be copied
+    // Copy GPU arrays back to CPU
     else {
         // copy the particles in the mini-batch
         if (batch_size != -1) {
@@ -144,6 +154,27 @@ void copy_mover_arrays(struct particles* part, struct EMfield* field, struct gri
             cudaMemcpy(part->w, p_p.w, part->npmax * sizeof(FPpart), cudaMemcpyDeviceToHost);
         }
     }
+}
+
+/**
+ * Copy the initial interpolation densities for interpolation kernels. This
+ * should be executed before any interpP2G kernels are launched.
+ * Assumes that grd arrays have already been set by mover_PC, and does not copy them again.
+ */
+void copy_interp_initial_to_GPU(struct interpDensSpecies* ids, ids_pointers i_p,
+                                int grdSize, int rhocSize)
+{
+    cudaMemcpy(i_p.rhon_flat, ids->rhon_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
+    cudaMemcpy(i_p.rhoc_flat, ids->rhoc_flat, rhocSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
+    cudaMemcpy(i_p.Jx_flat, ids->Jx_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
+    cudaMemcpy(i_p.Jy_flat, ids->Jy_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
+    cudaMemcpy(i_p.Jz_flat, ids->Jz_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
+    cudaMemcpy(i_p.pxx_flat, ids->pxx_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
+    cudaMemcpy(i_p.pxy_flat, ids->pxy_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
+    cudaMemcpy(i_p.pxz_flat, ids->pxz_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
+    cudaMemcpy(i_p.pyy_flat, ids->pyy_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
+    cudaMemcpy(i_p.pyz_flat, ids->pyz_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
+    cudaMemcpy(i_p.pzz_flat, ids->pzz_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
 }
 
 /** 
@@ -188,21 +219,6 @@ void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, s
             cudaMemcpy(p_p.w, part->w, part->npmax*sizeof(FPpart), cudaMemcpyHostToDevice);
             cudaMemcpy(p_p.q, part->q, part->npmax*sizeof(FPinterp), cudaMemcpyHostToDevice);
         }
-        cudaMemcpy(i_p.rhon_flat, ids->rhon_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
-        cudaMemcpy(i_p.rhoc_flat, ids->rhoc_flat, rhocSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
-        cudaMemcpy(i_p.Jx_flat, ids->Jx_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
-        cudaMemcpy(i_p.Jy_flat, ids->Jy_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
-        cudaMemcpy(i_p.Jz_flat, ids->Jz_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
-        cudaMemcpy(i_p.pxx_flat, ids->pxx_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
-        cudaMemcpy(i_p.pxy_flat, ids->pxy_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
-        cudaMemcpy(i_p.pxz_flat, ids->pxz_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
-        cudaMemcpy(i_p.pyy_flat, ids->pyy_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
-        cudaMemcpy(i_p.pyz_flat, ids->pyz_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
-        cudaMemcpy(i_p.pzz_flat, ids->pzz_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
-
-        cudaMemcpy(g_p.XN_flat, grd->XN_flat, grdSize*sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(g_p.YN_flat, grd->YN_flat, grdSize*sizeof(FPfield), cudaMemcpyHostToDevice);
-        cudaMemcpy(g_p.ZN_flat, grd->ZN_flat, grdSize*sizeof(FPfield), cudaMemcpyHostToDevice);
     } 
     // Copy GPU arrays back to CPU - only ids needs to be copied.
     else { 
