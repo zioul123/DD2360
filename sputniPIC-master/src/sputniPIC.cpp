@@ -128,17 +128,13 @@ int main(int argc, char **argv){
         // interpolate charge density from center to node
         applyBCscalarDensN(idn.rhon,&grd,&param);
         
-        
+        eInterp += (cpuSecond() - iInterp); // stop timer for interpolation
         
         // write E, B, rho to disk
         if (cycle%param.FieldOutputCycle==0){
             VTK_Write_Vectors(cycle, &grd,&field);
             VTK_Write_Scalars(cycle, &grd,ids,&idn);
         }
-        
-        eInterp += (cpuSecond() - iInterp); // stop timer for interpolation
-        
-        
     
     }  // end of one PIC cycle
     
