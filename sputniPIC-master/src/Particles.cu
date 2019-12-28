@@ -92,13 +92,13 @@ void particle_deallocate(struct particles* part)
 }
 
 /** GPU kernel to move a single particle */
-__global__ void g_move_particle(int nop, int n_sub_cycles, int part_NiterMover, struct grid grd,
+__global__ void g_move_particle(int batch_offset, int nop, int n_sub_cycles, int part_NiterMover, struct grid grd,
                                 struct parameters param, const dt_info dt_inf,
                                 particles_pointers part, const field_pointers field, const grd_pointers grd_p) 
 {
     // getting thread ID
-    const int i = blockIdx.x * blockDim.x + threadIdx.x;
-    if (i > nop) return;
+    const int i = blockIdx.x * blockDim.x + threadIdx.x + batch_offset;
+    if (i - batch_offset >= nop) return;
 
     // auxiliary variables
     FPpart omdtsq, denom, ut, vt, wt, udotb;
@@ -278,11 +278,9 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
 
             copy_mover_arrays(part, field, grd, p_p, f_p, g_p, grdSize, field_size, CPU_TO_GPU,
                               batch_start, batch_end);
-
-            g_move_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(batch_size, part->n_sub_cycles, part->NiterMover, *grd,
-                                                                  *param, dt_inf, p_p, f_p, g_p);
+            g_move_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(batch_start, batch_size, part->n_sub_cycles, part->NiterMover, *grd,
+                                                             *param, dt_inf, p_p, f_p, g_p);
             cudaDeviceSynchronize();
-
             copy_mover_arrays(part, field, grd, p_p, f_p, g_p, grdSize, field_size, GPU_TO_CPU,
                               batch_start, batch_end);
 
@@ -296,7 +294,7 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
 
         // h_move_particle(i, part->NiterMover, grd, param, dt_inf, p_p, f_p, g_p)
         // Launch the kernel
-        g_move_particle<<<(part->nop+TPB-1)/TPB, TPB>>>(part->nop, part->n_sub_cycles, part->NiterMover, *grd,
+        g_move_particle<<<(part->nop+TPB-1)/TPB, TPB>>>(0, part->nop, part->n_sub_cycles, part->NiterMover, *grd,
                 *param, dt_inf, p_p, f_p, g_p);
         cudaDeviceSynchronize();
 
@@ -307,11 +305,11 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
 
 
 /** GPU kernel to interpolate for a single particle during one subcycle. */
-__global__ void g_interp_particle(int nop, struct grid grd,
+__global__ void g_interp_particle(int batch_offset, int nop, struct grid grd,
                                   const particles_pointers part, ids_pointers ids, const grd_pointers grd_p)
 {
-    const int i = blockIdx.x * blockDim.x + threadIdx.x;
-    if (i > nop) return;
+    const int i = blockIdx.x * blockDim.x + threadIdx.x + batch_offset;
+    if (i - batch_offset >= nop) return;
 
     // arrays needed for interpolation
     FPpart weight[2][2][2];
@@ -484,7 +482,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
                                batch_start, batch_end);
 
             // launch the kernel to perform on the batch
-            g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(batch_size, *grd, p_p, i_p, g_p);
+            g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(batch_start, batch_size, *grd, p_p, i_p, g_p);
             cudaDeviceSynchronize();
 
             // copy batch from GPU back to CPU
@@ -500,7 +498,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         copy_interp_arrays(part, ids, grd, p_p, i_p, g_p, grdSize, rhocSize, CPU_TO_GPU);
 
         // Launch interpolation kernel
-        g_interp_particle<<<(part->nop+TPB-1)/TPB, TPB>>>(part->nop, *grd, p_p, i_p, g_p);
+        g_interp_particle<<<(part->nop+TPB-1)/TPB, TPB>>>(0, part->nop, *grd, p_p, i_p, g_p);
         cudaDeviceSynchronize();
 
         copy_interp_arrays(part, ids, grd, p_p, i_p, g_p, grdSize, rhocSize, GPU_TO_CPU);

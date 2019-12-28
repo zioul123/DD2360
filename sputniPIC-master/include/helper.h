@@ -20,22 +20,6 @@ enum PICMode
 void print(std::string str);
 
 
-void allocate_batch(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
-                    FPpart*& batch_u, FPpart*& batch_v, FPpart*& batch_w,
-                    FPpart*& batch_q, long batch_size, PICMode mode);
-
-
-void deallocate_batch(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z,
-                      FPpart*& batch_u, FPpart*& batch_v, FPpart*& batch_w,
-                      FPpart*& batch_q, PICMode mode);
-
-
-void batch_copy(FPpart*& batch_x, FPpart*& batch_y, FPpart*& batch_z, FPpart*& batch_u, FPpart*& batch_v,
-                FPpart*& batch_w, FPpart*& batch_q, FPpart*& part_x, FPpart*& part_y, FPpart*& part_z,
-                FPpart*& part_u, FPpart*& part_v, FPpart*& part_w, FPpart*& part_q,
-                long from, long to, PICMode mode, PICMode direction);
-
-
 void allocate_gpu_memory(struct particles* part, int grdSize, int fieldSize, 
                          particles_pointers* p_p, ids_pointers* i_p, 
                          grd_pointers* g_p, field_pointers* f_p);
