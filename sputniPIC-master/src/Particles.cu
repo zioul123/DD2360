@@ -457,7 +457,8 @@ __global__ void g_interp_particle(int stream_offset, int nop, struct grid grd,
 }
 
 void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
-               particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize, int rhocSize)
+               particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize, int rhocSize,
+               bool enableStreaming)
 {
     // Print species
     std::cout << std::endl << "***  In [interpP2G]: Interpolating "
@@ -485,14 +486,37 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         long batch_end = std::min(batch_start + MAX_GPU_PARTICLES, part->npmax);  // max is part->npmax
         long batch_size = batch_end - batch_start;
 
-        // Copy particles in batch to GPU (part in CPU to p_p on GPU)
-        copy_particles(part, p_p, CPU_TO_GPU_INTERP, batch_start, batch_end);
+        if (!enableStreaming) 
+        {
+            // Copy particles in batch to GPU (part in CPU to p_p on GPU)
+            copy_particles(part, p_p, CPU_TO_GPU_INTERP, batch_start, batch_end);
+            // Launch the kernel to perform on the batch
+            g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, *grd, p_p, i_p, g_p);
+            cudaDeviceSynchronize();
+        }
+        else if (enableStreaming) 
+        {
+            // If batch_size <= STREAM_SIZE, n_streams = 1, and whole batch is done in one stream
+            int n_streams = (batch_size + STREAM_SIZE - 1) / STREAM_SIZE;
+            for (int stream_no = 0; stream_no < n_streams; stream_no++) 
+            {
+                // Compute stream size/bounds RELATIVE TO BATCH_START. In other words, to access the
+                // CPU array, the starting element is batch_start + stream_start. GPU accesses are done
+                // with CPU index % GPU_MAX_PARTICLES, so there is no need to convert the indices back.
+                long stream_start = stream_no * STREAM_SIZE;
+                long stream_end = std::min(stream_start + STREAM_SIZE, batch_size);  // max is batch_size
+                long stream_size = stream_end - stream_start;
 
-        // Launch the kernel to perform on the batch
-        g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, *grd, p_p, i_p, g_p);
-        cudaDeviceSynchronize();
-
-        std::cout << "====== In [interpP2G]: batch " << (batch_no + 1) << " of " << n_batches << ": done." << std::endl;
+                // Copy particles in stream to GPU (part in CPU to p_p on GPU)
+                copy_particles(part, p_p, CPU_TO_GPU_INTERP, batch_start + stream_start, batch_start + stream_end);
+                // Launch the kernel to perform on the stream
+                g_interp_particle<<<(stream_size+TPB-1)/TPB, TPB>>>(stream_start, stream_size, *grd, p_p, i_p, g_p);
+                cudaDeviceSynchronize();
+            }
+        }
+        std::cout << "====== In [interpP2G]: batch " << (batch_no + 1) << " of " << n_batches 
+                  << (enableStreaming ? "(with streaming)" : "(without streaming)") 
+                  << ": done." << std::endl;
     }
     // Copy results back (i_p in GPU back to ids in CPU).
     copy_interp_results(ids, i_p, grdSize, rhocSize);

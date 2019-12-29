@@ -4,6 +4,7 @@
 #include "Particles.h"
 
 #define MAX_GPU_PARTICLES 14155776  // the number of particles per species in the GEM_3D file is chosen for maximum
+#define STREAM_SIZE 4718592 // Number of particles per stream, chosen as 1/3 max particles.
 
 // Modes for running the copy_particles function
 enum PICMode 
