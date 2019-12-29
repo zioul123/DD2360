@@ -104,32 +104,37 @@ void copy_mover_constants_to_GPU(struct EMfield* field, struct grid* grd,
  * This function copies the Particle data needed for running the kernel in the mover_pc function.
  * NOTE: to is exclusive => mini-batch size is (to - from) 
  */
-void copy_mover_arrays(struct particles* part, particles_pointers p_p, 
-                       PICDirection direction, long from, long to, bool verbose) {
+void copy_particles(struct particles* part, particles_pointers p_p, PICMode mode, 
+                       long from, long to, bool verbose) {
     // if batch_size is not -1, it means that mini-batching should be done
     long batch_size = to - from;
-    if (verbose) std::cout << "In [copy_mover_arrays]: copying with batch size of " << batch_size << std::endl;
-    
+    if (verbose) std::cout << "In [copy_particles]: copying with batch size of " << batch_size << std::endl;
+
     // Copy CPU Particles arrays to GPU
-    if (direction == CPU_TO_GPU) {
+    if (mode == CPU_TO_GPU_MOVER || mode == CPU_TO_GPU_INTERP) {
         cudaMemcpy(&p_p.x[from % MAX_GPU_PARTICLES], &part->x[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
         cudaMemcpy(&p_p.y[from % MAX_GPU_PARTICLES], &part->y[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
         cudaMemcpy(&p_p.z[from % MAX_GPU_PARTICLES], &part->z[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
         cudaMemcpy(&p_p.u[from % MAX_GPU_PARTICLES], &part->u[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
         cudaMemcpy(&p_p.v[from % MAX_GPU_PARTICLES], &part->v[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
         cudaMemcpy(&p_p.w[from % MAX_GPU_PARTICLES], &part->w[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
-        if (verbose) std::cout << "In [copy_mover_arrays]: batch copy to GPU done..." << std::endl;
+        
+        if (mode == CPU_TO_GPU_INTERP) 
+            cudaMemcpy(&p_p.q[from % MAX_GPU_PARTICLES], &part->q[from], batch_size * sizeof(FPinterp), cudaMemcpyHostToDevice);
+        
+        if (verbose) std::cout << "In [copy_particles]: batch copy to GPU done..." << std::endl;
     }
     // Copy GPU arrays back to CPU
-    else {
+    else if (mode == GPU_TO_CPU_MOVER) {
         cudaMemcpy(&part->x[from], &p_p.x[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
         cudaMemcpy(&part->y[from], &p_p.y[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
         cudaMemcpy(&part->z[from], &p_p.z[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
         cudaMemcpy(&part->u[from], &p_p.u[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
         cudaMemcpy(&part->v[from], &p_p.v[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
         cudaMemcpy(&part->w[from], &p_p.w[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
-        if (verbose) std::cout << "In [copy_mover_arrays]: copy back to CPU done..." << std::endl;
+        if (verbose) std::cout << "In [copy_particles]: copy back to CPU done..." << std::endl;
     }
+
 }
 
 /**

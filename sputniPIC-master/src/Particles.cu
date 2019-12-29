@@ -285,7 +285,7 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
         long batch_size = batch_end - batch_start;
 
         // Copy particles in batch to GPU (part in CPU to p_p on GPU)
-        copy_mover_arrays(part, p_p, CPU_TO_GPU, batch_start, batch_end);
+        copy_particles(part, p_p, CPU_TO_GPU_MOVER, batch_start, batch_end);
 
         // Launch the kernel to perform on the batch
         g_move_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, part->n_sub_cycles, part->NiterMover, 
@@ -293,7 +293,7 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
         cudaDeviceSynchronize();
 
         // Copy moved particles back (p_p in GPU back to part in CPU).
-        copy_mover_arrays(part, p_p, GPU_TO_CPU, batch_start, batch_end);
+        copy_particles(part, p_p, GPU_TO_CPU_MOVER, batch_start, batch_end);
 
         std::cout << "====== In [mover_PC]: batch " << (batch_no + 1) << " of " << n_batches << ": done." << std::endl;
     }
@@ -486,8 +486,8 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         long batch_size = batch_end - batch_start;
 
         // Copy particles in batch to GPU (part in CPU to p_p on GPU)
-        copy_interp_particles(part, p_p, batch_start, batch_end);
-
+        copy_particles(part, p_p, CPU_TO_GPU_INTERP, batch_start, batch_end);
+        
         // Launch the kernel to perform on the batch
         g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, *grd, p_p, i_p, g_p);
         cudaDeviceSynchronize();
