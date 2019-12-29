@@ -94,7 +94,7 @@ void particle_deallocate(struct particles*);
 /** particle mover */
 // int mover_PC(struct particles*, struct EMfield*, struct grid*, struct parameters*);
 int mover_PC(struct particles*, struct EMfield*, struct grid*, struct parameters*,
-             particles_pointers, field_pointers, grd_pointers, int, int);
+             particles_pointers, field_pointers, grd_pointers, int, int, bool enableStreaming=true);
 
 
 /** Interpolation Particle --> Grid: This is for species */
