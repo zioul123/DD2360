@@ -5,7 +5,7 @@
 
 #define MAX_GPU_PARTICLES 14155776  // the number of particles per species in the GEM_3D file is chosen for maximum
 #define STREAM_SIZE 4718592 // Number of particles per stream, chosen as 1/3 max particles.
-#define N_STREAMS 3  
+#define N_STREAMS 3  // Upper limit on the number of streams. This is equal to MAX_GPU_PARTICLES / STREAM_SIZE.
 #define STREAMS_ENABLED true // Change to false to disable streams
 
 // Modes for running the copy_particles function
@@ -34,6 +34,10 @@ void copy_mover_constants_to_GPU(struct EMfield* field, struct grid* grd,
 
 void copy_particles(struct particles* part, particles_pointers p_p, PICMode mode, 
                     long from, long to, bool verbose=false);
+
+
+void copy_particles_async(struct particles* part, particles_pointers p_p, PICMode mode, 
+                          long from, long to, cudaStream_t stream);
 
 
 void copy_interp_initial_to_GPU(struct interpDensSpecies* ids, ids_pointers i_p,

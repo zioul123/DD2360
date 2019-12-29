@@ -313,13 +313,12 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
 
         if (!enableStreaming)
         {
-            // Copy particles in batch to GPU (part in CPU to p_p on GPU)
+            // Copy particles in batch to GPU (part in CPU to p_p on GPU) without streaming
             copy_particles(part, p_p, CPU_TO_GPU_MOVER, batch_start, batch_end);
             // Launch the kernel to perform on the batch
             g_move_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, part->n_sub_cycles, part->NiterMover, 
                                                              *grd, *param, dt_inf, p_p, f_p, g_p);
-            cudaDeviceSynchronize();
-            // Copy moved particles back (p_p in GPU back to part in CPU).
+            // Copy moved particles back (p_p in GPU back to part in CPU) without streaming
             copy_particles(part, p_p, GPU_TO_CPU_MOVER, batch_start, batch_end);
         }
         else if (enableStreaming)
@@ -335,17 +334,21 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
                 long stream_end = std::min(stream_start + STREAM_SIZE, batch_size);  // max is batch_size
                 long stream_size = stream_end - stream_start;
 
-                // Copy particles in stream to GPU (part in CPU to p_p on GPU)
-                copy_particles(part, p_p, CPU_TO_GPU_MOVER, batch_start + stream_start, batch_start + stream_end);
+                // Copy particles in stream to GPU (part in CPU to p_p on GPU) with streaming
+                copy_particles_async(part, p_p, CPU_TO_GPU_MOVER, 
+                                     batch_start + stream_start, batch_start + stream_end, 
+                                     streams[stream_no]);
                 // Launch the kernel to perform on the stream
-                g_move_particle<<<(stream_size+TPB-1)/TPB, TPB>>>(stream_start, stream_size, part->n_sub_cycles, part->NiterMover, 
-                                                                  *grd, *param, dt_inf, p_p, f_p, g_p);
-                cudaDeviceSynchronize();
-                // Copy moved particles back (p_p in GPU back to part in CPU).
-                copy_particles(part, p_p, GPU_TO_CPU_MOVER, batch_start + stream_start, batch_start + stream_end);
+                g_move_particle<<<(stream_size+TPB-1)/TPB, TPB, 0, streams[stream_no]>>>(
+                        stream_start, stream_size, part->n_sub_cycles, part->NiterMover, 
+                        *grd, *param, dt_inf, p_p, f_p, g_p);
+                // Copy moved particles back (p_p in GPU back to part in CPU) with streaming
+                copy_particles_async(part, p_p, GPU_TO_CPU_MOVER, 
+                                     batch_start + stream_start, batch_start + stream_end,
+                                     streams[stream_no]);
             }
         }
-
+        cudaDeviceSynchronize();
         std::cout << "====== In [mover_PC]: batch " << (batch_no + 1) << " of " << n_batches 
                   << (enableStreaming ? " (with streaming)" : " (without streaming)") 
                   << ": done." << std::endl;
@@ -541,11 +544,10 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
 
         if (!enableStreaming) 
         {
-            // Copy particles in batch to GPU (part in CPU to p_p on GPU)
+            // Copy particles in batch to GPU (part in CPU to p_p on GPU) without streaming
             copy_particles(part, p_p, CPU_TO_GPU_INTERP, batch_start, batch_end);
             // Launch the kernel to perform on the batch
             g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, *grd, p_p, i_p, g_p);
-            cudaDeviceSynchronize();
         }
         else if (enableStreaming) 
         {
@@ -560,13 +562,16 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
                 long stream_end = std::min(stream_start + STREAM_SIZE, batch_size);  // max is batch_size
                 long stream_size = stream_end - stream_start;
 
-                // Copy particles in stream to GPU (part in CPU to p_p on GPU)
-                copy_particles(part, p_p, CPU_TO_GPU_INTERP, batch_start + stream_start, batch_start + stream_end);
+                // Copy particles in stream to GPU (part in CPU to p_p on GPU) with streaming
+                copy_particles_async(part, p_p, CPU_TO_GPU_INTERP, 
+                                     batch_start + stream_start, batch_start + stream_end,
+                                     streams[stream_no]);
                 // Launch the kernel to perform on the stream
-                g_interp_particle<<<(stream_size+TPB-1)/TPB, TPB>>>(stream_start, stream_size, *grd, p_p, i_p, g_p);
-                cudaDeviceSynchronize();
+                g_interp_particle<<<(stream_size+TPB-1)/TPB, TPB, 0, streams[stream_no]>>>(
+                        stream_start, stream_size, *grd, p_p, i_p, g_p);
             }
         }
+        cudaDeviceSynchronize();
         std::cout << "====== In [interpP2G]: batch " << (batch_no + 1) << " of " << n_batches 
                   << (enableStreaming ? " (with streaming)" : " (without streaming)") 
                   << ": done." << std::endl;
