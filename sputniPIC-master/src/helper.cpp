@@ -77,6 +77,18 @@ void allocate_gpu_memory(struct particles* part, int grdSize, int fieldSize,
 }
 
 /**
+ * Creates an array of CUDA streams.
+ */
+void createStreams(cudaStream_t** streams)
+{
+    cudaStream_t* streamsArr = new cudaStream_t[N_STREAMS];
+    for (int i = 0; i < N_STREAMS; i++) {
+        cudaStreamCreate(&streamsArr[i]);
+    }
+    *streams = streamsArr;
+}
+
+/**
  * Copy the field and grid arrays that are constant throughout all mover_PC kernels. This
  * should be executed before any mover_PC kernels are launched. Note that grid pointers
  * must also have been copied over prior to calling interpP2G kernels as well. 
@@ -211,4 +223,17 @@ void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g
     cudaFree(f_p->Bzn_flat);
 
     std::cout << "In [free_gpu_memory]: all GPU memory freed.." << std::endl;
+}
+
+/**
+ * Destroys streams in an array of CUDA streams.
+ */
+void destroyStreams(cudaStream_t* streams)
+{
+    for (int i = 0; i < N_STREAMS; i++) {
+        cudaStreamDestroy(streams[i]);
+    }
+    delete[] streams;
+
+    std::cout << "In [destroyStreams]: All CUDA Streams destroyed.." << std::endl;
 }

@@ -253,7 +253,7 @@ __global__ void g_move_particle(int stream_offset, int nop, int n_sub_cycles, in
 /** particle mover */
 int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, struct parameters* param,
              particles_pointers p_p, field_pointers f_p, grd_pointers g_p, int grdSize, int field_size, 
-             bool enableStreaming) 
+             cudaStream_t* streams, bool enableStreaming) 
 {
     // print species and subcycling
     std::cout << std::endl << "***  In [mover_PC]: MOVER with SUBCYCLYING "<< param->n_sub_cycles
@@ -485,7 +485,7 @@ __global__ void g_interp_particle(int stream_offset, int nop, struct grid grd,
 
 void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
                particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize, int rhocSize,
-               bool enableStreaming)
+               cudaStream_t* streams, bool enableStreaming)
 {
     // Print species
     std::cout << std::endl << "***  In [interpP2G]: Interpolating "
