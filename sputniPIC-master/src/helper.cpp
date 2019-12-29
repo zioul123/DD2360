@@ -77,6 +77,18 @@ void allocate_gpu_memory(struct particles* part, int grdSize, int fieldSize,
 }
 
 /**
+ * Creates an array of CUDA streams.
+ */
+void createStreams(cudaStream_t** streams)
+{
+    cudaStream_t* streamsArr = new cudaStream_t[N_STREAMS];
+    for (int i = 0; i < N_STREAMS; i++) {
+        cudaStreamCreate(&streamsArr[i]);
+    }
+    *streams = streamsArr;
+}
+
+/**
  * Copy the field and grid arrays that are constant throughout all mover_PC kernels. This
  * should be executed before any mover_PC kernels are launched. Note that grid pointers
  * must also have been copied over prior to calling interpP2G kernels as well. 
@@ -100,8 +112,8 @@ void copy_mover_constants_to_GPU(struct EMfield* field, struct grid* grd,
 }
 
 /** 
- * This function copies the Particle data needed for running the kernel in the mover_pc function.
- * NOTE: to is exclusive => mini-batch size is (to - from) 
+ * This function copies the Particle data needed for running the kernel in the mover_pc and interpP2G functions.
+ * NOTE: to is exclusive => batch size is (to - from) 
  */
 void copy_particles(struct particles* part, particles_pointers p_p, PICMode mode, 
                        long from, long to, bool verbose) 
@@ -133,6 +145,38 @@ void copy_particles(struct particles* part, particles_pointers p_p, PICMode mode
         cudaMemcpy(&part->v[from], &p_p.v[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
         cudaMemcpy(&part->w[from], &p_p.w[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
         if (verbose) std::cout << "In [copy_particles]: copy back to CPU done..." << std::endl;
+    }
+}
+
+/** 
+ * This function performs async copy of the Particle data needed for running the kernel 
+ * in the mover_pc and interpP2G functions. The copy is done on the specified stream.
+ */
+void copy_particles_async(struct particles* part, particles_pointers p_p, PICMode mode, 
+                          long from, long to, cudaStream_t stream)
+{
+    // if batch_size is not -1, it means that mini-batching should be done
+    long batch_size = to - from;
+
+    // Copy CPU Particles arrays to GPU
+    if (mode == CPU_TO_GPU_MOVER || mode == CPU_TO_GPU_INTERP) {
+        cudaMemcpyAsync(&p_p.x[from % MAX_GPU_PARTICLES], &part->x[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice, stream);
+        cudaMemcpyAsync(&p_p.y[from % MAX_GPU_PARTICLES], &part->y[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice, stream);
+        cudaMemcpyAsync(&p_p.z[from % MAX_GPU_PARTICLES], &part->z[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice, stream);
+        cudaMemcpyAsync(&p_p.u[from % MAX_GPU_PARTICLES], &part->u[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice, stream);
+        cudaMemcpyAsync(&p_p.v[from % MAX_GPU_PARTICLES], &part->v[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice, stream);
+        cudaMemcpyAsync(&p_p.w[from % MAX_GPU_PARTICLES], &part->w[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice, stream);
+        if (mode == CPU_TO_GPU_INTERP) 
+            cudaMemcpyAsync(&p_p.q[from % MAX_GPU_PARTICLES], &part->q[from], batch_size * sizeof(FPinterp), cudaMemcpyHostToDevice, stream);
+    }
+    // Copy GPU arrays back to CPU
+    else if (mode == GPU_TO_CPU_MOVER) {
+        cudaMemcpyAsync(&part->x[from], &p_p.x[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost, stream);
+        cudaMemcpyAsync(&part->y[from], &p_p.y[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost, stream);
+        cudaMemcpyAsync(&part->z[from], &p_p.z[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost, stream);
+        cudaMemcpyAsync(&part->u[from], &p_p.u[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost, stream);
+        cudaMemcpyAsync(&part->v[from], &p_p.v[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost, stream);
+        cudaMemcpyAsync(&part->w[from], &p_p.w[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost, stream);
     }
 }
 
@@ -211,4 +255,17 @@ void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g
     cudaFree(f_p->Bzn_flat);
 
     std::cout << "In [free_gpu_memory]: all GPU memory freed.." << std::endl;
+}
+
+/**
+ * Destroys streams in an array of CUDA streams.
+ */
+void destroyStreams(cudaStream_t* streams)
+{
+    for (int i = 0; i < N_STREAMS; i++) {
+        cudaStreamDestroy(streams[i]);
+    }
+    delete[] streams;
+
+    std::cout << "In [destroyStreams]: All CUDA Streams destroyed.." << std::endl;
 }

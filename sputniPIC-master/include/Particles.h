@@ -84,21 +84,23 @@ struct particles {
 };
 
 /** allocate particle arrays */
-void particle_allocate(struct parameters*, struct particles*, int);
+void particle_allocate(struct parameters*, struct particles*, int, bool enableStreaming=true);
 
 
 /** deallocate */
-void particle_deallocate(struct particles*);
+void particle_deallocate(struct particles*, bool enableStreaming=true);
 
 
 /** particle mover */
 // int mover_PC(struct particles*, struct EMfield*, struct grid*, struct parameters*);
 int mover_PC(struct particles*, struct EMfield*, struct grid*, struct parameters*,
-             particles_pointers, field_pointers, grd_pointers, int, int);
+             particles_pointers, field_pointers, grd_pointers, int, int, 
+             cudaStream_t* streams, bool enableStreaming=true);
 
 
 /** Interpolation Particle --> Grid: This is for species */
 void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
-               particles_pointers, ids_pointers, grd_pointers, int, int);
+               particles_pointers, ids_pointers, grd_pointers, int, int, 
+               cudaStream_t* streams, bool enableStreaming=true);
 
 #endif

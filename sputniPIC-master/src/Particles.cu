@@ -20,8 +20,8 @@ typedef struct {
 } dt_info;
 
 
-/** allocate particle arrays */
-void particle_allocate(struct parameters* param, struct particles* part, int is)
+/** allocate particle arrays. If streaming is enabled, use cudaHostAlloc */
+void particle_allocate(struct parameters* param, struct particles* part, int is, bool enableStreaming)
 {
     
     // set species ID
@@ -65,30 +65,56 @@ void particle_allocate(struct parameters* param, struct particles* part, int is)
     //////////////////////////////
     /// ALLOCATION PARTICLE ARRAYS
     //////////////////////////////
-    part->x = new FPpart[npmax];
-    part->y = new FPpart[npmax];
-    part->z = new FPpart[npmax];
-    // allocate velocity
-    part->u = new FPpart[npmax];
-    part->v = new FPpart[npmax];
-    part->w = new FPpart[npmax];
-    // allocate charge = q * statistical weight
-    part->q = new FPinterp[npmax];
+    if (!enableStreaming)
+    {
+        part->x = new FPpart[npmax];
+        part->y = new FPpart[npmax];
+        part->z = new FPpart[npmax];
+        // allocate velocity
+        part->u = new FPpart[npmax];
+        part->v = new FPpart[npmax];
+        part->w = new FPpart[npmax];
+        // allocate charge = q * statistical weight
+        part->q = new FPinterp[npmax];
+    }
+    else if (enableStreaming)
+    {
+        cudaHostAlloc(&part->x, sizeof(FPpart) * npmax, cudaHostAllocDefault);
+        cudaHostAlloc(&part->y, sizeof(FPpart) * npmax, cudaHostAllocDefault);
+        cudaHostAlloc(&part->z, sizeof(FPpart) * npmax, cudaHostAllocDefault);
+        cudaHostAlloc(&part->u, sizeof(FPpart) * npmax, cudaHostAllocDefault);
+        cudaHostAlloc(&part->v, sizeof(FPpart) * npmax, cudaHostAllocDefault);
+        cudaHostAlloc(&part->w, sizeof(FPpart) * npmax, cudaHostAllocDefault);
+        cudaHostAlloc(&part->q, sizeof(FPinterp) * npmax, cudaHostAllocDefault);
+    }
     
 }
 
 
-/** deallocate */
-void particle_deallocate(struct particles* part)
+/** deallocate. If streaming was enabled, use cudaFreeHost instead of delete[]. */
+void particle_deallocate(struct particles* part, bool enableStreaming)
 {
     // deallocate particle variables
-    delete[] part->x;
-    delete[] part->y;
-    delete[] part->z;
-    delete[] part->u;
-    delete[] part->v;
-    delete[] part->w;
-    delete[] part->q;
+    if (!enableStreaming)
+    {
+        delete[] part->x;
+        delete[] part->y;
+        delete[] part->z;
+        delete[] part->u;
+        delete[] part->v;
+        delete[] part->w;
+        delete[] part->q; 
+    }
+    else if (enableStreaming)
+    {
+        cudaFreeHost(part->x);
+        cudaFreeHost(part->y);
+        cudaFreeHost(part->z);
+        cudaFreeHost(part->u);
+        cudaFreeHost(part->v);
+        cudaFreeHost(part->w);
+        cudaFreeHost(part->q); 
+    }
 }
 
 /** GPU kernel to move a single particle */
@@ -252,7 +278,8 @@ __global__ void g_move_particle(int stream_offset, int nop, int n_sub_cycles, in
 
 /** particle mover */
 int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, struct parameters* param,
-             particles_pointers p_p, field_pointers f_p, grd_pointers g_p, int grdSize, int field_size) 
+             particles_pointers p_p, field_pointers f_p, grd_pointers g_p, int grdSize, int field_size, 
+             cudaStream_t* streams, bool enableStreaming) 
 {
     // print species and subcycling
     std::cout << std::endl << "***  In [mover_PC]: MOVER with SUBCYCLYING "<< param->n_sub_cycles
@@ -284,18 +311,47 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
         long batch_end = std::min(batch_start + MAX_GPU_PARTICLES, part->npmax);  // max is part->npmax
         long batch_size = batch_end - batch_start;
 
-        // Copy particles in batch to GPU (part in CPU to p_p on GPU)
-        copy_particles(part, p_p, CPU_TO_GPU_MOVER, batch_start, batch_end);
+        if (!enableStreaming)
+        {
+            // Copy particles in batch to GPU (part in CPU to p_p on GPU) without streaming
+            copy_particles(part, p_p, CPU_TO_GPU_MOVER, batch_start, batch_end);
+            // Launch the kernel to perform on the batch
+            g_move_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, part->n_sub_cycles, part->NiterMover, 
+                                                             *grd, *param, dt_inf, p_p, f_p, g_p);
+            // Copy moved particles back (p_p in GPU back to part in CPU) without streaming
+            copy_particles(part, p_p, GPU_TO_CPU_MOVER, batch_start, batch_end);
+        }
+        else if (enableStreaming)
+        {
+            // If batch_size <= STREAM_SIZE, n_streams = 1, and whole batch is done in one stream
+            int n_streams = (batch_size + STREAM_SIZE - 1) / STREAM_SIZE;
+            for (int stream_no = 0; stream_no < n_streams; stream_no++) 
+            {
+                // Compute stream size/bounds RELATIVE TO BATCH_START. In other words, to access the
+                // CPU array, the starting element is batch_start + stream_start. GPU accesses are done
+                // with CPU index % GPU_MAX_PARTICLES, so there is no need to convert the indices back.
+                long stream_start = stream_no * STREAM_SIZE;
+                long stream_end = std::min(stream_start + STREAM_SIZE, batch_size);  // max is batch_size
+                long stream_size = stream_end - stream_start;
 
-        // Launch the kernel to perform on the batch
-        g_move_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, part->n_sub_cycles, part->NiterMover, 
-                                                         *grd, *param, dt_inf, p_p, f_p, g_p);
+                // Copy particles in stream to GPU (part in CPU to p_p on GPU) with streaming
+                copy_particles_async(part, p_p, CPU_TO_GPU_MOVER, 
+                                     batch_start + stream_start, batch_start + stream_end, 
+                                     streams[stream_no]);
+                // Launch the kernel to perform on the stream
+                g_move_particle<<<(stream_size+TPB-1)/TPB, TPB, 0, streams[stream_no]>>>(
+                        stream_start, stream_size, part->n_sub_cycles, part->NiterMover, 
+                        *grd, *param, dt_inf, p_p, f_p, g_p);
+                // Copy moved particles back (p_p in GPU back to part in CPU) with streaming
+                copy_particles_async(part, p_p, GPU_TO_CPU_MOVER, 
+                                     batch_start + stream_start, batch_start + stream_end,
+                                     streams[stream_no]);
+            }
+        }
         cudaDeviceSynchronize();
-
-        // Copy moved particles back (p_p in GPU back to part in CPU).
-        copy_particles(part, p_p, GPU_TO_CPU_MOVER, batch_start, batch_end);
-
-        std::cout << "====== In [mover_PC]: batch " << (batch_no + 1) << " of " << n_batches << ": done." << std::endl;
+        std::cout << "====== In [mover_PC]: batch " << (batch_no + 1) << " of " << n_batches 
+                  << (enableStreaming ? " (with streaming)" : " (without streaming)") 
+                  << ": done." << std::endl;
     }
     
     return(0); // exit successfully
@@ -457,7 +513,8 @@ __global__ void g_interp_particle(int stream_offset, int nop, struct grid grd,
 }
 
 void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
-               particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize, int rhocSize)
+               particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize, int rhocSize,
+               cudaStream_t* streams, bool enableStreaming)
 {
     // Print species
     std::cout << std::endl << "***  In [interpP2G]: Interpolating "
@@ -485,14 +542,39 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         long batch_end = std::min(batch_start + MAX_GPU_PARTICLES, part->npmax);  // max is part->npmax
         long batch_size = batch_end - batch_start;
 
-        // Copy particles in batch to GPU (part in CPU to p_p on GPU)
-        copy_particles(part, p_p, CPU_TO_GPU_INTERP, batch_start, batch_end);
+        if (!enableStreaming) 
+        {
+            // Copy particles in batch to GPU (part in CPU to p_p on GPU) without streaming
+            copy_particles(part, p_p, CPU_TO_GPU_INTERP, batch_start, batch_end);
+            // Launch the kernel to perform on the batch
+            g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, *grd, p_p, i_p, g_p);
+        }
+        else if (enableStreaming) 
+        {
+            // If batch_size <= STREAM_SIZE, n_streams = 1, and whole batch is done in one stream
+            int n_streams = (batch_size + STREAM_SIZE - 1) / STREAM_SIZE;
+            for (int stream_no = 0; stream_no < n_streams; stream_no++) 
+            {
+                // Compute stream size/bounds RELATIVE TO BATCH_START. In other words, to access the
+                // CPU array, the starting element is batch_start + stream_start. GPU accesses are done
+                // with CPU index % GPU_MAX_PARTICLES, so there is no need to convert the indices back.
+                long stream_start = stream_no * STREAM_SIZE;
+                long stream_end = std::min(stream_start + STREAM_SIZE, batch_size);  // max is batch_size
+                long stream_size = stream_end - stream_start;
 
-        // Launch the kernel to perform on the batch
-        g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, *grd, p_p, i_p, g_p);
+                // Copy particles in stream to GPU (part in CPU to p_p on GPU) with streaming
+                copy_particles_async(part, p_p, CPU_TO_GPU_INTERP, 
+                                     batch_start + stream_start, batch_start + stream_end,
+                                     streams[stream_no]);
+                // Launch the kernel to perform on the stream
+                g_interp_particle<<<(stream_size+TPB-1)/TPB, TPB, 0, streams[stream_no]>>>(
+                        stream_start, stream_size, *grd, p_p, i_p, g_p);
+            }
+        }
         cudaDeviceSynchronize();
-
-        std::cout << "====== In [interpP2G]: batch " << (batch_no + 1) << " of " << n_batches << ": done." << std::endl;
+        std::cout << "====== In [interpP2G]: batch " << (batch_no + 1) << " of " << n_batches 
+                  << (enableStreaming ? " (with streaming)" : " (without streaming)") 
+                  << ": done." << std::endl;
     }
     // Copy results back (i_p in GPU back to ids in CPU).
     copy_interp_results(ids, i_p, grdSize, rhocSize);

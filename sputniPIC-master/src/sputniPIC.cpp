@@ -77,13 +77,16 @@ int main(int argc, char **argv){
 
     // -------------------------------------------------------------- //
     // ------ Additions for GPU version ----------------------------- //
-    // Declare GPU copies of arrays for interpP2G
+    // Declare GPU copies of arrays
     int grdSize = grd.nxn * grd.nyn * grd.nzn;
     int rhocSize = grd.nxc * grd.nyc * grd.nzc;
     int field_size = grd.nxn * grd.nyn * grd.nzn;
     particles_pointers p_p; ids_pointers i_p; grd_pointers g_p; field_pointers f_p; // on the GPU memory
     allocate_gpu_memory(part, grdSize, field_size, &p_p, &i_p, &g_p, &f_p);  // Allocates maximum MAX_GPU_PARTICLES particles
-    
+    // Declare CUDA streams if enabled
+    cudaStream_t* streams;
+    if (STREAMS_ENABLED) createStreams(&streams);
+
      // on the GPU memory
     std::cout << "In [main]: All GPU memory allocation: done" << std::endl;
 
@@ -109,7 +112,7 @@ int main(int argc, char **argv){
         iMover = cpuSecond(); // start timer for mover
         for (int is=0; is < param.ns; is++)
             // mover_PC(&part[is],&field,&grd,&param);
-            mover_PC(&part[is], &field, &grd, &param, p_p, f_p, g_p, grdSize, field_size);
+            mover_PC(&part[is], &field, &grd, &param, p_p, f_p, g_p, grdSize, field_size, streams, STREAMS_ENABLED);
 
         eMover += (cpuSecond() - iMover); // stop timer for mover
         
@@ -118,7 +121,7 @@ int main(int argc, char **argv){
         iInterp = cpuSecond(); // start timer for the interpolation step
         // interpolate species
         for (int is=0; is < param.ns; is++)
-            interpP2G(&part[is],&ids[is],&grd, p_p, i_p, g_p, grdSize, rhocSize);
+            interpP2G(&part[is],&ids[is],&grd, p_p, i_p, g_p, grdSize, rhocSize, streams, STREAMS_ENABLED);
         // apply BC to interpolated densities
         for (int is=0; is < param.ns; is++)
             applyBCids(&ids[is],&grd,&param);
@@ -154,6 +157,7 @@ int main(int argc, char **argv){
     // ------ Additions for GPU version ----------------------------- //
     // Free GPU arrays
     free_gpu_memory(&p_p, &i_p, &g_p, &f_p);
+    if (STREAMS_ENABLED) destroyStreams(streams);
 
     // stop timer
     double iElaps = cpuSecond() - iStart;
