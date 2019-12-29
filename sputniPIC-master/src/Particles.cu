@@ -20,8 +20,8 @@ typedef struct {
 } dt_info;
 
 
-/** allocate particle arrays */
-void particle_allocate(struct parameters* param, struct particles* part, int is)
+/** allocate particle arrays. If streaming is enabled, use cudaHostAlloc */
+void particle_allocate(struct parameters* param, struct particles* part, int is, bool enableStreaming)
 {
     
     // set species ID
@@ -65,30 +65,56 @@ void particle_allocate(struct parameters* param, struct particles* part, int is)
     //////////////////////////////
     /// ALLOCATION PARTICLE ARRAYS
     //////////////////////////////
-    part->x = new FPpart[npmax];
-    part->y = new FPpart[npmax];
-    part->z = new FPpart[npmax];
-    // allocate velocity
-    part->u = new FPpart[npmax];
-    part->v = new FPpart[npmax];
-    part->w = new FPpart[npmax];
-    // allocate charge = q * statistical weight
-    part->q = new FPinterp[npmax];
+    if (!enableStreaming)
+    {
+        part->x = new FPpart[npmax];
+        part->y = new FPpart[npmax];
+        part->z = new FPpart[npmax];
+        // allocate velocity
+        part->u = new FPpart[npmax];
+        part->v = new FPpart[npmax];
+        part->w = new FPpart[npmax];
+        // allocate charge = q * statistical weight
+        part->q = new FPinterp[npmax];
+    }
+    else if (enableStreaming)
+    {
+        cudaHostAlloc(&part->x, sizeof(FPpart) * npmax, cudaHostAllocDefault);
+        cudaHostAlloc(&part->y, sizeof(FPpart) * npmax, cudaHostAllocDefault);
+        cudaHostAlloc(&part->z, sizeof(FPpart) * npmax, cudaHostAllocDefault);
+        cudaHostAlloc(&part->u, sizeof(FPpart) * npmax, cudaHostAllocDefault);
+        cudaHostAlloc(&part->v, sizeof(FPpart) * npmax, cudaHostAllocDefault);
+        cudaHostAlloc(&part->w, sizeof(FPpart) * npmax, cudaHostAllocDefault);
+        cudaHostAlloc(&part->q, sizeof(FPinterp) * npmax, cudaHostAllocDefault);
+    }
     
 }
 
 
-/** deallocate */
-void particle_deallocate(struct particles* part)
+/** deallocate. If streaming was enabled, use cudaFreeHost instead of delete[]. */
+void particle_deallocate(struct particles* part, bool enableStreaming)
 {
     // deallocate particle variables
-    delete[] part->x;
-    delete[] part->y;
-    delete[] part->z;
-    delete[] part->u;
-    delete[] part->v;
-    delete[] part->w;
-    delete[] part->q;
+    if (!enableStreaming)
+    {
+        delete[] part->x;
+        delete[] part->y;
+        delete[] part->z;
+        delete[] part->u;
+        delete[] part->v;
+        delete[] part->w;
+        delete[] part->q; 
+    }
+    else if (enableStreaming)
+    {
+        cudaFreeHost(part->x);
+        cudaFreeHost(part->y);
+        cudaFreeHost(part->z);
+        cudaFreeHost(part->u);
+        cudaFreeHost(part->v);
+        cudaFreeHost(part->w);
+        cudaFreeHost(part->q); 
+    }
 }
 
 /** GPU kernel to move a single particle */

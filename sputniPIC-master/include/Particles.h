@@ -84,11 +84,11 @@ struct particles {
 };
 
 /** allocate particle arrays */
-void particle_allocate(struct parameters*, struct particles*, int);
+void particle_allocate(struct parameters*, struct particles*, int, bool enableStreaming=true);
 
 
 /** deallocate */
-void particle_deallocate(struct particles*);
+void particle_deallocate(struct particles*, bool enableStreaming=true);
 
 
 /** particle mover */
