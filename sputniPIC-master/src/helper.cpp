@@ -14,7 +14,6 @@ void allocate_gpu_memory(struct particles* part, int grdSize, int fieldSize,
                                 particles_pointers* p_p, ids_pointers* i_p,
                                 grd_pointers* g_p, field_pointers* f_p) 
 {
-    
     FPpart* part_copies[6]; FPinterp* part_copy_q;
     FPinterp* ids_copies[11];
     FPfield* grd_copies[3];
@@ -105,7 +104,8 @@ void copy_mover_constants_to_GPU(struct EMfield* field, struct grid* grd,
  * NOTE: to is exclusive => mini-batch size is (to - from) 
  */
 void copy_particles(struct particles* part, particles_pointers p_p, PICMode mode, 
-                       long from, long to, bool verbose) {
+                       long from, long to, bool verbose) 
+{
     // if batch_size is not -1, it means that mini-batching should be done
     long batch_size = to - from;
     if (verbose) std::cout << "In [copy_particles]: copying with batch size of " << batch_size << std::endl;
@@ -134,7 +134,6 @@ void copy_particles(struct particles* part, particles_pointers p_p, PICMode mode
         cudaMemcpy(&part->w[from], &p_p.w[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost);
         if (verbose) std::cout << "In [copy_particles]: copy back to CPU done..." << std::endl;
     }
-
 }
 
 /**
@@ -156,23 +155,6 @@ void copy_interp_initial_to_GPU(struct interpDensSpecies* ids, ids_pointers i_p,
     cudaMemcpy(i_p.pyy_flat, ids->pyy_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
     cudaMemcpy(i_p.pyz_flat, ids->pyz_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
     cudaMemcpy(i_p.pzz_flat, ids->pzz_flat, grdSize*sizeof(FPinterp), cudaMemcpyHostToDevice);
-}
-
-/** 
- * This function copies from specified Particles from CPU to GPU. 
- */
-void copy_interp_particles(struct particles* part, particles_pointers p_p, long from, long to, bool verbose) 
-{
-    long batch_size = to - from;
-    if (verbose) std::cout << "In [copy_interp_arrays]: copying with batch size of " << batch_size << std::endl;
-    cudaMemcpy(&p_p.x[from % MAX_GPU_PARTICLES], &part->x[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
-    cudaMemcpy(&p_p.y[from % MAX_GPU_PARTICLES], &part->y[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
-    cudaMemcpy(&p_p.z[from % MAX_GPU_PARTICLES], &part->z[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
-    cudaMemcpy(&p_p.u[from % MAX_GPU_PARTICLES], &part->u[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
-    cudaMemcpy(&p_p.v[from % MAX_GPU_PARTICLES], &part->v[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
-    cudaMemcpy(&p_p.w[from % MAX_GPU_PARTICLES], &part->w[from], batch_size * sizeof(FPpart), cudaMemcpyHostToDevice);
-    cudaMemcpy(&p_p.q[from % MAX_GPU_PARTICLES], &part->q[from], batch_size * sizeof(FPinterp), cudaMemcpyHostToDevice);
-    if (verbose) std::cout << "In [copy_interp_arrays]: copy to GPU: done." << std::endl;
 }
 
 /** 

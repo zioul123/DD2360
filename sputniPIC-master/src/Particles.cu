@@ -466,7 +466,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
     /*
      * The following steps are taken:
      * 0. Assume grd is copied to GPU already
-     * 1. Copy zero'd ids to GPU as initialization
+     * 1. Copy zeroed ids to GPU as initialization
      * 2. For each batch/full batch:
      *     1. Copy relevant Particles to GPU
      *     2. Launch kernels that modify ids in GPU memory
@@ -487,7 +487,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
 
         // Copy particles in batch to GPU (part in CPU to p_p on GPU)
         copy_particles(part, p_p, CPU_TO_GPU_INTERP, batch_start, batch_end);
-        
+
         // Launch the kernel to perform on the batch
         g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, *grd, p_p, i_p, g_p);
         cudaDeviceSynchronize();
