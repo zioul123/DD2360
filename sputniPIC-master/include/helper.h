@@ -5,16 +5,12 @@
 
 #define MAX_GPU_PARTICLES 14155776  // the number of particles per species in the GEM_3D file is chosen for maximum
 
-
-// Modes for running the functions
+// Modes for running the copy_particles function
 enum PICMode 
 {
-    INTERP2G,
-    MOVER_PC,
-    PARTICLE_TO_BATCH,
-    BATCH_TO_PARTICLE,
-    CPU_TO_GPU,
-    GPU_TO_CPU
+    CPU_TO_GPU_MOVER,
+    CPU_TO_GPU_INTERP,
+    GPU_TO_CPU_MOVER
 };
 
 void print(std::string str);
@@ -30,19 +26,15 @@ void copy_mover_constants_to_GPU(struct EMfield* field, struct grid* grd,
                                  int grdSize, int field_size);
 
 
-void copy_mover_arrays(struct particles* part, 
-                       particles_pointers p_p, PICMode mode, 
-                       long from=-1, long to=-1, bool verbose=false);
+void copy_particles(struct particles* part, particles_pointers p_p, PICMode mode, 
+                    long from, long to, bool verbose=false);
 
 
 void copy_interp_initial_to_GPU(struct interpDensSpecies* ids, ids_pointers i_p,
                                 int grdSize, int rhocSize);
 
 
-void copy_interp_arrays(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
-                        particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, 
-                        int grdSize, int rhocSize, PICMode mode, 
-                        long from=-1, long to=-1, bool verbose=false);
+void copy_interp_results(struct interpDensSpecies* ids, ids_pointers i_p, int grdSize, int rhocSize);
 
 
 void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g_p, field_pointers* f_p);

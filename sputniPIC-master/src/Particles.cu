@@ -275,35 +275,29 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
     // Copy grid/field constants to GPU
     copy_mover_constants_to_GPU(field, grd, f_p, g_p, grdSize, field_size);
 
-    // mini-batches
-    if (part->npmax > MAX_GPU_PARTICLES) {
-        int n_batches = (part->npmax + MAX_GPU_PARTICLES - 1) / MAX_GPU_PARTICLES;
+    // If npmax <= MAX_GPU_PARTICLES, n_batches = 1, and all movement is done in one batch
+    int n_batches = (part->npmax + MAX_GPU_PARTICLES - 1) / MAX_GPU_PARTICLES;
+    for (int batch_no = 0; batch_no < n_batches; batch_no++) 
+    {
+        // Compute batch size/bounds
+        long batch_start = batch_no * MAX_GPU_PARTICLES;
+        long batch_end = std::min(batch_start + MAX_GPU_PARTICLES, part->npmax);  // max is part->npmax
+        long batch_size = batch_end - batch_start;
 
-        for (int batch_no = 0; batch_no < n_batches; batch_no++) {
-            long batch_start = batch_no * MAX_GPU_PARTICLES;
-            long batch_end = std::min(batch_start + MAX_GPU_PARTICLES, part->npmax);  // max is part->npmax
-            long batch_size = batch_end - batch_start;
+        // Copy particles in batch to GPU (part in CPU to p_p on GPU)
+        copy_particles(part, p_p, CPU_TO_GPU_MOVER, batch_start, batch_end);
 
-            copy_mover_arrays(part, p_p, CPU_TO_GPU, batch_start, batch_end);
-
-            g_move_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, part->n_sub_cycles, part->NiterMover, 
-                                                             *grd, *param, dt_inf, p_p, f_p, g_p);
-            cudaDeviceSynchronize();
-            copy_mover_arrays(part, p_p, GPU_TO_CPU, batch_start, batch_end);
-
-            std::cout << "====== In [mover_PC]: batch " << (batch_no + 1) << " of " << n_batches << ": done." << std::endl;
-        }
-    }
-    // all the particles at once
-    else {
-        copy_mover_arrays(part, p_p, CPU_TO_GPU);
-        // h_move_particle(i, part->NiterMover, grd, param, dt_inf, p_p, f_p, g_p)
-        // Launch the kernel
-        g_move_particle<<<(part->nop+TPB-1)/TPB, TPB>>>(0, part->nop, part->n_sub_cycles, part->NiterMover, 
-                                                        *grd, *param, dt_inf, p_p, f_p, g_p);
+        // Launch the kernel to perform on the batch
+        g_move_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, part->n_sub_cycles, part->NiterMover, 
+                                                         *grd, *param, dt_inf, p_p, f_p, g_p);
         cudaDeviceSynchronize();
-        copy_mover_arrays(part, p_p, GPU_TO_CPU);
+
+        // Copy moved particles back (p_p in GPU back to part in CPU).
+        copy_particles(part, p_p, GPU_TO_CPU_MOVER, batch_start, batch_end);
+
+        std::cout << "====== In [mover_PC]: batch " << (batch_no + 1) << " of " << n_batches << ": done." << std::endl;
     }
+    
     return(0); // exit successfully
 }
 
@@ -465,51 +459,44 @@ __global__ void g_interp_particle(int stream_offset, int nop, struct grid grd,
 void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
                particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize, int rhocSize)
 {
+    // Print species
+    std::cout << std::endl << "***  In [interpP2G]: Interpolating "
+              << " - species " << part->species_ID << " ***" << std::endl;
+
     /*
      * The following steps are taken:
      * 0. Assume grd is copied to GPU already
-     * 1. Copy zero'd ids to GPU as initial
+     * 1. Copy zeroed ids to GPU as initialization
      * 2. For each batch/full batch:
      *     1. Copy relevant Particles to GPU
      *     2. Launch kernels that modify ids in GPU memory
      * 3. Copy ids back to CPU memory
      */
-    
+
+    // Copy initial zero'd IDS
     copy_interp_initial_to_GPU(ids, i_p, grdSize, rhocSize);
-    // mini-batches
-    if (part->npmax > MAX_GPU_PARTICLES) 
+
+    // If npmax <= MAX_GPU_PARTICLES, n_batches = 1, and whole interpolation is done in one batch
+    int n_batches = (part->npmax + MAX_GPU_PARTICLES - 1) / MAX_GPU_PARTICLES;
+    for (int batch_no = 0; batch_no < n_batches; batch_no++) 
     {
-        int n_batches = (part->npmax + MAX_GPU_PARTICLES - 1) / MAX_GPU_PARTICLES;
+        // Compute batch size/bounds
+        long batch_start = batch_no * MAX_GPU_PARTICLES;
+        long batch_end = std::min(batch_start + MAX_GPU_PARTICLES, part->npmax);  // max is part->npmax
+        long batch_size = batch_end - batch_start;
 
-        for (int batch_no = 0; batch_no < n_batches; batch_no++) {
-            long batch_start = batch_no * MAX_GPU_PARTICLES;
-            long batch_end = std::min(batch_start + MAX_GPU_PARTICLES, part->npmax);  // max is part->npmax
-            long batch_size = batch_end - batch_start;
+        // Copy particles in batch to GPU (part in CPU to p_p on GPU)
+        copy_particles(part, p_p, CPU_TO_GPU_INTERP, batch_start, batch_end);
 
-            // copy batch to GPU
-            copy_interp_arrays(part, ids, grd, p_p, i_p, g_p, grdSize, rhocSize, CPU_TO_GPU,
-                               batch_start, batch_end);
-
-            // launch the kernel to perform on the batch
-            g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, *grd, p_p, i_p, g_p);
-            cudaDeviceSynchronize();
-
-            std::cout << "====== In [interpP2G]: batch " << (batch_no + 1) << " of " << n_batches << ": done." << std::endl;
-        }
-
-    } 
-    // all the particles at once
-    else {
-        copy_interp_arrays(part, ids, grd, p_p, i_p, g_p, grdSize, rhocSize, CPU_TO_GPU);
-
-        // Launch interpolation kernel
-        g_interp_particle<<<(part->nop+TPB-1)/TPB, TPB>>>(0, part->nop, *grd, p_p, i_p, g_p);
+        // Launch the kernel to perform on the batch
+        g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, *grd, p_p, i_p, g_p);
         cudaDeviceSynchronize();
+
+        std::cout << "====== In [interpP2G]: batch " << (batch_no + 1) << " of " << n_batches << ": done." << std::endl;
     }
-    copy_interp_arrays(part, ids, grd, p_p, i_p, g_p, grdSize, rhocSize, GPU_TO_CPU);
+    // Copy results back (i_p in GPU back to ids in CPU).
+    copy_interp_results(ids, i_p, grdSize, rhocSize);
 }
-
-
 
 /* -------------------- *
  * CPU Serial Versions  *
