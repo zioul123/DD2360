@@ -112,4 +112,10 @@ void combinedMoveInterp(struct particles* part, struct EMfield* field, struct gr
                         cudaStream_t* streams, bool enableStreaming, int streamSize=0);
 
 
+int h_mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, struct parameters* param);
+
+
+void h_interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd);
+
+
 #endif
