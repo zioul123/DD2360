@@ -9,6 +9,24 @@
 
 /** Simulation Parameters */
 struct parameters {
+
+    /*
+     * Mode properties
+     */
+    /** Whether mover uses GPU. */
+    bool gpuMover;
+    /** Whether interp uses GPU. */
+    bool gpuInterp;
+    /** Whether we are using async/streaming. */
+    bool streamsEnabled;
+    /** Number of streams to use. */
+    int nStreams;
+    /** Whether we are using combined kernels. */
+    bool combinedKernels;
+
+    /*
+     * Simulation properties
+     */
     
     /** light speed */
     double c;

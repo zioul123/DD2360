@@ -69,7 +69,7 @@ int main(int argc, char **argv){
     particles *part = new particles[param.ns];
     // allocation
     for (int is=0; is < param.ns; is++){
-        particle_allocate(&param,&part[is],is);
+        particle_allocate(&param,&part[is],is, param.streamsEnabled);
     }
     
     // Initialization
@@ -85,7 +85,8 @@ int main(int argc, char **argv){
     allocate_gpu_memory(part, grdSize, field_size, &p_p, &i_p, &g_p, &f_p);  // Allocates maximum MAX_GPU_PARTICLES particles
     // Declare CUDA streams if enabled
     cudaStream_t* streams;
-    if (STREAMS_ENABLED) createStreams(&streams);
+    int streamSize = param.nStreams ? MAX_GPU_PARTICLES / param.nStreams : 0;
+    if (param.streamsEnabled) createStreams(&streams, param.nStreams);
 
      // on the GPU memory
     std::cout << "In [main]: All GPU memory allocation: done" << std::endl;
@@ -107,24 +108,24 @@ int main(int argc, char **argv){
         setZeroDensities(&idn,ids,&grd,param.ns);
         
         // This version calls the mover_PC and interpP2G functions in sequence
-        if (!KERNELS_COMBINED)
+        if (!param.combinedKernels)
         {
             // implicit mover
             iMover = cpuSecond(); // start timer for mover
             for (int is=0; is < param.ns; is++)
                 // mover_PC(&part[is],&field,&grd,&param);
-                mover_PC(&part[is], &field, &grd, &param, p_p, f_p, g_p, grdSize, field_size, streams, STREAMS_ENABLED);
+                mover_PC(&part[is], &field, &grd, &param, p_p, f_p, g_p, grdSize, field_size, streams, param.streamsEnabled, streamSize);
             eMover += (cpuSecond() - iMover); // stop timer for mover
             
             // interpolation particle to grid
             iInterp = cpuSecond(); // start timer for the interpolation step
             // interpolate species
             for (int is=0; is < param.ns; is++)
-                interpP2G(&part[is],&ids[is],&grd, p_p, i_p, g_p, grdSize, rhocSize, streams, STREAMS_ENABLED);
+                interpP2G(&part[is],&ids[is],&grd, p_p, i_p, g_p, grdSize, rhocSize, streams, param.streamsEnabled, streamSize);
             // Continue execution outside the if-else clause
         }
         // This version calls the function that combines movement and interp of particles
-        else if (KERNELS_COMBINED)
+        else if (param.combinedKernels)
         {
             // implicit mover
             iMover = cpuSecond(); // start timer for mover
@@ -132,7 +133,7 @@ int main(int argc, char **argv){
                 // mover_PC(&part[is],&field,&grd,&param);
                 combinedMoveInterp(&part[is], &field, &grd, &ids[is], &param, 
                                    p_p, f_p, g_p, i_p, grdSize, field_size, rhocSize, 
-                                   streams, STREAMS_ENABLED);
+                                   streams, param.streamsEnabled, streamSize);
             eMover += (cpuSecond() - iMover); // stop timer for mover
             
             // interpolation particle to grid was complete already
@@ -167,14 +168,14 @@ int main(int argc, char **argv){
     // Deallocate interpolated densities and particles
     for (int is=0; is < param.ns; is++){
         interp_dens_species_deallocate(&grd,&ids[is]);
-        particle_deallocate(&part[is]);
+        particle_deallocate(&part[is], param.streamsEnabled);
     }
 
     // -------------------------------------------------------------- //
     // ------ Additions for GPU version ----------------------------- //
     // Free GPU arrays
     free_gpu_memory(&p_p, &i_p, &g_p, &f_p);
-    if (STREAMS_ENABLED) destroyStreams(streams);
+    if (param.streamsEnabled) destroyStreams(streams, param.nStreams);
 
     // stop timer
     double iElaps = cpuSecond() - iStart;
