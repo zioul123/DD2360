@@ -84,24 +84,24 @@ struct particles {
 };
 
 /** allocate particle arrays */
-void particle_allocate(struct parameters*, struct particles*, int, bool enableStreaming=true);
+void particle_allocate(struct parameters*, struct particles*, int, bool enableStreaming);
 
 
 /** deallocate */
-void particle_deallocate(struct particles*, bool enableStreaming=true);
+void particle_deallocate(struct particles*, bool enableStreaming);
 
 
 /** particle mover */
 // int mover_PC(struct particles*, struct EMfield*, struct grid*, struct parameters*);
 int mover_PC(struct particles*, struct EMfield*, struct grid*, struct parameters*,
              particles_pointers, field_pointers, grd_pointers, int, int, 
-             cudaStream_t* streams, bool enableStreaming=true);
+             cudaStream_t* streams, bool enableStreaming, int streamSize=0);
 
 
 /** Interpolation Particle --> Grid: This is for species */
 void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
                particles_pointers, ids_pointers, grd_pointers, int, int, 
-               cudaStream_t* streams, bool enableStreaming=true);
+               cudaStream_t* streams, bool enableStreaming, int streamSize=0);
 
 
 /** Combined function - This combines mover_PC and interpP2G. */
@@ -109,7 +109,13 @@ void combinedMoveInterp(struct particles* part, struct EMfield* field, struct gr
                         struct interpDensSpecies* ids, struct parameters* param, 
                         particles_pointers p_p, field_pointers f_p, grd_pointers g_p, ids_pointers i_p, 
                         int grdSize, int field_size, int rhocSize,
-                        cudaStream_t* streams, bool enableStreaming);
+                        cudaStream_t* streams, bool enableStreaming, int streamSize=0);
+
+
+int h_mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, struct parameters* param);
+
+
+void h_interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd);
 
 
 #endif

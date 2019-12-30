@@ -80,10 +80,10 @@ void allocate_gpu_memory(struct particles* part, int grdSize, int fieldSize,
 /**
  * Creates an array of CUDA streams.
  */
-void createStreams(cudaStream_t** streams)
+void createStreams(cudaStream_t** streams, int nStreams)
 {
-    cudaStream_t* streamsArr = new cudaStream_t[N_STREAMS];
-    for (int i = 0; i < N_STREAMS; i++) {
+    cudaStream_t* streamsArr = new cudaStream_t[nStreams];
+    for (int i = 0; i < nStreams; i++) {
         cudaStreamCreate(&streamsArr[i]);
     }
     *streams = streamsArr;
@@ -262,9 +262,9 @@ void free_gpu_memory(particles_pointers* p_p, ids_pointers* i_p, grd_pointers* g
 /**
  * Destroys streams in an array of CUDA streams.
  */
-void destroyStreams(cudaStream_t* streams)
+void destroyStreams(cudaStream_t* streams, int nStreams)
 {
-    for (int i = 0; i < N_STREAMS; i++) {
+    for (int i = 0; i < nStreams; i++) {
         cudaStreamDestroy(streams[i]);
     }
     delete[] streams;

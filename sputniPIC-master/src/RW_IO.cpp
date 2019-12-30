@@ -15,26 +15,46 @@ void readInputFile(struct parameters* param, int argc, char **argv)
     // /////////////////////
     // Read the command line
     if (argc < 2) {
-        std::cout << "Need to provide the input file for the sputniPIC simulation" << std::endl;
+        std::cout << "Need to provide the input file for the sputniPIC simulation." << std::endl;
+        std::cout << "Usage: ./bin/sputniPIC.out inputfiles/GEM_3D.inp <flags>." << std::endl;
+        std::cout << "Possible flags: " << std::endl;
+        std::cout << "-m: GPU accelerate moverPC" << std::endl;
+        std::cout << "-i: GPU accelerate interpP2G" << std::endl;
+        std::cout << "-s <n>: Use pinned memory and async data movement, with n streams" << std::endl;
+        std::cout << "-c: Use combined kernels (implicitly adds -i and -m)" << std::endl;
         exit (EXIT_FAILURE);
     }
-    else if (argc < 3) {
+    else {
         param->inputfile = argv[1];
         param->RESTART = false;
-    } else {
-        if (strcmp(argv[1], "restart") == 0) {
-            param->inputfile = argv[2];
-            param->RESTART = true;
+        // Check flags
+        for (int i = 0; i < argc; i++) {
+            if (strcmp(argv[i], "-m") == 0) {
+                param->gpuMover = true;
+            }
+            else if (strcmp(argv[i], "-i") == 0) {
+                param->gpuInterp = true;
+            }
+            else if (strcmp(argv[i], "-s") == 0) {
+                param->streamsEnabled = true;
+                if (i == argc - 1) {
+                    std::cout << "Error when providing command line arguments" << std::endl;
+                    exit (EXIT_FAILURE);
+                }
+                try {
+                    param->nStreams = std::stoi(argv[i+1]);
+                } catch (std::invalid_argument const &e) {
+                    std::cout << "Error when providing command line arguments" << std::endl;
+                    exit (EXIT_FAILURE);
+                } catch (std::out_of_range const &e){
+                    std::cout << "Integer overflow: std::out_of_range thrown" << '\n';
+                    exit (EXIT_FAILURE);
+                }
+            }
+            else if (strcmp(argv[i], "-c") == 0) {
+                param->combinedKernels = true;
+            }
         }
-        else if (strcmp(argv[2], "restart") == 0) {
-            param->inputfile = argv[1];
-            param->RESTART = true;
-        }
-        else {
-            std::cout << "Error when providing command line arguments" << std::endl;
-            exit (EXIT_FAILURE);
-        }
-        
     }
     // /////////////////////
     // Loading the input file
@@ -298,6 +318,11 @@ void printParameters(struct parameters* param)
     std::cout << "Time step                = " << param->dt << std::endl;
     std::cout << "Number of cycles         = " << param->ncycles << std::endl;
     std::cout << "Results saved in: " << param->SaveDirName << std::endl;
+    std::cout << "Mover performed on " << (param->gpuMover ? "GPU" : "CPU") << std::endl;
+    std::cout << "Interp performed on " << (param->gpuInterp ? "GPU" : "CPU") << std::endl;
+    std::cout << "Streaming " << (param->streamsEnabled ? "enabled" : "disabled") << std::endl;
+    std::cout << "nStreams: " << param->nStreams << std::endl;
+    std::cout << "Combined kernels: " << (param->combinedKernels ? "True" : "False") << std::endl;
 }
 
 
