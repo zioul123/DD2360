@@ -76,6 +76,7 @@ void particle_allocate(struct parameters* param, struct particles* part, int is,
         part->w = new FPpart[npmax];
         // allocate charge = q * statistical weight
         part->q = new FPinterp[npmax];
+        std::cout << "In [particle_allocate]: Allocation of CPU (non-pinned) memory for species " << is << " done" << std::endl;
     }
     else if (enableStreaming)
     {
@@ -86,6 +87,7 @@ void particle_allocate(struct parameters* param, struct particles* part, int is,
         cudaHostAlloc(&part->v, sizeof(FPpart) * npmax, cudaHostAllocDefault);
         cudaHostAlloc(&part->w, sizeof(FPpart) * npmax, cudaHostAllocDefault);
         cudaHostAlloc(&part->q, sizeof(FPinterp) * npmax, cudaHostAllocDefault);
+        std::cout << "In [particle_allocate]: Allocation of CPU (pinned) memory for species " << is << " done" << std::endl;
     }
     
 }
@@ -104,6 +106,7 @@ void particle_deallocate(struct particles* part, bool enableStreaming)
         delete[] part->v;
         delete[] part->w;
         delete[] part->q; 
+        std::cout << "In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done" << std::endl;
     }
     else if (enableStreaming)
     {
@@ -114,6 +117,7 @@ void particle_deallocate(struct particles* part, bool enableStreaming)
         cudaFreeHost(part->v);
         cudaFreeHost(part->w);
         cudaFreeHost(part->q); 
+        std::cout << "In [particle_deallocate]: Dellocation of CPU memory (pinned) done" << std::endl;
     }
 }
 
@@ -282,7 +286,7 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
              cudaStream_t* streams, bool enableStreaming, int streamSize)
 {
     // print species and subcycling
-    std::cout << std::endl << "***  In [mover_PC]: MOVER with SUBCYCLYING "<< param->n_sub_cycles
+    std::cout << std::endl << "***  In [mover_PC]: MOVER with SUBCYCLING "<< param->n_sub_cycles
               << " - species " << part->species_ID << " ***" << std::endl;
 
     // "global" environment variables
@@ -346,6 +350,7 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
                 copy_particles_async(part, p_p, GPU_TO_CPU_MOVER, 
                                      batch_start + stream_start, batch_start + stream_end,
                                      streams[stream_no]);
+                std::cout << "Stream " << stream_no << "launched" << std::endl;
             }
         }
         cudaDeviceSynchronize();
@@ -569,6 +574,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
                 // Launch the kernel to perform on the stream
                 g_interp_particle<<<(stream_size+TPB-1)/TPB, TPB, 0, streams[stream_no]>>>(
                         stream_start, stream_size, *grd, p_p, i_p, g_p);
+                std::cout << "Stream " << stream_no << "launched" << std::endl;
             }
         }
         cudaDeviceSynchronize();
@@ -959,6 +965,7 @@ void combinedMoveInterp(struct particles* part, struct EMfield* field, struct gr
                 copy_particles_async(part, p_p, GPU_TO_CPU_MOVER, 
                                      batch_start + stream_start, batch_start + stream_end,
                                      streams[stream_no]);
+                std::cout << "Stream " << stream_no << "launched" << std::endl;
             }
         }
         cudaDeviceSynchronize();
@@ -978,8 +985,8 @@ void combinedMoveInterp(struct particles* part, struct EMfield* field, struct gr
 int h_mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, struct parameters* param)
 {
     // print species and subcycling
-    std::cout << "***  MOVER with SUBCYCLYING "<< param->n_sub_cycles << " - species " << part->species_ID << " ***" << std::endl;
- 
+    std::cout << "*** In [h_mover_PC]: MOVER with SUBCYCLYING "<< param->n_sub_cycles << " - species " << part->species_ID << " ***" << std::endl;
+    
     // auxiliary variables
     FPpart dt_sub_cycling = (FPpart) param->dt/((double) part->n_sub_cycles);
     FPpart dto2 = .5*dt_sub_cycling, qomdt2 = part->qom*dto2/param->c;

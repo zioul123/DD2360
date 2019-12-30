@@ -112,16 +112,25 @@ int main(int argc, char **argv){
         {
             // implicit mover
             iMover = cpuSecond(); // start timer for mover
-            for (int is=0; is < param.ns; is++)
-                // mover_PC(&part[is],&field,&grd,&param);
-                mover_PC(&part[is], &field, &grd, &param, p_p, f_p, g_p, grdSize, field_size, streams, param.streamsEnabled, streamSize);
+
+            if (param.gpuMover) 
+                for (int is=0; is < param.ns; is++)
+                    mover_PC(&part[is], &field, &grd, &param, p_p, f_p, g_p, grdSize, field_size, streams, param.streamsEnabled, streamSize);
+            else if (!param.gpuMover)
+                for (int is=0; is < param.ns; is++)
+                    h_mover_PC(&part[is], &field, &grd, &param);
+
             eMover += (cpuSecond() - iMover); // stop timer for mover
             
             // interpolation particle to grid
             iInterp = cpuSecond(); // start timer for the interpolation step
             // interpolate species
-            for (int is=0; is < param.ns; is++)
-                interpP2G(&part[is],&ids[is],&grd, p_p, i_p, g_p, grdSize, rhocSize, streams, param.streamsEnabled, streamSize);
+            if (param.gpuInterp)
+                for (int is=0; is < param.ns; is++)
+                    interpP2G(&part[is],&ids[is],&grd, p_p, i_p, g_p, grdSize, rhocSize, streams, param.streamsEnabled, streamSize);
+            else if (!param.gpuInterp)
+                for (int is=0; is < param.ns; is++)
+                    h_interpP2G(&part[is], &ids[is], &grd);
             // Continue execution outside the if-else clause
         }
         // This version calls the function that combines movement and interp of particles
@@ -186,6 +195,12 @@ int main(int argc, char **argv){
     std::cout << "   Tot. Simulation Time (s) = " << iElaps << std::endl;
     std::cout << "   Mover Time / Cycle   (s) = " << eMover/param.ncycles << std::endl;
     std::cout << "   Interp. Time / Cycle (s) = " << eInterp/param.ncycles  << std::endl;
+    std::cout << "**************************************" << std::endl;
+    std::cout << "   Mover performed on " << (param.gpuMover ? "GPU" : "CPU") << std::endl;
+    std::cout << "   Interp performed on " << (param.gpuInterp ? "GPU" : "CPU") << std::endl;
+    std::cout << "   Streaming " << (param.streamsEnabled ? "enabled" : "disabled") << std::endl;
+    std::cout << "   nStreams: " << param.nStreams << std::endl;
+    std::cout << "   Combined kernels: " << (param.combinedKernels ? "True" : "False") << std::endl;
     std::cout << "**************************************" << std::endl;
     
     // exit

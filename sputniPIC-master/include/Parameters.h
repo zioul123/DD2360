@@ -14,15 +14,15 @@ struct parameters {
      * Mode properties
      */
     /** Whether mover uses GPU. */
-    bool gpuMover;
+    bool gpuMover = false;
     /** Whether interp uses GPU. */
-    bool gpuInterp;
+    bool gpuInterp = false;
     /** Whether we are using async/streaming. */
-    bool streamsEnabled;
+    bool streamsEnabled = false;
     /** Number of streams to use. */
-    int nStreams;
+    int nStreams = 0;
     /** Whether we are using combined kernels. */
-    bool combinedKernels;
+    bool combinedKernels = false;
 
     /*
      * Simulation properties

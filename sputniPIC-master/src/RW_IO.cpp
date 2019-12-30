@@ -24,18 +24,9 @@ void readInputFile(struct parameters* param, int argc, char **argv)
         std::cout << "-c: Use combined kernels (implicitly adds -i and -m)" << std::endl;
         exit (EXIT_FAILURE);
     }
-    else if (argc < 3) {
+    else {
         param->inputfile = argv[1];
         param->RESTART = false;
-    } else {
-        if (strcmp(argv[1], "restart") == 0) {
-            param->inputfile = argv[2];
-            param->RESTART = true;
-        }
-        else if (strcmp(argv[2], "restart") == 0) {
-            param->inputfile = argv[1];
-            param->RESTART = true;
-        }        
         // Check flags
         for (int i = 0; i < argc; i++) {
             if (strcmp(argv[i], "-m") == 0) {
@@ -327,6 +318,11 @@ void printParameters(struct parameters* param)
     std::cout << "Time step                = " << param->dt << std::endl;
     std::cout << "Number of cycles         = " << param->ncycles << std::endl;
     std::cout << "Results saved in: " << param->SaveDirName << std::endl;
+    std::cout << "Mover performed on " << (param->gpuMover ? "GPU" : "CPU") << std::endl;
+    std::cout << "Interp performed on " << (param->gpuInterp ? "GPU" : "CPU") << std::endl;
+    std::cout << "Streaming " << (param->streamsEnabled ? "enabled" : "disabled") << std::endl;
+    std::cout << "nStreams: " << param->nStreams << std::endl;
+    std::cout << "Combined kernels: " << (param->combinedKernels ? "True" : "False") << std::endl;
 }
 
 
