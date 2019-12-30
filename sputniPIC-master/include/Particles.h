@@ -103,4 +103,13 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
                particles_pointers, ids_pointers, grd_pointers, int, int, 
                cudaStream_t* streams, bool enableStreaming=true);
 
+
+/** Combined function - This combines mover_PC and interpP2G. */
+void combinedMoveInterp(struct particles* part, struct EMfield* field, struct grid* grd, 
+                        struct interpDensSpecies* ids, struct parameters* param, 
+                        particles_pointers p_p, field_pointers f_p, grd_pointers g_p, ids_pointers i_p, 
+                        int grdSize, int field_size, int rhocSize,
+                        cudaStream_t* streams, bool enableStreaming);
+
+
 #endif

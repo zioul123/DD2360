@@ -106,22 +106,40 @@ int main(int argc, char **argv){
         // set to zero the densities - needed for interpolation
         setZeroDensities(&idn,ids,&grd,param.ns);
         
-        
-        
-        // implicit mover
-        iMover = cpuSecond(); // start timer for mover
-        for (int is=0; is < param.ns; is++)
-            // mover_PC(&part[is],&field,&grd,&param);
-            mover_PC(&part[is], &field, &grd, &param, p_p, f_p, g_p, grdSize, field_size, streams, STREAMS_ENABLED);
+        // This version calls the mover_PC and interpP2G functions in sequence
+        if (!KERNELS_COMBINED)
+        {
+            // implicit mover
+            iMover = cpuSecond(); // start timer for mover
+            for (int is=0; is < param.ns; is++)
+                // mover_PC(&part[is],&field,&grd,&param);
+                mover_PC(&part[is], &field, &grd, &param, p_p, f_p, g_p, grdSize, field_size, streams, STREAMS_ENABLED);
+            eMover += (cpuSecond() - iMover); // stop timer for mover
+            
+            // interpolation particle to grid
+            iInterp = cpuSecond(); // start timer for the interpolation step
+            // interpolate species
+            for (int is=0; is < param.ns; is++)
+                interpP2G(&part[is],&ids[is],&grd, p_p, i_p, g_p, grdSize, rhocSize, streams, STREAMS_ENABLED);
+            // Continue execution outside the if-else clause
+        }
+        // This version calls the function that combines movement and interp of particles
+        else if (KERNELS_COMBINED)
+        {
+            // implicit mover
+            iMover = cpuSecond(); // start timer for mover
+            for (int is=0; is < param.ns; is++)
+                // mover_PC(&part[is],&field,&grd,&param);
+                combinedMoveInterp(&part[is], &field, &grd, &ids[is], &param, 
+                                   p_p, f_p, g_p, i_p, grdSize, field_size, rhocSize, 
+                                   streams, STREAMS_ENABLED);
+            eMover += (cpuSecond() - iMover); // stop timer for mover
+            
+            // interpolation particle to grid was complete already
+            iInterp = cpuSecond(); // start timer for the interpolation step
+            // Continue execution outside the if-else clause
+        }
 
-        eMover += (cpuSecond() - iMover); // stop timer for mover
-        
-        
-        // interpolation particle to grid
-        iInterp = cpuSecond(); // start timer for the interpolation step
-        // interpolate species
-        for (int is=0; is < param.ns; is++)
-            interpP2G(&part[is],&ids[is],&grd, p_p, i_p, g_p, grdSize, rhocSize, streams, STREAMS_ENABLED);
         // apply BC to interpolated densities
         for (int is=0; is < param.ns; is++)
             applyBCids(&ids[is],&grd,&param);
@@ -137,7 +155,6 @@ int main(int argc, char **argv){
             VTK_Write_Vectors(cycle, &grd,&field);
             VTK_Write_Scalars(cycle, &grd,ids,&idn);
         }
-    
     }  // end of one PIC cycle
     
     /// Release the resources

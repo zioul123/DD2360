@@ -22,7 +22,7 @@ void allocate_gpu_memory(struct particles* part, int grdSize, int fieldSize,
     long num_gpu_particles = part->npmax;
     if (part->npmax > MAX_GPU_PARTICLES) {
         num_gpu_particles = MAX_GPU_PARTICLES;
-        std::cout << "In [allocate_interp_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. "
+        std::cout << "In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. "
                      "Allocating only up to MAX_GPU_PARTICLES particles..." << std::endl;
     }
 
@@ -74,6 +74,7 @@ void allocate_gpu_memory(struct particles* part, int grdSize, int fieldSize,
     f_p->Bxn_flat = field_copies[3];
     f_p->Byn_flat = field_copies[4];
     f_p->Bzn_flat = field_copies[5];
+    std::cout << "In [allocate_gpu_memory]: All GPU memory allocation: done" << std::endl;
 }
 
 /**
@@ -86,6 +87,7 @@ void createStreams(cudaStream_t** streams)
         cudaStreamCreate(&streamsArr[i]);
     }
     *streams = streamsArr;
+    std::cout << "In [createStreams]: All streams created." << std::endl;
 }
 
 /**
