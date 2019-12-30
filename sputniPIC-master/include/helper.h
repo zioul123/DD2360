@@ -7,6 +7,7 @@
 #define STREAM_SIZE 4718592 // Number of particles per stream, chosen as 1/3 max particles.
 #define N_STREAMS 3  // Upper limit on the number of streams. This is equal to MAX_GPU_PARTICLES / STREAM_SIZE.
 #define STREAMS_ENABLED true // Change to false to disable streams
+#define KERNELS_COMBINED true // Change to false to use separate kernels
 
 // Modes for running the copy_particles function
 enum PICMode 
