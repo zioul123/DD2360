@@ -350,7 +350,6 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
                 copy_particles_async(part, p_p, GPU_TO_CPU_MOVER, 
                                      batch_start + stream_start, batch_start + stream_end,
                                      streams[stream_no]);
-                std::cout << "Stream " << stream_no << "launched" << std::endl;
             }
         }
         cudaDeviceSynchronize();
@@ -574,7 +573,6 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
                 // Launch the kernel to perform on the stream
                 g_interp_particle<<<(stream_size+TPB-1)/TPB, TPB, 0, streams[stream_no]>>>(
                         stream_start, stream_size, *grd, p_p, i_p, g_p);
-                std::cout << "Stream " << stream_no << "launched" << std::endl;
             }
         }
         cudaDeviceSynchronize();
@@ -965,7 +963,6 @@ void combinedMoveInterp(struct particles* part, struct EMfield* field, struct gr
                 copy_particles_async(part, p_p, GPU_TO_CPU_MOVER, 
                                      batch_start + stream_start, batch_start + stream_end,
                                      streams[stream_no]);
-                std::cout << "Stream " << stream_no << "launched" << std::endl;
             }
         }
         cudaDeviceSynchronize();
