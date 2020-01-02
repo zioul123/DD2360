@@ -9,8 +9,7 @@
 #include <cmath>
 #include <algorithm>
 
-#define TPB 32
-
+extern int TPB;
 
 /** "Global" environment auxilliary variables necessary to run h_move_particle() */
 typedef struct {

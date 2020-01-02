@@ -32,6 +32,8 @@
 
 #include "helper.h"  // our helper functions
 
+int TPB = 32; // Modified by the readInputFile function
+
 int main(int argc, char **argv){
     
     // Read the inputfile and fill the param structure
@@ -208,6 +210,7 @@ int main(int argc, char **argv){
     std::cout << "   Streaming " << (param.streamsEnabled ? "enabled" : "disabled") << std::endl;
     std::cout << "   nStreams: " << param.nStreams << std::endl;
     std::cout << "   Combined kernels: " << (param.combinedKernels ? "True" : "False") << std::endl;
+    std::cout << "   TPB: " << TPB << std::endl;
     std::cout << "**************************************" << std::endl;
     
     // exit

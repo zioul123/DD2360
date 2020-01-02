@@ -8,6 +8,8 @@
 #include "InterpDensNet.h"
 #include "EMfield.h"
 
+extern int TPB;
+
 /** read the inputfile given via the command line */
 void readInputFile(struct parameters* param, int argc, char **argv)
 {
@@ -22,6 +24,7 @@ void readInputFile(struct parameters* param, int argc, char **argv)
         std::cout << "-i: GPU accelerate interpP2G" << std::endl;
         std::cout << "-s <n>: Use pinned memory and async data movement, with n streams" << std::endl;
         std::cout << "-c: Use combined kernels (implicitly adds -i and -m)" << std::endl;
+        std::cout << "-t <TPB>: Use the specified TPB (default 32)" << std::endl;
         exit (EXIT_FAILURE);
     }
     else {
@@ -43,6 +46,25 @@ void readInputFile(struct parameters* param, int argc, char **argv)
                 }
                 try {
                     param->nStreams = std::stoi(argv[i+1]);
+                } catch (std::invalid_argument const &e) {
+                    std::cout << "Error when providing command line arguments" << std::endl;
+                    exit (EXIT_FAILURE);
+                } catch (std::out_of_range const &e){
+                    std::cout << "Integer overflow: std::out_of_range thrown" << '\n';
+                    exit (EXIT_FAILURE);
+                }
+            }
+            else if (strcmp(argv[i], "-t") == 0) {
+                if (i == argc - 1) {
+                    std::cout << "Error when providing command line arguments" << std::endl;
+                    exit (EXIT_FAILURE);
+                }
+                try {
+                    int tpb_candidate = std::stoi(argv[i+1]);
+                    if (tpb_candidate % 2 == 0 || tpb_candidate <= 0)
+                        TPB = std::stoi(argv[i+1]);
+                    else
+                        std::cout << "TPB provided was not a multiple of 2. Proceeding with TPB = 32." << std::endl;
                 } catch (std::invalid_argument const &e) {
                     std::cout << "Error when providing command line arguments" << std::endl;
                     exit (EXIT_FAILURE);
@@ -323,6 +345,7 @@ void printParameters(struct parameters* param)
     std::cout << "Streaming " << (param->streamsEnabled ? "enabled" : "disabled") << std::endl;
     std::cout << "nStreams: " << param->nStreams << std::endl;
     std::cout << "Combined kernels: " << (param->combinedKernels ? "True" : "False") << std::endl;
+    std::cout << "Threads per block = " << TPB << std::endl;
 }
 
 
