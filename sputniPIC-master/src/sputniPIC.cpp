@@ -43,8 +43,10 @@ int main(int argc, char **argv){
     
     // Timing variables
     double iStart = cpuSecond();
-    double iMover, iInterp, eMover = 0.0, eInterp= 0.0;
+    double iMover, iInterp, iOutput, iMemory, eMover = 0.0, eInterp= 0.0, eOutput = 0.0, eMemory = 0.0;
     
+    iMemory = cpuSecond();
+
     // Set-up the grid information
     grid grd;
     setGrid(&param, &grd);
@@ -91,6 +93,7 @@ int main(int argc, char **argv){
      // on the GPU memory
     std::cout << "In [main]: All GPU memory allocation: done" << std::endl;
 
+    eMemory += (cpuSecond() - iMemory);
 
     // -------------------------------------------------------------- //
 
@@ -162,8 +165,10 @@ int main(int argc, char **argv){
         
         // write E, B, rho to disk
         if (cycle%param.FieldOutputCycle==0){
+            iOutput = cpuSecond();
             VTK_Write_Vectors(cycle, &grd,&field);
             VTK_Write_Scalars(cycle, &grd,ids,&idn);
+            eOutput += (cpuSecond() - iOutput);
         }
     }  // end of one PIC cycle
     
@@ -193,6 +198,8 @@ int main(int argc, char **argv){
     std::cout << std::endl;
     std::cout << "**************************************" << std::endl;
     std::cout << "   Tot. Simulation Time (s) = " << iElaps << std::endl;
+    std::cout << "   Tot. Simulation Time minus output (s) = " << iElaps - eOutput << std::endl;
+    std::cout << "   Memory allocation time  (s) = " << eMemory << std::endl;
     std::cout << "   Mover Time / Cycle   (s) = " << eMover/param.ncycles << std::endl;
     std::cout << "   Interp. Time / Cycle (s) = " << eInterp/param.ncycles  << std::endl;
     std::cout << "**************************************" << std::endl;

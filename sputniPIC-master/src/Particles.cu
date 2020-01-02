@@ -286,7 +286,7 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
              cudaStream_t* streams, bool enableStreaming, int streamSize)
 {
     // print species and subcycling
-    std::cout << std::endl << "***  In [mover_PC]: MOVER with SUBCYCLING "<< param->n_sub_cycles
+    std::cout << "***  In [mover_PC]: MOVER with SUBCYCLING "<< param->n_sub_cycles
               << " - species " << part->species_ID << " ***" << std::endl;
 
     // "global" environment variables
@@ -521,7 +521,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
                cudaStream_t* streams, bool enableStreaming, int streamSize)
 {
     // Print species
-    std::cout << std::endl << "***  In [interpP2G]: Interpolating "
+    std::cout << "***  In [interpP2G]: Interpolating "
               << " - species " << part->species_ID << " ***" << std::endl;
 
     /*
@@ -896,7 +896,7 @@ void combinedMoveInterp(struct particles* part, struct EMfield* field, struct gr
              cudaStream_t* streams, bool enableStreaming, int streamSize) 
 {
     // print species and subcycling
-    std::cout << std::endl << "***  In [combinedMoveInterp]: Moving with SUBCYCLING "<< param->n_sub_cycles
+    std::cout << "***  In [combinedMoveInterp]: Moving with SUBCYCLING "<< param->n_sub_cycles
               << " and interpolating - species " << part->species_ID << " ***" << std::endl;
 
     // "global" environment variables
@@ -1143,7 +1143,7 @@ int h_mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, 
 void h_interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd)
 {
     // Print species
-    std::cout << std::endl << "***  In [h_interpP2G]: Interpolating "
+    std::cout << "***  In [h_interpP2G]: Interpolating "
               << " - species " << part->species_ID << " ***" << std::endl;
     
     // arrays needed for interpolation
