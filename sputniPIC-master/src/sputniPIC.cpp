@@ -175,6 +175,7 @@ int main(int argc, char **argv){
     }  // end of one PIC cycle
     
     /// Release the resources
+    iMemory = cpuSecond();
     // deallocate field
     grid_deallocate(&grd);
     field_deallocate(&grd,&field);
@@ -193,6 +194,8 @@ int main(int argc, char **argv){
     free_gpu_memory(&p_p, &i_p, &g_p, &f_p);
     if (param.streamsEnabled) destroyStreams(streams, param.nStreams);
 
+    eMemory += (cpuSecond() - iMemory);
+
     // stop timer
     double iElaps = cpuSecond() - iStart;
     
@@ -201,7 +204,7 @@ int main(int argc, char **argv){
     std::cout << "**************************************" << std::endl;
     std::cout << "   Tot. Simulation Time (s) = " << iElaps << std::endl;
     std::cout << "   Tot. Simulation Time minus output (s) = " << iElaps - eOutput << std::endl;
-    std::cout << "   Memory allocation time  (s) = " << eMemory << std::endl;
+    std::cout << "   Memory allocation/deallocation time  (s) = " << eMemory << std::endl;
     std::cout << "   Mover Time / Cycle   (s) = " << eMover/param.ncycles << std::endl;
     std::cout << "   Interp. Time / Cycle (s) = " << eInterp/param.ncycles  << std::endl;
     std::cout << "**************************************" << std::endl;
