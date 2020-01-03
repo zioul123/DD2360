@@ -1,56 +1,72 @@
-======================================= RESULTS FOR GRADE E, D =======================================
+======================================= RESULTS FOR GRADE C =======================================
 ======================================= 2D_INCREASED INPUT FILE
 **************************************
-   Tot. Simulation Time (s) = 235.318
-   Mover Time / Cycle   (s) = 6.71942
-   Interp. Time / Cycle (s) = 15.0861
+   Tot. Simulation Time (s) = 171.378
+   Tot. Simulation Time minus output (s) = 170.993
+   Memory allocation/deallocation time  (s) = 17.2364
+   Mover Time / Cycle   (s) = 4.28301
+   Interp. Time / Cycle (s) = 11.0716
 **************************************
-==17646== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_2D_increased.inp
-==17646== Profiling result:
+   Mover performed on GPU
+   Interp performed on GPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 32
+**************************************
+==25237== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_2D_increased.inp -m -i
+==25237== Profiling result:
             Type  Time(%)      Time     Calls       Avg       Min       Max  Name
- GPU activities:   71.84%  93.8058s        80  1.17257s  261.89ms  2.30855s  g_interp_particle(int, grid, particles_pointers, ids_pointers, grd_pointers)
-                   16.58%  21.6442s        80  270.55ms  35.172ms  891.36ms  g_move_particle(int, int, int, grid, parameters, dt_info, particle_info, field_pointers, grd_pointers)
-                    7.26%  9.48073s      2880  3.2919ms  60.861us  17.010ms  [CUDA memcpy DtoH]
-                    4.32%  5.64579s      2880  1.9603ms  65.501us  9.1451ms  [CUDA memcpy HtoD]
-      API calls:   87.79%  115.502s       160  721.89ms  35.505ms  2.30887s  cudaDeviceSynchronize
-                   12.13%  15.9537s      5760  2.7697ms  67.098us  18.020ms  cudaMemcpy
-                    0.08%  108.27ms        36  3.0075ms  117.04us  102.81ms  cudaMalloc
-                    0.00%  5.3158ms       160  33.223us  29.451us  70.955us  cudaLaunchKernel
-                    0.00%  2.6725ms        42  63.630us  1.1890us  241.13us  cudaFree
-                    0.00%  430.01us        96  4.4790us     329ns  193.63us  cuDeviceGetAttribute
-                    0.00%  131.70us         1  131.70us  131.70us  131.70us  cuDeviceTotalMem
-                    0.00%  43.384us         1  43.384us  43.384us  43.384us  cuDeviceGetName
-                    0.00%  9.2200us         1  9.2200us  9.2200us  9.2200us  cuDeviceGetPCIBusId
-                    0.00%  2.6500us         3     883ns     370ns  1.7370us  cuDeviceGetCount
-                    0.00%  2.0170us         2  1.0080us     390ns  1.6270us  cuDeviceGet
-                    0.00%     650ns         1     650ns     650ns     650ns  cuDeviceGetUuid
-
-
+ GPU activities:   61.98%  93.7999s        80  1.17250s  261.95ms  2.30799s  g_interp_particle(int, int, grid, particles_pointers, ids_pointers, grd_pointers)
+                   19.20%  29.0531s      1840  15.790ms  68.348us  54.687ms  [CUDA memcpy HtoD]
+                   14.43%  21.8424s        80  273.03ms  35.389ms  899.42ms  g_move_particle(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, grd_pointers)
+                    4.39%  6.63627s       920  7.2133ms  60.925us  30.293ms  [CUDA memcpy DtoH]
+      API calls:   61.13%  93.8258s       160  586.41ms  5.5090us  2.30831s  cudaDeviceSynchronize
+                   38.68%  59.3594s      2760  21.507ms  242.80us  926.03ms  cudaMemcpy
+                    0.18%  276.33ms        27  10.234ms  177.08us  270.81ms  cudaMalloc
+                    0.01%  13.717ms       160  85.732us  40.071us  374.63us  cudaLaunchKernel
+                    0.00%  3.9822ms        27  147.49us  90.200us  724.68us  cudaFree
+                    0.00%  1.4000ms       192  7.2910us     297ns  323.81us  cuDeviceGetAttribute
+                    0.00%  239.24us         2  119.62us  111.69us  127.55us  cuDeviceTotalMem
+                    0.00%  104.77us         2  52.385us  38.462us  66.309us  cuDeviceGetName
+                    0.00%  20.522us         2  10.261us  7.1680us  13.354us  cuDeviceGetPCIBusId
+                    0.00%  9.0190us         4  2.2540us     314ns  7.8160us  cuDeviceGet
+                    0.00%  3.4150us         3  1.1380us     432ns  2.2980us  cuDeviceGetCount
+                    0.00%     993ns         2     496ns     380ns     613ns  cuDeviceGetUuid
 
 
 
 ======================================= 3D_INCREASED INPUT FILE
 **************************************
-   Tot. Simulation Time (s) = 625.611
-   Mover Time / Cycle   (s) = 20.5722
-   Interp. Time / Cycle (s) = 37.7421
+   Tot. Simulation Time (s) = 511.82
+   Tot. Simulation Time minus output (s) = 463.628
+   Memory allocation/deallocation time  (s) = 44.7035
+   Mover Time / Cycle   (s) = 14.9482
+   Interp. Time / Cycle (s) = 26.8592
 **************************************
-==18084== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp
-==18084== Profiling result:
+   Mover performed on GPU
+   Interp performed on GPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 32
+**************************************
+==26247== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -m -i
+==26247== Profiling result:
             Type  Time(%)      Time     Calls       Avg       Min       Max  Name
- GPU activities:   63.17%  222.793s       120  1.85661s  1.49486s  2.15495s  g_interp_particle(int, grid, particles_pointers, ids_pointers, grd_pointers)
-                   24.77%  87.3636s       120  728.03ms  225.30ms  1.81386s  g_move_particle(int, int, int, grid, parameters, dt_info, particle_info, field_pointers, grd_pointers)
-                    7.73%  27.2507s      4320  6.3080ms  342.38us  19.680ms  [CUDA memcpy DtoH]
-                    4.34%  15.2971s      4320  3.5410ms  365.01us  10.061ms  [CUDA memcpy HtoD]
-      API calls:   87.45%  310.238s       240  1.29266s  225.63ms  2.15527s  cudaDeviceSynchronize
-                   12.52%  44.4105s      8640  5.1401ms  320.44us  20.794ms  cudaMemcpy
-                    0.03%  103.63ms        36  2.8786ms  110.92us  98.338ms  cudaMalloc
-                    0.00%  7.9247ms       240  33.019us  28.807us  62.554us  cudaLaunchKernel
-                    0.00%  2.6984ms        42  64.248us  1.1880us  243.44us  cudaFree
-                    0.00%  443.52us        96  4.6200us     353ns  193.04us  cuDeviceGetAttribute
-                    0.00%  131.86us         1  131.86us  131.86us  131.86us  cuDeviceTotalMem
-                    0.00%  42.538us         1  42.538us  42.538us  42.538us  cuDeviceGetName
-                    0.00%  7.4360us         1  7.4360us  7.4360us  7.4360us  cuDeviceGetPCIBusId
-                    0.00%  2.7200us         3     906ns     363ns  1.7870us  cuDeviceGetCount
-                    0.00%  1.7620us         2     881ns     376ns  1.3860us  cuDeviceGet
-                    0.00%     643ns         1     643ns     643ns     643ns  cuDeviceGetUuid
+ GPU activities:   53.92%  222.817s       120  1.85681s  1.49527s  2.15467s  g_interp_particle(int, int, grid, particles_pointers, ids_pointers, grd_pointers)
+                   21.28%  87.9244s       120  732.70ms  226.16ms  1.81990s  g_move_particle(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, grd_pointers)
+                   19.06%  78.7615s      2360  33.374ms  1.0606ms  67.491ms  [CUDA memcpy HtoD]
+                    5.74%  23.7173s      1160  20.446ms  613.31us  54.281ms  [CUDA memcpy DtoH]
+      API calls:   53.43%  222.858s       240  928.58ms  8.5540us  2.15496s  cudaDeviceSynchronize
+                   46.49%  193.927s      3520  55.093ms  1.1118ms  1.84576s  cudaMemcpy
+                    0.07%  283.53ms        27  10.501ms  171.87us  278.18ms  cudaMalloc
+                    0.01%  23.553ms       240  98.136us  75.026us  231.33us  cudaLaunchKernel
+                    0.00%  4.0007ms        27  148.17us  96.330us  665.09us  cudaFree
+                    0.00%  1.4404ms       192  7.5020us     297ns  366.96us  cuDeviceGetAttribute
+                    0.00%  233.65us         2  116.82us  108.42us  125.23us  cuDeviceTotalMem
+                    0.00%  102.03us         2  51.012us  37.892us  64.133us  cuDeviceGetName
+                    0.00%  22.112us         2  11.056us  7.2480us  14.864us  cuDeviceGetPCIBusId
+                    0.00%  3.6320us         3  1.2100us     400ns  2.2110us  cuDeviceGetCount
+                    0.00%  2.7350us         4     683ns     323ns  1.5730us  cuDeviceGet
+                    0.00%  1.0500us         2     525ns     430ns     620ns  cuDeviceGetUuids  cuDeviceGetUuid
