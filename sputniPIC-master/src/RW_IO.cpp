@@ -75,6 +75,8 @@ void readInputFile(struct parameters* param, int argc, char **argv)
             }
             else if (strcmp(argv[i], "-c") == 0) {
                 param->combinedKernels = true;
+                param->gpuMover = true;
+                param->gpuInterp = true;
             }
         }
     }

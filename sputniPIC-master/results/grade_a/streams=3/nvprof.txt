@@ -1,0 +1,81 @@
+======================================= RESULTS FOR GRADE A - Streams = 3 =======================================
+======================================= 2D_INCREASED INPUT FILE
+**************************************
+   Tot. Simulation Time (s) = 155.129
+   Tot. Simulation Time minus output (s) = 140.672
+   Memory allocation/deallocation time  (s) = 18.4541
+   Mover Time / Cycle   (s) = 12.1723
+   Interp. Time / Cycle (s) = 0.0322477
+**************************************
+   Mover performed on GPU
+   Interp performed on GPU
+   Streaming enabled
+   nStreams: 3
+   Combined kernels: True
+   TPB: 32
+**************************************
+==27245== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_2D_increased.inp -c -s 3
+==27245== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   95.30%  115.604s       160  722.52ms  359.27ms  919.36ms  g_combined_kernel(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, ids_pointers, grd_pointers)
+                    2.65%  3.21485s      1920  1.6744ms  68.636us  3.5456ms  [CUDA memcpy HtoD]
+                    2.05%  2.48307s      1400  1.7736ms  60.796us  3.5319ms  [CUDA memcpy DtoH]
+      API calls:   98.46%  121.222s        80  1.51528s  378.17ms  2.88335s  cudaDeviceSynchronize
+                    0.91%  1.12355s        28  40.127ms  29.932ms  228.47ms  cudaHostAlloc
+                    0.39%  475.68ms      1240  383.61us  181.31us  8.2429ms  cudaMemcpy
+                    0.22%  267.96ms        28  9.5701ms  9.1945ms  12.031ms  cudaFreeHost
+                    0.01%  17.154ms      2080  8.2460us  4.7480us  72.829us  cudaMemcpyAsync
+                    0.00%  5.3041ms        27  196.45us  145.98us  713.39us  cudaMalloc
+                    0.00%  4.3720ms       160  27.325us  13.866us  227.63us  cudaLaunchKernel
+                    0.00%  3.5007ms        27  129.65us  99.030us  270.99us  cudaFree
+                    0.00%  1.4129ms       192  7.3590us     300ns  338.66us  cuDeviceGetAttribute
+                    0.00%  236.08us         2  118.04us  111.10us  124.97us  cuDeviceTotalMem
+                    0.00%  173.63us         3  57.876us  9.5420us  153.18us  cudaStreamCreate
+                    0.00%  107.58us         2  53.791us  38.324us  69.258us  cuDeviceGetName
+                    0.00%  47.670us         3  15.890us  3.7930us  39.565us  cudaStreamDestroy
+                    0.00%  23.301us         2  11.650us  7.9410us  15.360us  cuDeviceGetPCIBusId
+                    0.00%  4.1440us         3  1.3810us     344ns  2.5630us  cuDeviceGetCount
+                    0.00%  3.0300us         4     757ns     390ns  1.7280us  cuDeviceGet
+                    0.00%  1.1830us         2     591ns     455ns     728ns  cuDeviceGetUuid
+
+
+
+
+======================================= 3D_INCREASED INPUT FILE
+**************************************
+   Tot. Simulation Time (s) = 390.252
+   Tot. Simulation Time minus output (s) = 377.413
+   Memory allocation/deallocation time  (s) = 47.4841
+   Mover Time / Cycle   (s) = 32.8022
+   Interp. Time / Cycle (s) = 0.116308
+**************************************
+   Mover performed on GPU
+   Interp performed on GPU
+   Streaming enabled
+   nStreams: 3
+   Combined kernels: True
+   TPB: 32
+**************************************
+==27675== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -c -s 3
+==27675== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   95.31%  311.829s       360  866.19ms  613.32ms  1.14361s  g_combined_kernel(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, ids_pointers, grd_pointers)
+                    2.70%  8.82850s      3320  2.6592ms  822.83us  3.5031ms  [CUDA memcpy HtoD]
+                    1.99%  6.50180s      2600  2.5007ms  445.38us  3.5208ms  [CUDA memcpy DtoH]
+      API calls:   98.56%  326.255s       120  2.71879s  1.96061s  3.55093s  cudaDeviceSynchronize
+                    0.73%  2.42434s        28  86.584ms  72.262ms  242.62ms  cudaHostAlloc
+                    0.52%  1.71206s      1240  1.3807ms  717.05us  7.0016ms  cudaMemcpy
+                    0.17%  569.18ms        28  20.328ms  19.888ms  21.436ms  cudaFreeHost
+                    0.01%  39.364ms      4680  8.4110us  4.7990us  70.561us  cudaMemcpyAsync
+                    0.00%  8.7772ms       360  24.381us  14.060us  232.68us  cudaLaunchKernel
+                    0.00%  5.3982ms        27  199.93us  145.47us  786.53us  cudaMalloc
+                    0.00%  3.1001ms        27  114.82us  89.993us  236.66us  cudaFree
+                    0.00%  1.4148ms       192  7.3680us     298ns  339.52us  cuDeviceGetAttribute
+                    0.00%  229.42us         2  114.71us  108.72us  120.70us  cuDeviceTotalMem
+                    0.00%  110.11us         3  36.703us  7.5030us  94.258us  cudaStreamCreate
+                    0.00%  103.07us         2  51.535us  38.360us  64.711us  cuDeviceGetName
+                    0.00%  45.555us         3  15.185us  2.8180us  38.962us  cudaStreamDestroy
+                    0.00%  17.498us         2  8.7490us  8.3280us  9.1700us  cuDeviceGetPCIBusId
+                    0.00%  3.7770us         3  1.2590us     320ns  2.5570us  cuDeviceGetCount
+                    0.00%  3.5790us         4     894ns     340ns  1.9970us  cuDeviceGet
+                    0.00%  1.2420us         2     621ns     450ns     792ns  cuDeviceGetUuid
