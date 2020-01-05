@@ -115,27 +115,23 @@ int main(int argc, char **argv){
         // This version calls the mover_PC and interpP2G functions in sequence
         if (!param.combinedKernels)
         {
-            // implicit mover
-            iMover = cpuSecond(); // start timer for mover
-
-            if (param.gpuMover) 
-                for (int is=0; is < param.ns; is++)
+            for (int is=0; is < param.ns; is++) 
+            {
+                // implicit mover
+                iMover = cpuSecond(); // start timer for mover
+                if (param.gpuMover) 
                     mover_PC(&part[is], &field, &grd, &param, p_p, f_p, g_p, grdSize, field_size, streams, param.streamsEnabled, streamSize);
-            else if (!param.gpuMover)
-                for (int is=0; is < param.ns; is++)
+                else if (!param.gpuMover)
                     h_mover_PC(&part[is], &field, &grd, &param);
-
-            eMover += (cpuSecond() - iMover); // stop timer for mover
-            
-            // interpolation particle to grid
-            iInterp = cpuSecond(); // start timer for the interpolation step
-            // interpolate species
-            if (param.gpuInterp)
-                for (int is=0; is < param.ns; is++)
+                eMover += (cpuSecond() - iMover); // stop timer for mover
+                
+                // interpolation particle to grid
+                iInterp = cpuSecond(); // start timer for the interpolation step
+                if (param.gpuInterp)
                     interpP2G(&part[is],&ids[is],&grd, p_p, i_p, g_p, grdSize, rhocSize, streams, param.streamsEnabled, streamSize);
-            else if (!param.gpuInterp)
-                for (int is=0; is < param.ns; is++)
+                else if (!param.gpuInterp)
                     h_interpP2G(&part[is], &ids[is], &grd);
+            }
             // Continue execution outside the if-else clause
         }
         // This version calls the function that combines movement and interp of particles

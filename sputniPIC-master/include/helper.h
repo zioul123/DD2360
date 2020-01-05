@@ -8,9 +8,8 @@
 // Modes for running the copy_particles function
 enum PICMode 
 {
-    CPU_TO_GPU_MOVER,
-    CPU_TO_GPU_INTERP,
-    GPU_TO_CPU_MOVER
+    CPU_TO_GPU,
+    GPU_TO_CPU
 };
 
 void print(std::string str);
