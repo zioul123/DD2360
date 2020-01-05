@@ -547,6 +547,11 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
 
         if (!enableStreaming) 
         {
+            // Only copy the particles if more particles than fit on the GPU in one batch are being used. If
+            // n_batches is 1, then the particles will still be left on the GPU since the mover was run.
+            // Copy particles in batch to GPU (part in CPU to p_p on GPU) without streaming
+            if (n_batches > 1)
+                copy_particles(part, p_p, CPU_TO_GPU, batch_start, batch_end);
             // Launch the kernel to perform on the batch
             g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, *grd, p_p, i_p, g_p);
         }
@@ -563,6 +568,12 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
                 long stream_end = std::min(stream_start + streamSize, batch_size);  // max is batch_size
                 long stream_size = stream_end - stream_start;
 
+                // Copy particles in stream to GPU (part in CPU to p_p on GPU) with streaming.
+                // Again, don't copy if n_batches is 1, because particles are still left since mover was run.
+                if (n_batches > 1)
+                    copy_particles_async(part, p_p, CPU_TO_GPU, 
+                                         batch_start + stream_start, batch_start + stream_end,
+                                         streams[stream_no]);
                 // Launch the kernel to perform on the stream
                 g_interp_particle<<<(stream_size+TPB-1)/TPB, TPB, 0, streams[stream_no]>>>(
                         stream_start, stream_size, *grd, p_p, i_p, g_p);
