@@ -170,7 +170,7 @@ void copy_particles_async(struct particles* part, particles_pointers p_p, PICMod
         cudaMemcpyAsync(&p_p.q[from % MAX_GPU_PARTICLES], &part->q[from], batch_size * sizeof(FPinterp), cudaMemcpyHostToDevice, stream);
     }
     // Copy GPU arrays back to CPU
-    else if (mode == GPU_TO_CPU_MOVER) {
+    else if (mode == GPU_TO_CPU) {
         cudaMemcpyAsync(&part->x[from], &p_p.x[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost, stream);
         cudaMemcpyAsync(&part->y[from], &p_p.y[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost, stream);
         cudaMemcpyAsync(&part->z[from], &p_p.z[from % MAX_GPU_PARTICLES], batch_size * sizeof(FPpart), cudaMemcpyDeviceToHost, stream);
