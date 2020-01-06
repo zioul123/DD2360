@@ -317,12 +317,12 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
         if (!enableStreaming)
         {
             // Copy particles in batch to GPU (part in CPU to p_p on GPU) without streaming
-            copy_particles(part, p_p, CPU_TO_GPU_MOVER, batch_start, batch_end);
+            copy_particles(part, p_p, CPU_TO_GPU, batch_start, batch_end);
             // Launch the kernel to perform on the batch
             g_move_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, part->n_sub_cycles, part->NiterMover, 
                                                              *grd, *param, dt_inf, p_p, f_p, g_p);
             // Copy moved particles back (p_p in GPU back to part in CPU) without streaming
-            copy_particles(part, p_p, GPU_TO_CPU_MOVER, batch_start, batch_end);
+            copy_particles(part, p_p, GPU_TO_CPU, batch_start, batch_end);
         }
         else if (enableStreaming)
         {
@@ -338,7 +338,7 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
                 long stream_size = stream_end - stream_start;
 
                 // Copy particles in stream to GPU (part in CPU to p_p on GPU) with streaming
-                copy_particles_async(part, p_p, CPU_TO_GPU_MOVER, 
+                copy_particles_async(part, p_p, CPU_TO_GPU, 
                                      batch_start + stream_start, batch_start + stream_end, 
                                      streams[stream_no]);
                 // Launch the kernel to perform on the stream
@@ -346,7 +346,7 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
                         stream_start, stream_size, part->n_sub_cycles, part->NiterMover, 
                         *grd, *param, dt_inf, p_p, f_p, g_p);
                 // Copy moved particles back (p_p in GPU back to part in CPU) with streaming
-                copy_particles_async(part, p_p, GPU_TO_CPU_MOVER, 
+                copy_particles_async(part, p_p, GPU_TO_CPU, 
                                      batch_start + stream_start, batch_start + stream_end,
                                      streams[stream_no]);
             }
@@ -528,8 +528,8 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
      * 0. Assume grd is copied to GPU already
      * 1. Copy zeroed ids to GPU as initialization
      * 2. For each batch/full batch:
-     *     1. Copy relevant Particles to GPU
-     *     2. Launch kernels that modify ids in GPU memory
+     *     0. Assume relevant Particles are already in GPU
+     *     1. Launch kernels that modify ids in GPU memory
      * 3. Copy ids back to CPU memory
      */
 
@@ -547,8 +547,11 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
 
         if (!enableStreaming) 
         {
+            // Only copy the particles if more particles than fit on the GPU in one batch are being used. If
+            // n_batches is 1, then the particles will still be left on the GPU since the mover was run.
             // Copy particles in batch to GPU (part in CPU to p_p on GPU) without streaming
-            copy_particles(part, p_p, CPU_TO_GPU_INTERP, batch_start, batch_end);
+            if (n_batches > 1)
+                copy_particles(part, p_p, CPU_TO_GPU, batch_start, batch_end);
             // Launch the kernel to perform on the batch
             g_interp_particle<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, *grd, p_p, i_p, g_p);
         }
@@ -565,10 +568,12 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
                 long stream_end = std::min(stream_start + streamSize, batch_size);  // max is batch_size
                 long stream_size = stream_end - stream_start;
 
-                // Copy particles in stream to GPU (part in CPU to p_p on GPU) with streaming
-                copy_particles_async(part, p_p, CPU_TO_GPU_INTERP, 
-                                     batch_start + stream_start, batch_start + stream_end,
-                                     streams[stream_no]);
+                // Copy particles in stream to GPU (part in CPU to p_p on GPU) with streaming.
+                // Again, don't copy if n_batches is 1, because particles are still left since mover was run.
+                if (n_batches > 1)
+                    copy_particles_async(part, p_p, CPU_TO_GPU, 
+                                         batch_start + stream_start, batch_start + stream_end,
+                                         streams[stream_no]);
                 // Launch the kernel to perform on the stream
                 g_interp_particle<<<(stream_size+TPB-1)/TPB, TPB, 0, streams[stream_no]>>>(
                         stream_start, stream_size, *grd, p_p, i_p, g_p);
@@ -930,12 +935,12 @@ void combinedMoveInterp(struct particles* part, struct EMfield* field, struct gr
         if (!enableStreaming)
         {
             // Copy particles in batch to GPU (part in CPU to p_p on GPU) without streaming
-            copy_particles(part, p_p, CPU_TO_GPU_INTERP, batch_start, batch_end);
+            copy_particles(part, p_p, CPU_TO_GPU, batch_start, batch_end);
             // Launch the movement kernel to perform on the batch
             g_combined_kernel<<<(batch_size+TPB-1)/TPB, TPB>>>(0, batch_size, part->n_sub_cycles, part->NiterMover, 
                                                                *grd, *param, dt_inf, p_p, f_p, i_p, g_p);
             // Copy moved particles back (p_p in GPU back to part in CPU) without streaming
-            copy_particles(part, p_p, GPU_TO_CPU_MOVER, batch_start, batch_end);
+            copy_particles(part, p_p, GPU_TO_CPU, batch_start, batch_end);
         }
         else if (enableStreaming)
         {
@@ -951,7 +956,7 @@ void combinedMoveInterp(struct particles* part, struct EMfield* field, struct gr
                 long stream_size = stream_end - stream_start;
 
                 // Copy particles in stream to GPU (part in CPU to p_p on GPU) with streaming
-                copy_particles_async(part, p_p, CPU_TO_GPU_INTERP, 
+                copy_particles_async(part, p_p, CPU_TO_GPU, 
                                      batch_start + stream_start, batch_start + stream_end, 
                                      streams[stream_no]);
                 // Launch the kernel to perform on the stream
@@ -959,7 +964,7 @@ void combinedMoveInterp(struct particles* part, struct EMfield* field, struct gr
                         stream_start, stream_size, part->n_sub_cycles, part->NiterMover, 
                         *grd, *param, dt_inf, p_p, f_p, i_p, g_p);
                 // Copy moved particles back (p_p in GPU back to part in CPU) with streaming
-                copy_particles_async(part, p_p, GPU_TO_CPU_MOVER, 
+                copy_particles_async(part, p_p, GPU_TO_CPU, 
                                      batch_start + stream_start, batch_start + stream_end,
                                      streams[stream_no]);
             }
