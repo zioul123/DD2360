@@ -131,6 +131,7 @@ int main(int argc, char **argv){
                     interpP2G(&part[is],&ids[is],&grd, p_p, i_p, g_p, grdSize, rhocSize, streams, param.streamsEnabled, streamSize);
                 else if (!param.gpuInterp)
                     h_interpP2G(&part[is], &ids[is], &grd);
+                eInterp += (cpuSecond() - iInterp); // stop timer for interpolation
             }
             // Continue execution outside the if-else clause
         }
@@ -145,12 +146,9 @@ int main(int argc, char **argv){
                                    p_p, f_p, g_p, i_p, grdSize, field_size, rhocSize, 
                                    streams, param.streamsEnabled, streamSize);
             eMover += (cpuSecond() - iMover); // stop timer for mover
-            
-            // interpolation particle to grid was complete already
-            iInterp = cpuSecond(); // start timer for the interpolation step
             // Continue execution outside the if-else clause
         }
-
+        iInterp = cpuSecond(); // start timer for the interpolation step
         // apply BC to interpolated densities
         for (int is=0; is < param.ns; is++)
             applyBCids(&ids[is],&grd,&param);
