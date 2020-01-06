@@ -1,0 +1,230 @@
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 16384000	 (MAX = 16384000)  QOM = -64
+Number of particles of species 1 = 16384000	 (MAX = 16384000)  QOM = 1
+Number of particles of species 2 = 16384000	 (MAX = 16384000)  QOM = -64
+Number of particles of species 3 = 16384000	 (MAX = 16384000)  QOM = 1
+x-Length                 = 40
+y-Length                 = 20
+z-Length                 = 1
+Number of cells (x)      = 256
+Number of cells (y)      = 128
+Number of cells (z)      = 1
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on GPU
+Interp performed on GPU
+Streaming enabled
+nStreams: 1
+Combined kernels: True
+Threads per block = 128
+In [particle_allocate]: Allocation of CPU (pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0195
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [createStreams]: All streams created.
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 0 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 1 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 2 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 3 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+
+***********************
+   cycle = 2
+***********************
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 0 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 1 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 2 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 3 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+
+***********************
+   cycle = 3
+***********************
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 0 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 1 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 2 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 3 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+
+***********************
+   cycle = 4
+***********************
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 0 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 1 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 2 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 3 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+
+***********************
+   cycle = 5
+***********************
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 0 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 1 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 2 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 3 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+
+***********************
+   cycle = 6
+***********************
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 0 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 1 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 2 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 3 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+
+***********************
+   cycle = 7
+***********************
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 0 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 1 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 2 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 3 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+
+***********************
+   cycle = 8
+***********************
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 0 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 1 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 2 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 3 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+
+***********************
+   cycle = 9
+***********************
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 0 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 1 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 2 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 3 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+
+***********************
+   cycle = 10
+***********************
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 0 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 1 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 2 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+***  In [combinedMoveInterp]: Moving with SUBCYCLING 1 and interpolating - species 3 ***
+====== In [combinedMoveInterp]: batch 1 of 2 (with streaming): done.
+====== In [combinedMoveInterp]: batch 2 of 2 (with streaming): done.
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+In [destroyStreams]: All CUDA Streams destroyed..
+
+**************************************
+   Tot. Simulation Time (s) = 111.227
+   Tot. Simulation Time minus output (s) = 100.59
+   Memory allocation/deallocation time  (s) = 19.6598
+   Mover Time / Cycle   (s) = 8.04036
+   Interp. Time / Cycle (s) = 0.0331029
+**************************************
+   Mover performed on GPU
+   Interp performed on GPU
+   Streaming enabled
+   nStreams: 1
+   Combined kernels: True
+   TPB: 128
+**************************************

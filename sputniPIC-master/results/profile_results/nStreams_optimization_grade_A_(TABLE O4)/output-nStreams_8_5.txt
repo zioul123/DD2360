@@ -215,11 +215,11 @@ In [free_gpu_memory]: all GPU memory freed..
 In [destroyStreams]: All CUDA Streams destroyed..
 
 **************************************
-   Tot. Simulation Time (s) = 100.947
-   Tot. Simulation Time minus output (s) = 100.544
-   Memory allocation/deallocation time  (s) = 19.5288
-   Mover Time / Cycle   (s) = 8.049
-   Interp. Time / Cycle (s) = 0.0331857
+   Tot. Simulation Time (s) = 115.857
+   Tot. Simulation Time minus output (s) = 101.427
+   Memory allocation/deallocation time  (s) = 20.2549
+   Mover Time / Cycle   (s) = 8.06327
+   Interp. Time / Cycle (s) = 0.0344023
 **************************************
    Mover performed on GPU
    Interp performed on GPU
