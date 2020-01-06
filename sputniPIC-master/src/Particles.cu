@@ -329,21 +329,27 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
             int streamSize = (n_streams - 1 + batch_size) / n_streams;
             for (int stream_no = 0; stream_no < n_streams; stream_no++) 
             {
-                // Compute stream size/bounds RELATIVE TO BATCH_START. In other words, to access the
-                // CPU array, the starting element is batch_start + stream_start. GPU accesses are done
-                // with CPU index % GPU_MAX_PARTICLES, so there is no need to convert the indices back.
                 long stream_start = stream_no * streamSize;
                 long stream_end = std::min(stream_start + streamSize, batch_size);  // max is batch_size
-                long stream_size = stream_end - stream_start;
-
                 // Copy particles in stream to GPU (part in CPU to p_p on GPU) with streaming
                 copy_particles_async(part, p_p, CPU_TO_GPU, 
                                      batch_start + stream_start, batch_start + stream_end, 
                                      streams[stream_no]);
+            }
+            for (int stream_no = 0; stream_no < n_streams; stream_no++) 
+            {
+                long stream_start = stream_no * streamSize;
+                long stream_end = std::min(stream_start + streamSize, batch_size);  // max is batch_size
+                long stream_size = stream_end - stream_start;
                 // Launch the kernel to perform on the stream
                 g_move_particle<<<(stream_size+TPB-1)/TPB, TPB, 0, streams[stream_no]>>>(
                         stream_start, stream_size, part->n_sub_cycles, part->NiterMover, 
                         *grd, *param, dt_inf, p_p, f_p, g_p);
+            }
+            for (int stream_no = 0; stream_no < n_streams; stream_no++) 
+            {
+                long stream_start = stream_no * streamSize;
+                long stream_end = std::min(stream_start + streamSize, batch_size);  // max is batch_size
                 // Copy moved particles back (p_p in GPU back to part in CPU) with streaming
                 copy_particles_async(part, p_p, GPU_TO_CPU, 
                                      batch_start + stream_start, batch_start + stream_end,
@@ -559,19 +565,20 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
             int streamSize = (n_streams - 1 + batch_size) / n_streams;
             for (int stream_no = 0; stream_no < n_streams; stream_no++) 
             {
-                // Compute stream size/bounds RELATIVE TO BATCH_START. In other words, to access the
-                // CPU array, the starting element is batch_start + stream_start. GPU accesses are done
-                // with CPU index % GPU_MAX_PARTICLES, so there is no need to convert the indices back.
                 long stream_start = stream_no * streamSize;
                 long stream_end = std::min(stream_start + streamSize, batch_size);  // max is batch_size
-                long stream_size = stream_end - stream_start;
-
                 // Copy particles in stream to GPU (part in CPU to p_p on GPU) with streaming.
                 // Again, don't copy if n_batches is 1, because particles are still left since mover was run.
                 if (n_batches > 1)
                     copy_particles_async(part, p_p, CPU_TO_GPU, 
                                          batch_start + stream_start, batch_start + stream_end,
                                          streams[stream_no]);
+            }
+            for (int stream_no = 0; stream_no < n_streams; stream_no++) 
+            {
+                long stream_start = stream_no * streamSize;
+                long stream_end = std::min(stream_start + streamSize, batch_size);  // max is batch_size
+                long stream_size = stream_end - stream_start;
                 // Launch the kernel to perform on the stream
                 g_interp_particle<<<(stream_size+TPB-1)/TPB, TPB, 0, streams[stream_no]>>>(
                         stream_start, stream_size, *grd, p_p, i_p, g_p);
@@ -945,21 +952,27 @@ void combinedMoveInterp(struct particles* part, struct EMfield* field, struct gr
             int streamSize = (n_streams - 1 + batch_size) / n_streams;
             for (int stream_no = 0; stream_no < n_streams; stream_no++) 
             {
-                // Compute stream size/bounds RELATIVE TO BATCH_START. In other words, to access the
-                // CPU array, the starting element is batch_start + stream_start. GPU accesses are done
-                // with CPU index % GPU_MAX_PARTICLES, so there is no need to convert the indices back.
                 long stream_start = stream_no * streamSize;
                 long stream_end = std::min(stream_start + streamSize, batch_size);  // max is batch_size
-                long stream_size = stream_end - stream_start;
-
                 // Copy particles in stream to GPU (part in CPU to p_p on GPU) with streaming
                 copy_particles_async(part, p_p, CPU_TO_GPU, 
                                      batch_start + stream_start, batch_start + stream_end, 
                                      streams[stream_no]);
+            }
+            for (int stream_no = 0; stream_no < n_streams; stream_no++) 
+            {
+                long stream_start = stream_no * streamSize;
+                long stream_end = std::min(stream_start + streamSize, batch_size);  // max is batch_size
+                long stream_size = stream_end - stream_start;
                 // Launch the kernel to perform on the stream
                 g_combined_kernel<<<(stream_size+TPB-1)/TPB, TPB, 0, streams[stream_no]>>>(
                         stream_start, stream_size, part->n_sub_cycles, part->NiterMover, 
                         *grd, *param, dt_inf, p_p, f_p, i_p, g_p);
+            }
+            for (int stream_no = 0; stream_no < n_streams; stream_no++) 
+            {
+                long stream_start = stream_no * streamSize;
+                long stream_end = std::min(stream_start + streamSize, batch_size);  // max is batch_size
                 // Copy moved particles back (p_p in GPU back to part in CPU) with streaming
                 copy_particles_async(part, p_p, GPU_TO_CPU, 
                                      batch_start + stream_start, batch_start + stream_end,
