@@ -1,0 +1,20 @@
+==784== NVPROF is profiling process 784, command: ./bin/sputniPIC.out inputfiles/GEM_2D.inp -t 32 -c
+==784== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_2D.inp -t 32 -c
+==784== Profiling result:
+"Type","Time(%)","Time","Calls","Avg","Min","Max","Name"
+,%,s,,ms,ms,ms,
+"GPU activities",82.925062,28.492638,40,712.315953,653.129340,770.669467,"g_combined_kernel(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, ids_pointers, grd_pointers)"
+"GPU activities",11.489521,3.947742,1080,3.655316,0.068252,20.980843,"[CUDA memcpy HtoD]"
+"GPU activities",5.585416,1.919121,680,2.822237,0.061021,14.024933,"[CUDA memcpy DtoH]"
+"API calls",99.221989,35.426643,1760,20.128774,0.243860,783.373258,"cudaMemcpy"
+"API calls",0.750046,0.267800,27,9.918500,0.190921,262.115568,"cudaMalloc"
+"API calls",0.010907,0.003894,40,0.097359,0.077654,0.274168,"cudaLaunchKernel"
+"API calls",0.010674,0.003811,27,0.141147,0.095821,0.638218,"cudaFree"
+"API calls",0.003888,0.001388,192,0.007230,0.000307,0.328212,"cuDeviceGetAttribute"
+"API calls",0.001455,0.000519,40,0.012987,0.007704,0.032869,"cudaDeviceSynchronize"
+"API calls",0.000650,0.000232,2,0.115964,0.107418,0.124510,"cuDeviceTotalMem"
+"API calls",0.000294,0.000105,2,0.052446,0.038032,0.066860,"cuDeviceGetName"
+"API calls",0.000075,0.000027,2,0.013325,0.006693,0.019957,"cuDeviceGetPCIBusId"
+"API calls",0.000011,0.000004,3,0.001319,0.000560,0.002277,"cuDeviceGetCount"
+"API calls",0.000009,0.000003,4,0.000782,0.000354,0.001888,"cuDeviceGet"
+"API calls",0.000004,0.000001,2,0.000636,0.000457,0.000815,"cuDeviceGetUuid"
