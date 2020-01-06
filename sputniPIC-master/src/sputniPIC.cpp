@@ -89,7 +89,6 @@ int main(int argc, char **argv){
     allocate_gpu_memory(part, grdSize, field_size, &p_p, &i_p, &g_p, &f_p);  // Allocates maximum MAX_GPU_PARTICLES particles
     // Declare CUDA streams if enabled
     cudaStream_t* streams;
-    int streamSize = param.nStreams ? MAX_GPU_PARTICLES / param.nStreams : 0;
     if (param.streamsEnabled) createStreams(&streams, param.nStreams);
 
      // on the GPU memory
@@ -120,7 +119,7 @@ int main(int argc, char **argv){
                 // implicit mover
                 iMover = cpuSecond(); // start timer for mover
                 if (param.gpuMover) 
-                    mover_PC(&part[is], &field, &grd, &param, p_p, f_p, g_p, grdSize, field_size, streams, param.streamsEnabled, streamSize);
+                    mover_PC(&part[is], &field, &grd, &param, p_p, f_p, g_p, grdSize, field_size, streams, param.streamsEnabled, param.nStreams);
                 else if (!param.gpuMover)
                     h_mover_PC(&part[is], &field, &grd, &param);
                 eMover += (cpuSecond() - iMover); // stop timer for mover
@@ -128,7 +127,7 @@ int main(int argc, char **argv){
                 // interpolation particle to grid
                 iInterp = cpuSecond(); // start timer for the interpolation step
                 if (param.gpuInterp)
-                    interpP2G(&part[is],&ids[is],&grd, p_p, i_p, g_p, grdSize, rhocSize, streams, param.streamsEnabled, streamSize);
+                    interpP2G(&part[is],&ids[is],&grd, p_p, i_p, g_p, grdSize, rhocSize, streams, param.streamsEnabled, param.nStreams);
                 else if (!param.gpuInterp)
                     h_interpP2G(&part[is], &ids[is], &grd);
                 eInterp += (cpuSecond() - iInterp); // stop timer for interpolation
@@ -144,7 +143,7 @@ int main(int argc, char **argv){
                 // mover_PC(&part[is],&field,&grd,&param);
                 combinedMoveInterp(&part[is], &field, &grd, &ids[is], &param, 
                                    p_p, f_p, g_p, i_p, grdSize, field_size, rhocSize, 
-                                   streams, param.streamsEnabled, streamSize);
+                                   streams, param.streamsEnabled, param.nStreams);
             eMover += (cpuSecond() - iMover); // stop timer for mover
             // Continue execution outside the if-else clause
         }

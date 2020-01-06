@@ -282,7 +282,7 @@ __global__ void g_move_particle(int stream_offset, int nop, int n_sub_cycles, in
 /** particle mover */
 int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, struct parameters* param,
              particles_pointers p_p, field_pointers f_p, grd_pointers g_p, int grdSize, int field_size, 
-             cudaStream_t* streams, bool enableStreaming, int streamSize)
+             cudaStream_t* streams, bool enableStreaming, int n_streams)
 {
     // print species and subcycling
     std::cout << "***  In [mover_PC]: MOVER with SUBCYCLING "<< param->n_sub_cycles
@@ -326,8 +326,7 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
         }
         else if (enableStreaming)
         {
-            // If batch_size <= streamSize, n_streams = 1, and whole batch is done in one stream
-            int n_streams = (batch_size + streamSize - 1) / streamSize;
+            int streamSize = (n_streams - 1 + batch_size) / n_streams;
             for (int stream_no = 0; stream_no < n_streams; stream_no++) 
             {
                 // Compute stream size/bounds RELATIVE TO BATCH_START. In other words, to access the
@@ -517,7 +516,7 @@ __global__ void g_interp_particle(int stream_offset, int nop, struct grid grd,
 
 void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct grid* grd,
                particles_pointers p_p, ids_pointers i_p, grd_pointers g_p, int grdSize, int rhocSize,
-               cudaStream_t* streams, bool enableStreaming, int streamSize)
+               cudaStream_t* streams, bool enableStreaming, int n_streams)
 {
     // Print species
     std::cout << "***  In [interpP2G]: Interpolating "
@@ -557,8 +556,7 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
         }
         else if (enableStreaming) 
         {
-            // If batch_size <= streamSize, n_streams = 1, and whole batch is done in one stream
-            int n_streams = (batch_size + streamSize - 1) / streamSize;
+            int streamSize = (n_streams - 1 + batch_size) / n_streams;
             for (int stream_no = 0; stream_no < n_streams; stream_no++) 
             {
                 // Compute stream size/bounds RELATIVE TO BATCH_START. In other words, to access the
@@ -897,7 +895,7 @@ void combinedMoveInterp(struct particles* part, struct EMfield* field, struct gr
              struct interpDensSpecies* ids, struct parameters* param, 
              particles_pointers p_p, field_pointers f_p, grd_pointers g_p, ids_pointers i_p, 
              int grdSize, int field_size, int rhocSize,
-             cudaStream_t* streams, bool enableStreaming, int streamSize) 
+             cudaStream_t* streams, bool enableStreaming, int n_streams)
 {
     // print species and subcycling
     std::cout << "***  In [combinedMoveInterp]: Moving with SUBCYCLING "<< param->n_sub_cycles
@@ -944,8 +942,7 @@ void combinedMoveInterp(struct particles* part, struct EMfield* field, struct gr
         }
         else if (enableStreaming)
         {
-            // If batch_size <= streamSize, n_streams = 1, and whole batch is done in one stream
-            int n_streams = (batch_size + streamSize - 1) / streamSize;
+            int streamSize = (n_streams - 1 + batch_size) / n_streams;
             for (int stream_no = 0; stream_no < n_streams; stream_no++) 
             {
                 // Compute stream size/bounds RELATIVE TO BATCH_START. In other words, to access the
