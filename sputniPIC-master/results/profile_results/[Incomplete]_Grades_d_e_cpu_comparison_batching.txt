@@ -1,0 +1,2538 @@
+================================================== RUNNING FOR grade_e ==================================================
+########################## Run 1 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on GPU
+Interp performed on CPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 128
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 2
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 3
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 4
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 5
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 6
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 7
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 8
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 9
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 10
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 420.491
+   Tot. Simulation Time minus output (s) = 415.163
+   Memory allocation/deallocation time  (s) = 72.3408
+   Mover Time / Cycle   (s) = 12.3147
+   Interp. Time / Cycle (s) = 21.8826
+**************************************
+   Mover performed on GPU
+   Interp performed on CPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 128
+**************************************
+==42468== NVPROF is profiling process 42468, command: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m
+==42468== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m
+==42468== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   68.36%  83.2505s       120  693.75ms  132.49ms  1.87562s  g_move_particle(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, grd_pointers)
+                   16.16%  19.6831s      1080  18.225ms  568.55us  54.169ms  [CUDA memcpy HtoD]
+                   15.47%  18.8447s       720  26.173ms  15.929ms  53.635ms  [CUDA memcpy DtoH]
+      API calls:   99.76%  123.125s      1800  68.403ms  818.19us  1.89707s  cudaMemcpy
+                    0.22%  270.81ms        27  10.030ms  165.91us  265.67ms  cudaMalloc
+                    0.01%  12.037ms       120  100.31us  79.720us  270.66us  cudaLaunchKernel
+                    0.00%  3.7678ms        27  139.55us  93.243us  721.06us  cudaFree
+                    0.00%  1.7824ms       120  14.853us  9.2290us  44.981us  cudaDeviceSynchronize
+                    0.00%  1.4119ms       192  7.3530us     297ns  364.95us  cuDeviceGetAttribute
+                    0.00%  237.02us         2  118.51us  107.88us  129.14us  cuDeviceTotalMem
+                    0.00%  104.67us         2  52.333us  37.837us  66.829us  cuDeviceGetName
+                    0.00%  19.413us         2  9.7060us  7.8930us  11.520us  cuDeviceGetPCIBusId
+                    0.00%  9.4800us         4  2.3700us     378ns  8.1900us  cuDeviceGet
+                    0.00%  3.6960us         3  1.2320us     586ns  2.3150us  cuDeviceGetCount
+                    0.00%  1.2650us         2     632ns     503ns     762ns  cuDeviceGetUuid
+############################################################################## 
+
+
+
+
+
+########################## Run 2 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on GPU
+Interp performed on CPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 128
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 2
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 3
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 4
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 5
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 6
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 7
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 8
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 9
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 10
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 399.986
+   Tot. Simulation Time minus output (s) = 394.45
+   Memory allocation/deallocation time  (s) = 43.7573
+   Mover Time / Cycle   (s) = 13.6596
+   Interp. Time / Cycle (s) = 21.3283
+**************************************
+   Mover performed on GPU
+   Interp performed on CPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 128
+**************************************
+==42888== NVPROF is profiling process 42888, command: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m
+==42888== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m
+==42888== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   61.69%  83.2497s       120  693.75ms  132.45ms  1.87563s  g_move_particle(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, grd_pointers)
+                   25.87%  34.9107s      1080  32.325ms  1.0670ms  50.920ms  [CUDA memcpy HtoD]
+                   12.43%  16.7774s       720  23.302ms  19.923ms  26.124ms  [CUDA memcpy DtoH]
+      API calls:   99.75%  136.577s      1800  75.876ms  1.8595ms  1.90043s  cudaMemcpy
+                    0.24%  324.89ms        27  12.033ms  179.71us  319.28ms  cudaMalloc
+                    0.01%  12.157ms       120  101.31us  80.770us  201.32us  cudaLaunchKernel
+                    0.00%  4.1271ms        27  152.86us  100.44us  698.38us  cudaFree
+                    0.00%  1.5353ms       120  12.793us  7.7140us  44.101us  cudaDeviceSynchronize
+                    0.00%  1.3852ms       192  7.2140us     314ns  318.92us  cuDeviceGetAttribute
+                    0.00%  233.41us         2  116.71us  107.92us  125.49us  cuDeviceTotalMem
+                    0.00%  110.51us         2  55.256us  48.419us  62.094us  cuDeviceGetName
+                    0.00%  21.956us         2  10.978us  7.9030us  14.053us  cuDeviceGetPCIBusId
+                    0.00%  3.6520us         3  1.2170us     531ns  2.3490us  cuDeviceGetCount
+                    0.00%  2.6650us         4     666ns     360ns  1.4380us  cuDeviceGet
+                    0.00%  1.2760us         2     638ns     428ns     848ns  cuDeviceGetUuid
+############################################################################## 
+
+
+
+
+
+########################## Run 3 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on GPU
+Interp performed on CPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 128
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 2
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 3
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 4
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 5
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 6
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 7
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 8
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 9
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 10
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 410.543
+   Tot. Simulation Time minus output (s) = 405.154
+   Memory allocation/deallocation time  (s) = 50.9059
+   Mover Time / Cycle   (s) = 13.7291
+   Interp. Time / Cycle (s) = 21.6134
+**************************************
+   Mover performed on GPU
+   Interp performed on CPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 128
+**************************************
+==43304== NVPROF is profiling process 43304, command: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m
+==43304== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m
+==43304== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   61.39%  83.2490s       120  693.74ms  132.48ms  1.87576s  g_move_particle(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, grd_pointers)
+                   25.85%  35.0546s      1080  32.458ms  1.0695ms  50.673ms  [CUDA memcpy HtoD]
+                   12.75%  17.2949s       720  24.021ms  18.919ms  29.417ms  [CUDA memcpy DtoH]
+      API calls:   99.80%  137.270s      1800  76.261ms  1.8720ms  1.90081s  cudaMemcpy
+                    0.18%  249.52ms        27  9.2415ms  173.03us  244.15ms  cudaMalloc
+                    0.01%  12.436ms       120  103.64us  83.024us  335.70us  cudaLaunchKernel
+                    0.00%  4.3222ms        27  160.08us  100.02us  816.73us  cudaFree
+                    0.00%  1.5372ms       120  12.809us  8.1410us  85.048us  cudaDeviceSynchronize
+                    0.00%  1.3765ms       192  7.1690us     297ns  337.77us  cuDeviceGetAttribute
+                    0.00%  226.37us         2  113.18us  108.42us  117.95us  cuDeviceTotalMem
+                    0.00%  99.409us         2  49.704us  37.627us  61.782us  cuDeviceGetName
+                    0.00%  23.030us         2  11.515us  6.8900us  16.140us  cuDeviceGetPCIBusId
+                    0.00%  3.3910us         3  1.1300us     421ns  2.3920us  cuDeviceGetCount
+                    0.00%  2.5430us         4     635ns     340ns  1.3700us  cuDeviceGet
+                    0.00%  1.2220us         2     611ns     445ns     777ns  cuDeviceGetUuid
+############################################################################## 
+
+
+
+
+
+########################## Run 4 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on GPU
+Interp performed on CPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 128
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 2
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 3
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 4
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 5
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 6
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 7
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 8
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 9
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 10
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 412.094
+   Tot. Simulation Time minus output (s) = 406.492
+   Memory allocation/deallocation time  (s) = 51.5338
+   Mover Time / Cycle   (s) = 13.7556
+   Interp. Time / Cycle (s) = 21.6572
+**************************************
+   Mover performed on GPU
+   Interp performed on CPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 128
+**************************************
+==43754== NVPROF is profiling process 43754, command: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m
+==43754== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m
+==43754== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   61.27%  83.2496s       120  693.75ms  132.46ms  1.87547s  g_move_particle(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, grd_pointers)
+                   25.94%  35.2476s      1080  32.637ms  1.0718ms  51.193ms  [CUDA memcpy HtoD]
+                   12.79%  17.3810s       720  24.140ms  19.075ms  28.234ms  [CUDA memcpy DtoH]
+      API calls:   99.79%  137.536s      1800  76.409ms  1.8690ms  1.90183s  cudaMemcpy
+                    0.20%  273.84ms        27  10.142ms  168.66us  268.53ms  cudaMalloc
+                    0.01%  12.425ms       120  103.54us  84.009us  274.74us  cudaLaunchKernel
+                    0.00%  4.2995ms        27  159.24us  100.14us  758.36us  cudaFree
+                    0.00%  1.6103ms       120  13.418us  8.7430us  49.059us  cudaDeviceSynchronize
+                    0.00%  1.3481ms       192  7.0210us     350ns  316.82us  cuDeviceGetAttribute
+                    0.00%  262.56us         2  131.28us  117.50us  145.06us  cuDeviceTotalMem
+                    0.00%  116.77us         2  58.382us  37.731us  79.034us  cuDeviceGetName
+                    0.00%  22.963us         2  11.481us  7.6240us  15.339us  cuDeviceGetPCIBusId
+                    0.00%  7.8620us         4  1.9650us     317ns  6.6580us  cuDeviceGet
+                    0.00%  3.6040us         3  1.2010us     411ns  2.5730us  cuDeviceGetCount
+                    0.00%  1.3060us         2     653ns     470ns     836ns  cuDeviceGetUuid
+############################################################################## 
+
+
+
+
+
+########################## Run 5 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on GPU
+Interp performed on CPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 128
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 2
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 3
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 4
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 5
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 6
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 7
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 8
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 9
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 10
+***********************
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 406.056
+   Tot. Simulation Time minus output (s) = 400.202
+   Memory allocation/deallocation time  (s) = 44.241
+   Mover Time / Cycle   (s) = 13.6906
+   Interp. Time / Cycle (s) = 21.823
+**************************************
+   Mover performed on GPU
+   Interp performed on CPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 128
+**************************************
+==44169== NVPROF is profiling process 44169, command: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m
+==44169== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m
+==44169== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   61.56%  83.2475s       120  693.73ms  132.47ms  1.87564s  g_move_particle(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, grd_pointers)
+                   25.73%  34.8023s      1080  32.224ms  1.0664ms  50.696ms  [CUDA memcpy HtoD]
+                   12.71%  17.1903s       720  23.875ms  18.562ms  27.852ms  [CUDA memcpy DtoH]
+      API calls:   99.79%  136.885s      1800  76.047ms  1.8767ms  1.90053s  cudaMemcpy
+                    0.19%  261.44ms        27  9.6831ms  171.14us  256.13ms  cudaMalloc
+                    0.01%  12.144ms       120  101.20us  85.001us  237.59us  cudaLaunchKernel
+                    0.00%  4.3523ms        27  161.20us  101.81us  825.07us  cudaFree
+                    0.00%  1.6324ms       120  13.603us  8.6000us  65.625us  cudaDeviceSynchronize
+                    0.00%  1.4180ms       192  7.3850us     325ns  328.23us  cuDeviceGetAttribute
+                    0.00%  243.82us         2  121.91us  116.94us  126.88us  cuDeviceTotalMem
+                    0.00%  133.88us         2  66.938us  39.583us  94.294us  cuDeviceGetName
+                    0.00%  24.115us         2  12.057us  7.5150us  16.600us  cuDeviceGetPCIBusId
+                    0.00%  3.4880us         3  1.1620us     320ns  2.2830us  cuDeviceGetCount
+                    0.00%  3.4210us         4     855ns     379ns  1.7840us  cuDeviceGet
+                    0.00%  1.2800us         2     640ns     464ns     816ns  cuDeviceGetUuid
+############################################################################## 
+
+
+
+
+
+================================================================================================================
+================================================================================================================
+
+
+
+================================================== RUNNING FOR grade_d ==================================================
+########################## Run 1 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on GPU
+Interp performed on GPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 128
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+
+***********************
+   cycle = 2
+***********************
+
+***********************
+   cycle = 3
+***********************
+
+***********************
+   cycle = 4
+***********************
+
+***********************
+   cycle = 5
+***********************
+
+***********************
+   cycle = 6
+***********************
+
+***********************
+   cycle = 7
+***********************
+
+***********************
+   cycle = 8
+***********************
+
+***********************
+   cycle = 9
+***********************
+
+***********************
+   cycle = 10
+***********************
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 374.244
+   Tot. Simulation Time minus output (s) = 368.518
+   Memory allocation/deallocation time  (s) = 58.0579
+   Mover Time / Cycle   (s) = 13.6624
+   Interp. Time / Cycle (s) = 17.3017
+**************************************
+   Mover performed on GPU
+   Interp performed on GPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 128
+**************************************
+==44617== NVPROF is profiling process 44617, command: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m -i
+==44617== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m -i
+==44617== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   42.41%  129.528s       120  1.07940s  880.64ms  1.22265s  g_interp_particle(int, int, grid, particles_pointers, ids_pointers, grd_pointers)
+                   27.26%  83.2501s       120  693.75ms  132.46ms  1.87577s  g_move_particle(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, grd_pointers)
+                   24.64%  75.2657s      2360  31.892ms  926.13us  50.155ms  [CUDA memcpy HtoD]
+                    5.69%  17.3947s      1160  14.995ms  619.33us  26.180ms  [CUDA memcpy DtoH]
+      API calls:   57.94%  178.874s      3520  50.817ms  1.1096ms  1.90102s  cudaMemcpy
+                   41.97%  129.569s       240  539.87ms  7.9550us  1.22295s  cudaDeviceSynchronize
+                    0.09%  264.25ms        27  9.7870ms  181.91us  258.68ms  cudaMalloc
+                    0.01%  23.940ms       240  99.748us  81.496us  244.98us  cudaLaunchKernel
+                    0.00%  4.0441ms        27  149.78us  91.592us  738.63us  cudaFree
+                    0.00%  1.3777ms       192  7.1750us     297ns  320.72us  cuDeviceGetAttribute
+                    0.00%  234.53us         2  117.26us  108.64us  125.89us  cuDeviceTotalMem
+                    0.00%  101.43us         2  50.713us  38.462us  62.964us  cuDeviceGetName
+                    0.00%  23.181us         2  11.590us  7.7790us  15.402us  cuDeviceGetPCIBusId
+                    0.00%  7.4690us         4  1.8670us     360ns  6.3520us  cuDeviceGet
+                    0.00%  3.4360us         3  1.1450us     523ns  2.1980us  cuDeviceGetCount
+                    0.00%  1.1050us         2     552ns     442ns     663ns  cuDeviceGetUuid
+############################################################################## 
+
+
+
+
+
+########################## Run 2 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on GPU
+Interp performed on GPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 128
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+
+***********************
+   cycle = 2
+***********************
+
+***********************
+   cycle = 3
+***********************
+
+***********************
+   cycle = 4
+***********************
+
+***********************
+   cycle = 5
+***********************
+
+***********************
+   cycle = 6
+***********************
+
+***********************
+   cycle = 7
+***********************
+
+***********************
+   cycle = 8
+***********************
+
+***********************
+   cycle = 9
+***********************
+
+***********************
+   cycle = 10
+***********************
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 360.427
+   Tot. Simulation Time minus output (s) = 354.896
+   Memory allocation/deallocation time  (s) = 44.1518
+   Mover Time / Cycle   (s) = 13.8703
+   Interp. Time / Cycle (s) = 17.119
+**************************************
+   Mover performed on GPU
+   Interp performed on GPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 128
+**************************************
+==45032== NVPROF is profiling process 45032, command: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m -i
+==45032== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m -i
+==45032== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   42.39%  129.528s       120  1.07940s  880.66ms  1.22263s  g_interp_particle(int, int, grid, particles_pointers, ids_pointers, grd_pointers)
+                   27.24%  83.2469s       120  693.72ms  132.48ms  1.87549s  g_move_particle(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, grd_pointers)
+                   23.68%  72.3705s      2360  30.665ms  584.74us  66.790ms  [CUDA memcpy HtoD]
+                    6.69%  20.4324s      1160  17.614ms  613.25us  53.080ms  [CUDA memcpy DtoH]
+      API calls:   57.97%  179.122s      3520  50.887ms  886.16us  1.90130s  cudaMemcpy
+                   41.93%  129.569s       240  539.87ms  5.7690us  1.22296s  cudaDeviceSynchronize
+                    0.09%  278.83ms        27  10.327ms  173.34us  270.53ms  cudaMalloc
+                    0.01%  22.800ms       240  95.000us  69.649us  207.06us  cudaLaunchKernel
+                    0.00%  3.9230ms        27  145.30us  88.680us  646.62us  cudaFree
+                    0.00%  1.3931ms       192  7.2550us     317ns  328.46us  cuDeviceGetAttribute
+                    0.00%  264.36us         2  132.18us  108.48us  155.88us  cuDeviceTotalMem
+                    0.00%  176.70us         2  88.349us  52.676us  124.02us  cuDeviceGetName
+                    0.00%  29.720us         2  14.860us  7.2880us  22.432us  cuDeviceGetPCIBusId
+                    0.00%  9.2720us         4  2.3180us     320ns  8.0880us  cuDeviceGet
+                    0.00%  3.7440us         3  1.2480us     403ns  2.5650us  cuDeviceGetCount
+                    0.00%  1.1530us         2     576ns     403ns     750ns  cuDeviceGetUuid
+############################################################################## 
+
+
+
+
+
+########################## Run 3 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on GPU
+Interp performed on GPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 128
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+
+***********************
+   cycle = 2
+***********************
+
+***********************
+   cycle = 3
+***********************
+
+***********************
+   cycle = 4
+***********************
+
+***********************
+   cycle = 5
+***********************
+
+***********************
+   cycle = 6
+***********************
+
+***********************
+   cycle = 7
+***********************
+
+***********************
+   cycle = 8
+***********************
+
+***********************
+   cycle = 9
+***********************
+
+***********************
+   cycle = 10
+***********************
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 361.883
+   Tot. Simulation Time minus output (s) = 356.262
+   Memory allocation/deallocation time  (s) = 43.6018
+   Mover Time / Cycle   (s) = 13.8011
+   Interp. Time / Cycle (s) = 17.3787
+**************************************
+   Mover performed on GPU
+   Interp performed on GPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 128
+**************************************
+==45429== NVPROF is profiling process 45429, command: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m -i
+==45429== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m -i
+==45429== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   42.13%  129.528s       120  1.07940s  880.60ms  1.22266s  g_interp_particle(int, int, grid, particles_pointers, ids_pointers, grd_pointers)
+                   27.08%  83.2505s       120  693.75ms  132.48ms  1.87545s  g_move_particle(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, grd_pointers)
+                   25.15%  77.3361s      2360  32.770ms  1.0354ms  67.834ms  [CUDA memcpy HtoD]
+                    5.64%  17.3292s      1160  14.939ms  636.48us  48.033ms  [CUDA memcpy DtoH]
+      API calls:   58.24%  180.970s      3520  51.412ms  1.1228ms  1.90046s  cudaMemcpy
+                   41.70%  129.569s       240  539.87ms  9.1150us  1.22299s  cudaDeviceSynchronize
+                    0.05%  147.37ms        27  5.4580ms  186.19us  141.69ms  cudaMalloc
+                    0.01%  25.737ms       240  107.24us  88.062us  215.56us  cudaLaunchKernel
+                    0.00%  4.0099ms        27  148.51us  92.320us  730.72us  cudaFree
+                    0.00%  1.4420ms       192  7.5100us     320ns  343.42us  cuDeviceGetAttribute
+                    0.00%  242.44us         2  121.22us  118.29us  124.14us  cuDeviceTotalMem
+                    0.00%  105.85us         2  52.923us  39.789us  66.058us  cuDeviceGetName
+                    0.00%  19.716us         2  9.8580us  7.5940us  12.122us  cuDeviceGetPCIBusId
+                    0.00%  8.8190us         4  2.2040us     363ns  7.5460us  cuDeviceGet
+                    0.00%  3.4000us         3  1.1330us     474ns  2.3360us  cuDeviceGetCount
+                    0.00%  1.1260us         2     563ns     440ns     686ns  cuDeviceGetUuid
+############################################################################## 
+
+
+
+
+
+########################## Run 4 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on GPU
+Interp performed on GPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 128
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+
+***********************
+   cycle = 2
+***********************
+
+***********************
+   cycle = 3
+***********************
+
+***********************
+   cycle = 4
+***********************
+
+***********************
+   cycle = 5
+***********************
+
+***********************
+   cycle = 6
+***********************
+
+***********************
+   cycle = 7
+***********************
+
+***********************
+   cycle = 8
+***********************
+
+***********************
+   cycle = 9
+***********************
+
+***********************
+   cycle = 10
+***********************
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 374.778
+   Tot. Simulation Time minus output (s) = 368.983
+   Memory allocation/deallocation time  (s) = 57.8893
+   Mover Time / Cycle   (s) = 13.6958
+   Interp. Time / Cycle (s) = 17.3326
+**************************************
+   Mover performed on GPU
+   Interp performed on GPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 128
+**************************************
+==45835== NVPROF is profiling process 45835, command: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m -i
+==45835== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m -i
+==45835== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   42.32%  129.529s       120  1.07941s  880.66ms  1.22264s  g_interp_particle(int, int, grid, particles_pointers, ids_pointers, grd_pointers)
+                   27.20%  83.2491s       120  693.74ms  132.45ms  1.87551s  g_move_particle(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, grd_pointers)
+                   24.76%  75.7688s      2360  32.105ms  1.0348ms  51.387ms  [CUDA memcpy HtoD]
+                    5.72%  17.5098s      1160  15.095ms  609.67us  27.381ms  [CUDA memcpy DtoH]
+      API calls:   58.02%  179.530s      3520  51.003ms  1.0883ms  1.90103s  cudaMemcpy
+                   41.88%  129.570s       240  539.88ms  8.2010us  1.22299s  cudaDeviceSynchronize
+                    0.09%  290.86ms        27  10.773ms  172.38us  285.51ms  cudaMalloc
+                    0.01%  22.124ms       240  92.184us  77.488us  217.02us  cudaLaunchKernel
+                    0.00%  3.7905ms        27  140.39us  89.079us  612.57us  cudaFree
+                    0.00%  1.3900ms       192  7.2390us     297ns  335.72us  cuDeviceGetAttribute
+                    0.00%  226.34us         2  113.17us  107.92us  118.42us  cuDeviceTotalMem
+                    0.00%  102.93us         2  51.465us  39.175us  63.756us  cuDeviceGetName
+                    0.00%  22.108us         2  11.054us  7.6450us  14.463us  cuDeviceGetPCIBusId
+                    0.00%  7.6250us         4  1.9060us     360ns  6.2480us  cuDeviceGet
+                    0.00%  3.7720us         3  1.2570us     354ns  2.5040us  cuDeviceGetCount
+                    0.00%  1.1600us         2     580ns     397ns     763ns  cuDeviceGetUuid
+############################################################################## 
+
+
+
+
+
+########################## Run 5 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on GPU
+Interp performed on GPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 128
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+
+***********************
+   cycle = 2
+***********************
+
+***********************
+   cycle = 3
+***********************
+
+***********************
+   cycle = 4
+***********************
+
+***********************
+   cycle = 5
+***********************
+
+***********************
+   cycle = 6
+***********************
+
+***********************
+   cycle = 7
+***********************
+
+***********************
+   cycle = 8
+***********************
+
+***********************
+   cycle = 9
+***********************
+
+***********************
+   cycle = 10
+***********************
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 361.254
+   Tot. Simulation Time minus output (s) = 355.944
+   Memory allocation/deallocation time  (s) = 44.7351
+   Mover Time / Cycle   (s) = 13.6997
+   Interp. Time / Cycle (s) = 17.3405
+**************************************
+   Mover performed on GPU
+   Interp performed on GPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 128
+**************************************
+==46216== NVPROF is profiling process 46216, command: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m -i
+==46216== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -m -i
+==46216== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   42.30%  129.528s       120  1.07940s  880.67ms  1.22266s  g_interp_particle(int, int, grid, particles_pointers, ids_pointers, grd_pointers)
+                   27.19%  83.2476s       120  693.73ms  132.45ms  1.87551s  g_move_particle(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, grd_pointers)
+                   24.78%  75.8644s      2360  32.146ms  1.0297ms  52.147ms  [CUDA memcpy HtoD]
+                    5.74%  17.5650s      1160  15.142ms  610.21us  28.668ms  [CUDA memcpy DtoH]
+      API calls:   58.04%  179.649s      3520  51.037ms  1.0979ms  1.90171s  cudaMemcpy
+                   41.86%  129.569s       240  539.87ms  7.3840us  1.22299s  cudaDeviceSynchronize
+                    0.10%  296.12ms        27  10.967ms  173.87us  290.73ms  cudaMalloc
+                    0.01%  21.925ms       240  91.352us  76.165us  201.99us  cudaLaunchKernel
+                    0.00%  3.7271ms        27  138.04us  89.652us  616.45us  cudaFree
+                    0.00%  1.4045ms       192  7.3150us     300ns  354.72us  cuDeviceGetAttribute
+                    0.00%  235.14us         2  117.57us  108.99us  126.14us  cuDeviceTotalMem
+                    0.00%  105.95us         2  52.975us  38.543us  67.407us  cuDeviceGetName
+                    0.00%  25.824us         2  12.912us  7.8450us  17.979us  cuDeviceGetPCIBusId
+                    0.00%  8.1460us         4  2.0360us     348ns  6.5250us  cuDeviceGet
+                    0.00%  3.7740us         3  1.2580us     542ns  2.3120us  cuDeviceGetCount
+                    0.00%  1.2320us         2     616ns     432ns     800ns  cuDeviceGetUuid
+############################################################################## 
+
+
+
+
+
+================================================================================================================
+================================================================================================================
+
+
+
+================================================== RUNNING FOR cpu ==================================================
+########################## Run 1 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on CPU
+Interp performed on CPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 32
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 2
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 3
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 4
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 5
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 6
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 7
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 8
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 9
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 10
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 643.533
+   Tot. Simulation Time minus output (s) = 637.804
+   Memory allocation/deallocation time  (s) = 44.1557
+   Mover Time / Cycle   (s) = 38.0572
+   Interp. Time / Cycle (s) = 21.2232
+**************************************
+   Mover performed on CPU
+   Interp performed on CPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 32
+**************************************
+############################################################################## 
+
+
+
+
+
+########################## Run 2 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on CPU
+Interp performed on CPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 32
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 2
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 3
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 4
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 5
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 6
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 7
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 8
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 9
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 10
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 637.652
+   Tot. Simulation Time minus output (s) = 631.804
+   Memory allocation/deallocation time  (s) = 44.3717
+   Mover Time / Cycle   (s) = 37.7884
+   Interp. Time / Cycle (s) = 20.873
+**************************************
+   Mover performed on CPU
+   Interp performed on CPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 32
+**************************************
+############################################################################## 
+
+
+
+
+
+########################## Run 3 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on CPU
+Interp performed on CPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 32
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 2
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 3
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 4
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 5
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 6
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 7
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 8
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 9
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 10
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 644.151
+   Tot. Simulation Time minus output (s) = 638.317
+   Memory allocation/deallocation time  (s) = 44.163
+   Mover Time / Cycle   (s) = 38.1385
+   Interp. Time / Cycle (s) = 21.1947
+**************************************
+   Mover performed on CPU
+   Interp performed on CPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 32
+**************************************
+############################################################################## 
+
+
+
+
+
+########################## Run 4 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on CPU
+Interp performed on CPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 32
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 2
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 3
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 4
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 5
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 6
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 7
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 8
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 9
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 10
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 651.415
+   Tot. Simulation Time minus output (s) = 645.923
+   Memory allocation/deallocation time  (s) = 43.8435
+   Mover Time / Cycle   (s) = 38.4988
+   Interp. Time / Cycle (s) = 21.6252
+**************************************
+   Mover performed on CPU
+   Interp performed on CPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 32
+**************************************
+############################################################################## 
+
+
+
+
+
+########################## Run 5 out of 5 ##########################
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on CPU
+Interp performed on CPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 32
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 2
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 3
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 4
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 5
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 6
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 7
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 8
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 9
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 10
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 636.781
+   Tot. Simulation Time minus output (s) = 630.913
+   Memory allocation/deallocation time  (s) = 44.3272
+   Mover Time / Cycle   (s) = 37.724
+   Interp. Time / Cycle (s) = 20.8498
+**************************************
+   Mover performed on CPU
+   Interp performed on CPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 32
+**************************************
+############################################################################## 
+
+
+
+
+
+================================================================================================================
+================================================================================================================
+
+
+

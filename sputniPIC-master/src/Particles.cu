@@ -352,8 +352,8 @@ int mover_PC(struct particles* part, struct EMfield* field, struct grid* grd, st
             }
         }
         cudaDeviceSynchronize();
-        std::cout << "====== In [mover_PC]: batch " << (batch_no + 1) << " of " << n_batches 
-                  << (enableStreaming ? " (with streaming)" : " (without streaming)") 
+        std::cout << "====== In [mover_PC]: batch " << (batch_no + 1) << " of " << n_batches
+                  << (enableStreaming ? " (with streaming)" : " (without streaming)")
                   << ": done." << std::endl;
     }
     
@@ -575,8 +575,8 @@ void interpP2G(struct particles* part, struct interpDensSpecies* ids, struct gri
             }
         }
         cudaDeviceSynchronize();
-        std::cout << "====== In [interpP2G]: batch " << (batch_no + 1) << " of " << n_batches 
-                  << (enableStreaming ? " (with streaming)" : " (without streaming)") 
+        std::cout << "====== In [interpP2G]: batch " << (batch_no + 1) << " of " << n_batches
+                  << (enableStreaming ? " (with streaming)" : " (without streaming)")
                   << ": done." << std::endl;
     }
     // Copy results back (i_p in GPU back to ids in CPU).
