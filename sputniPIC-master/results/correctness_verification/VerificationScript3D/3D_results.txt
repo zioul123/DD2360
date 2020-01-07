@@ -1,0 +1,5 @@
+All differences in VerificationScript3D/3D_MI.vtk, VerificationScript3D/3D_CPU.vtk are less than 10e-6.
+All differences in VerificationScript3D/3D_MIS1.vtk, VerificationScript3D/3D_CPU.vtk are less than 10e-6.
+All differences in VerificationScript3D/3D_MIS10.vtk, VerificationScript3D/3D_CPU.vtk are less than 10e-6.
+All differences in VerificationScript3D/3D_MIS1C.vtk, VerificationScript3D/3D_CPU.vtk are less than 10e-6.
+All differences in VerificationScript3D/3D_MIS10C.vtk, VerificationScript3D/3D_CPU.vtk are less than 10e-6.

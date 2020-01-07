@@ -1,0 +1,187 @@
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 14155776	 (MAX = 14155776)  QOM = -64
+Number of particles of species 1 = 14155776	 (MAX = 14155776)  QOM = 1
+Number of particles of species 2 = 14155776	 (MAX = 14155776)  QOM = -64
+Number of particles of species 3 = 14155776	 (MAX = 14155776)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on CPU
+Interp performed on CPU
+Streaming disabled
+nStreams: 0
+Combined kernels: False
+Threads per block = 32
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (non-pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 2
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 3
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 4
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 5
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 6
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 7
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 8
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 9
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+
+***********************
+   cycle = 10
+***********************
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 0 ***
+***  In [h_interpP2G]: Interpolating  - species 0 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 1 ***
+***  In [h_interpP2G]: Interpolating  - species 1 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 2 ***
+***  In [h_interpP2G]: Interpolating  - species 2 ***
+*** In [h_mover_PC]: MOVER with SUBCYCLYING 1 - species 3 ***
+***  In [h_interpP2G]: Interpolating  - species 3 ***
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (non-pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+
+**************************************
+   Tot. Simulation Time (s) = 251.582
+   Tot. Simulation Time minus output (s) = 217.358
+   Memory allocation/deallocation time  (s) = 15.5875
+   Mover Time / Cycle   (s) = 12.7723
+   Interp. Time / Cycle (s) = 7.3231
+**************************************
+   Mover performed on CPU
+   Interp performed on CPU
+   Streaming disabled
+   nStreams: 0
+   Combined kernels: False
+   TPB: 32
+**************************************

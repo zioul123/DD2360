@@ -1,0 +1,25 @@
+==35553== NVPROF is profiling process 35553, command: ./bin/sputniPIC.out inputfiles/GEM_2D_increased.inp -t 128 -s 32 -c
+==35553== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_2D_increased.inp -t 128 -s 32 -c
+==35553== Profiling result:
+"Type","Time(%)","Time","Calls","Avg","Min","Max","Name"
+,%,s,,ms,ms,ms,
+"GPU activities",92.381297,74.344697,2560,29.040897,6.849876,61.320907,"g_combined_kernel(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, ids_pointers, grd_pointers)"
+"GPU activities",4.261930,3.429827,18720,0.183217,0.047134,0.468361,"[CUDA memcpy HtoD]"
+"GPU activities",3.356774,2.701395,15800,0.170974,0.042686,0.692062,"[CUDA memcpy DtoH]"
+"API calls",97.049827,80.259302,80,1003.241277,239.127887,2087.088880,"cudaDeviceSynchronize"
+"API calls",1.511942,1.250362,28,44.655776,32.212969,310.350644,"cudaHostAlloc"
+"API calls",0.720855,0.596140,1240,0.480758,0.188924,10.361284,"cudaMemcpy"
+"API calls",0.326322,0.269865,33280,0.008108,0.005019,0.817878,"cudaMemcpyAsync"
+"API calls",0.319098,0.263891,28,9.424680,8.038747,13.986368,"cudaFreeHost"
+"API calls",0.058855,0.048673,2560,0.019012,0.014325,0.644024,"cudaLaunchKernel"
+"API calls",0.006407,0.005299,27,0.196244,0.147016,0.815574,"cudaMalloc"
+"API calls",0.003695,0.003056,27,0.113175,0.089463,0.221428,"cudaFree"
+"API calls",0.001602,0.001325,192,0.006899,0.000302,0.304936,"cuDeviceGetAttribute"
+"API calls",0.000698,0.000578,32,0.018050,0.001671,0.191056,"cudaStreamCreate"
+"API calls",0.000304,0.000251,2,0.125692,0.117354,0.134030,"cuDeviceTotalMem"
+"API calls",0.000204,0.000169,32,0.005283,0.002094,0.044616,"cudaStreamDestroy"
+"API calls",0.000148,0.000123,2,0.061390,0.058377,0.064404,"cuDeviceGetName"
+"API calls",0.000028,0.000023,2,0.011723,0.006792,0.016655,"cuDeviceGetPCIBusId"
+"API calls",0.000007,0.000006,4,0.001522,0.000300,0.004973,"cuDeviceGet"
+"API calls",0.000004,0.000004,3,0.001189,0.000390,0.002202,"cuDeviceGetCount"
+"API calls",0.000001,0.000001,2,0.000580,0.000424,0.000736,"cuDeviceGetUuid"

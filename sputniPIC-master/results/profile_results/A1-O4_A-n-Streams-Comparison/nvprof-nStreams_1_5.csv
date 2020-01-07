@@ -1,0 +1,25 @@
+==44261== NVPROF is profiling process 44261, command: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -s 1 -c
+==44261== Profiling application: ./bin/sputniPIC.out inputfiles/GEM_3D_increased.inp -t 128 -s 1 -c
+==44261== Profiling result:
+"Type","Time(%)","Time","Calls","Avg","Min","Max","Name"
+,%,s,,s,s,s,
+"GPU activities",93.476658,221.380817,120,1.844840,1.201166,2.926059,"g_combined_kernel(int, int, int, int, grid, parameters, dt_info, particles_pointers, field_pointers, ids_pointers, grd_pointers)"
+"GPU activities",3.659935,8.667825,1640,0.005285,0.000545,0.010181,"[CUDA memcpy HtoD]"
+"GPU activities",2.863407,6.781408,1160,0.005846,0.000432,0.010509,"[CUDA memcpy DtoH]"
+"API calls",98.024738,236.121559,120,1.967680,1.321776,3.049671,"cudaDeviceSynchronize"
+"API calls",1.191763,2.870712,28,0.102525,0.087780,0.404233,"cudaHostAlloc"
+"API calls",0.513162,1.236103,1240,0.000997,0.000690,0.014920,"cudaMemcpy"
+"API calls",0.257604,0.620516,28,0.022161,0.021321,0.026607,"cudaFreeHost"
+"API calls",0.006365,0.015332,1560,0.000010,0.000005,0.000068,"cudaMemcpyAsync"
+"API calls",0.002205,0.005312,27,0.000197,0.000140,0.000783,"cudaMalloc"
+"API calls",0.002025,0.004878,120,0.000041,0.000018,0.000211,"cudaLaunchKernel"
+"API calls",0.001351,0.003254,27,0.000121,0.000089,0.000281,"cudaFree"
+"API calls",0.000583,0.001404,192,0.000007,0.000000,0.000367,"cuDeviceGetAttribute"
+"API calls",0.000098,0.000235,2,0.000118,0.000109,0.000126,"cuDeviceTotalMem"
+"API calls",0.000042,0.000102,2,0.000051,0.000039,0.000063,"cuDeviceGetName"
+"API calls",0.000028,0.000067,1,0.000067,0.000067,0.000067,"cudaStreamCreate"
+"API calls",0.000025,0.000060,1,0.000060,0.000060,0.000060,"cudaStreamDestroy"
+"API calls",0.000009,0.000021,2,0.000010,0.000007,0.000013,"cuDeviceGetPCIBusId"
+"API calls",0.000001,0.000003,3,0.000001,0.000000,0.000003,"cuDeviceGetCount"
+"API calls",0.000001,0.000003,4,0.000001,0.000000,0.000001,"cuDeviceGet"
+"API calls",0.000001,0.000001,2,0.000001,0.000000,0.000001,"cuDeviceGetUuid"

@@ -1,0 +1,5 @@
+All differences in VerificationScript2D/2D_MI.vtk, VerificationScript2D/2D_CPU.vtk are less than 10e-6.
+All differences in VerificationScript2D/2D_MIS1.vtk, VerificationScript2D/2D_CPU.vtk are less than 10e-6.
+All differences in VerificationScript2D/2D_MIS10.vtk, VerificationScript2D/2D_CPU.vtk are less than 10e-6.
+All differences in VerificationScript2D/2D_MIS1C.vtk, VerificationScript2D/2D_CPU.vtk are less than 10e-6.
+All differences in VerificationScript2D/2D_MIS10C.vtk, VerificationScript2D/2D_CPU.vtk are less than 10e-6.

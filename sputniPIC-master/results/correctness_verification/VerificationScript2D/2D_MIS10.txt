@@ -1,0 +1,314 @@
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 4096000	 (MAX = 4096000)  QOM = -64
+Number of particles of species 1 = 4096000	 (MAX = 4096000)  QOM = 1
+Number of particles of species 2 = 4096000	 (MAX = 4096000)  QOM = -64
+Number of particles of species 3 = 4096000	 (MAX = 4096000)  QOM = 1
+x-Length                 = 40
+y-Length                 = 20
+z-Length                 = 1
+Number of cells (x)      = 256
+Number of cells (y)      = 128
+Number of cells (z)      = 1
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on GPU
+Interp performed on GPU
+Streaming enabled
+nStreams: 10
+Combined kernels: False
+Threads per block = 128
+In [particle_allocate]: Allocation of CPU (pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0195
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [createStreams]: All streams created.
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+Opening file: ./data/E_1.vtk
+Opening file: ./data/B_1.vtk
+Opening file: ./data/rhoe_1.vtk
+Opening file: ./data/rhoi_1.vtk
+Opening file: ./data/rho_net_1.vtk
+
+***********************
+   cycle = 2
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+Opening file: ./data/E_2.vtk
+Opening file: ./data/B_2.vtk
+Opening file: ./data/rhoe_2.vtk
+Opening file: ./data/rhoi_2.vtk
+Opening file: ./data/rho_net_2.vtk
+
+***********************
+   cycle = 3
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+Opening file: ./data/E_3.vtk
+Opening file: ./data/B_3.vtk
+Opening file: ./data/rhoe_3.vtk
+Opening file: ./data/rhoi_3.vtk
+Opening file: ./data/rho_net_3.vtk
+
+***********************
+   cycle = 4
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+Opening file: ./data/E_4.vtk
+Opening file: ./data/B_4.vtk
+Opening file: ./data/rhoe_4.vtk
+Opening file: ./data/rhoi_4.vtk
+Opening file: ./data/rho_net_4.vtk
+
+***********************
+   cycle = 5
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+Opening file: ./data/E_5.vtk
+Opening file: ./data/B_5.vtk
+Opening file: ./data/rhoe_5.vtk
+Opening file: ./data/rhoi_5.vtk
+Opening file: ./data/rho_net_5.vtk
+
+***********************
+   cycle = 6
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+Opening file: ./data/E_6.vtk
+Opening file: ./data/B_6.vtk
+Opening file: ./data/rhoe_6.vtk
+Opening file: ./data/rhoi_6.vtk
+Opening file: ./data/rho_net_6.vtk
+
+***********************
+   cycle = 7
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+Opening file: ./data/E_7.vtk
+Opening file: ./data/B_7.vtk
+Opening file: ./data/rhoe_7.vtk
+Opening file: ./data/rhoi_7.vtk
+Opening file: ./data/rho_net_7.vtk
+
+***********************
+   cycle = 8
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+Opening file: ./data/E_8.vtk
+Opening file: ./data/B_8.vtk
+Opening file: ./data/rhoe_8.vtk
+Opening file: ./data/rhoi_8.vtk
+Opening file: ./data/rho_net_8.vtk
+
+***********************
+   cycle = 9
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+Opening file: ./data/E_9.vtk
+Opening file: ./data/B_9.vtk
+Opening file: ./data/rhoe_9.vtk
+Opening file: ./data/rhoi_9.vtk
+Opening file: ./data/rho_net_9.vtk
+
+***********************
+   cycle = 10
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 1 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 1 (with streaming): done.
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+In [destroyStreams]: All CUDA Streams destroyed..
+
+**************************************
+   Tot. Simulation Time (s) = 29.563
+   Tot. Simulation Time minus output (s) = 26.0005
+   Memory allocation/deallocation time  (s) = 5.177
+   Mover Time / Cycle   (s) = 0.627636
+   Interp. Time / Cycle (s) = 1.43727
+**************************************
+   Mover performed on GPU
+   Interp performed on GPU
+   Streaming enabled
+   nStreams: 10
+   Combined kernels: False
+   TPB: 128
+**************************************

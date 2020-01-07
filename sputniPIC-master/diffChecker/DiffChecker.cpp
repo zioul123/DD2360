@@ -35,7 +35,6 @@ int main(int argc, char **argv)
             }
         }
         in1.close();
-        std::cout << "All input1 read." << std::endl;
     } 
     else 
     {
@@ -58,7 +57,6 @@ int main(int argc, char **argv)
             }
         }
         in2.close();
-        std::cout << "All input2 read." << std::endl;
     } 
     else 
     {
@@ -77,7 +75,7 @@ int main(int argc, char **argv)
         }
         in1Doubles.pop(); in2Doubles.pop();
     }
-    std::cout << "All differences less than 10e-6." << std::endl;
+    std::cout << "All differences in " << inputFile1 << ", " << inputFile2 << " are less than 10e-6." << std::endl;
  
     return 0;
 

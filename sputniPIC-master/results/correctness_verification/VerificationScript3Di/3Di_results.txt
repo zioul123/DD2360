@@ -1,0 +1,5 @@
+All differences in VerificationScript3Di/3Di_MI.vtk, VerificationScript3Di/3Di_CPU.vtk are less than 10e-6.
+All differences in VerificationScript3Di/3Di_MIS1.vtk, VerificationScript3Di/3Di_CPU.vtk are less than 10e-6.
+All differences in VerificationScript3Di/3Di_MIS10.vtk, VerificationScript3Di/3Di_CPU.vtk are less than 10e-6.
+All differences in VerificationScript3Di/3Di_MIS1C.vtk, VerificationScript3Di/3Di_CPU.vtk are less than 10e-6.
+All differences in VerificationScript3Di/3Di_MIS10C.vtk, VerificationScript3Di/3Di_CPU.vtk are less than 10e-6.

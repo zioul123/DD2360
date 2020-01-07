@@ -1,0 +1,430 @@
+
+-------------------------
+sputniPIC Sim. Parameters
+-------------------------
+Number of species    = 4
+Number of particles of species 0 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 1 = 42467328	 (MAX = 42467328)  QOM = 1
+Number of particles of species 2 = 42467328	 (MAX = 42467328)  QOM = -64
+Number of particles of species 3 = 42467328	 (MAX = 42467328)  QOM = 1
+x-Length                 = 20
+y-Length                 = 10
+z-Length                 = 10
+Number of cells (x)      = 128
+Number of cells (y)      = 64
+Number of cells (z)      = 64
+Time step                = 0.25
+Number of cycles         = 10
+Results saved in: data
+Mover performed on GPU
+Interp performed on GPU
+Streaming enabled
+nStreams: 1
+Combined kernels: False
+Threads per block = 128
+In [particle_allocate]: Allocation of CPU (pinned) memory for species 0 done
+In [particle_allocate]: Allocation of CPU (pinned) memory for species 1 done
+In [particle_allocate]: Allocation of CPU (pinned) memory for species 2 done
+In [particle_allocate]: Allocation of CPU (pinned) memory for species 3 done
+*************************************************
+**  Initialize GEM Challenge with Pertubation  **
+*************************************************
+** B0x = 0.0097
+** B0y = 0
+** B0z = 0
+** Delta (current sheet thickness) = 0.5
+** rho species 0 = 1 CURRENT SHEET 
+** rho species 1 = 1 CURRENT SHEET 
+** rho species 2 = 0.02 BACKGROUND 
+** rho species 3 = 0.02 BACKGROUND 
+*************************************************
+In [allocate_gpu_memory]: part->nop is greater than MAX_GPU_PARTICLES. Allocating only up to MAX_GPU_PARTICLES particles...
+In [allocate_gpu_memory]: All GPU memory allocation: done
+In [createStreams]: All streams created.
+In [main]: All GPU memory allocation: done
+
+***********************
+   cycle = 1
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+
+***********************
+   cycle = 2
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+
+***********************
+   cycle = 3
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+
+***********************
+   cycle = 4
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+
+***********************
+   cycle = 5
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+
+***********************
+   cycle = 6
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+
+***********************
+   cycle = 7
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+
+***********************
+   cycle = 8
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+
+***********************
+   cycle = 9
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+
+***********************
+   cycle = 10
+***********************
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 0 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 0 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 1 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 1 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 2 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 2 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+***  In [mover_PC]: MOVER with SUBCYCLING 1 - species 3 ***
+====== In [mover_PC]: batch 1 of 3 (with streaming): done.
+====== In [mover_PC]: batch 2 of 3 (with streaming): done.
+====== In [mover_PC]: batch 3 of 3 (with streaming): done.
+***  In [interpP2G]: Interpolating  - species 3 ***
+====== In [interpP2G]: batch 1 of 3 (with streaming): done.
+====== In [interpP2G]: batch 2 of 3 (with streaming): done.
+====== In [interpP2G]: batch 3 of 3 (with streaming): done.
+Opening file: ./data/E_10.vtk
+Opening file: ./data/B_10.vtk
+Opening file: ./data/rhoe_10.vtk
+Opening file: ./data/rhoi_10.vtk
+Opening file: ./data/rho_net_10.vtk
+In [particle_deallocate]: Dellocation of CPU memory (pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (pinned) done
+In [particle_deallocate]: Dellocation of CPU memory (pinned) done
+In [free_gpu_memory]: all GPU memory freed..
+In [destroyStreams]: All CUDA Streams destroyed..
+
+**************************************
+   Tot. Simulation Time (s) = 293.466
+   Tot. Simulation Time minus output (s) = 287.597
+   Memory allocation/deallocation time  (s) = 48.8527
+   Mover Time / Cycle   (s) = 9.81622
+   Interp. Time / Cycle (s) = 13.9823
+**************************************
+   Mover performed on GPU
+   Interp performed on GPU
+   Streaming enabled
+   nStreams: 1
+   Combined kernels: False
+   TPB: 128
+**************************************
