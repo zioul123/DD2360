@@ -5,7 +5,7 @@ The folders are organized with two categories,
 - By input file used
 - By grade
 
-In each grade's folder, you will find the output files, diff files, and nvprof files from running the program with the mode specified by that grade's requirements.
+In each grade's folder, you will find the output files, diff files, and nvprof files from running the program with the mode specified by that grade's requirements (run with `TPB=32`).
 - Grade d/e: Run on `GEM_2D.inp` and `GEM_3D.inp`
 - Grade c: Run on `GEM_2D_increased.inp` and `GEM_3D_increased.inp`
 - Grade b: Similar to grade c, with `nStreams=1` and `nStreams=3`
